@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <WingHeader title="Home"></WingHeader>
-  </div>
+    <WingHeader title="News"/>
 </template>
 
 <script>
 import WingHeader from '../components/WingHeader'
 export default {
-  name: 'Home',
+  name: 'News',
   components: {
     WingHeader
   }

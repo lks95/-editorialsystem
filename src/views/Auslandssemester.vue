@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <WingHeader title="Home"></WingHeader>
-  </div>
+    <WingHeader title="Auslandssemester"/>
 </template>
 
 <script>
 import WingHeader from '../components/WingHeader'
 export default {
-  name: 'Home',
+  name: 'Auslandssemester',
   components: {
     WingHeader
   }
