@@ -4,7 +4,17 @@
     <ul class="list-group">
         <li v-for="data in praxissemester" v-bind:key="data.author" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
             {{data.author}}
-            <button class="btn btn-sm btn-outline-secondary">Bearbeiten</button>
+            <div>
+                <button class="btn btn-outline-primary mx-1">
+                    <font-awesome-icon icon="edit" />
+                </button>
+                <button class="btn btn-outline-warning mx-1">
+                    <font-awesome-icon icon="archive" />
+                </button>
+                <button class="btn btn-outline-danger mx-1">
+                    <font-awesome-icon icon="trash" />
+                </button>
+            </div>
         </li>
     </ul>
 </div>
