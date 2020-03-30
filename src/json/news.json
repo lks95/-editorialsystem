@@ -1,0 +1,33 @@
+{
+    "news": [
+      {
+        "title": "WING-Team auf Hausmesse der it.schule Stuttgart",
+        "link": "news_200307.html",
+        "linkText": "Details zur Meldung 'WING-Team auf Hausmesse der it.schule Stuttgart'",
+        "img": "200307/it_schule.jpg",
+        "text": "Aussteller informieren über vielseitige Studienmöglichkeiten"
+      },
+      {
+        "title": "Bester Absolvent im Druck- und Verpackungsbereich",
+        "link": "news_200302.html",
+        "linkText": "Details zur Meldung 'Bester Absolvent im Druck- und Verpackungsbereich'",
+        "img": "200302/preisverleihung.JPG",
+        "text": "Andreas Riedel wurde bei der Absolventenfeier im Februar 2020 von dem Verband Druck und Medien in Baden-Württemberg e. V. als bester Absolvent des vergangenen Semesters im Druck- und Verpackungsbereich ausgezeichnet. Wir haben bei Andreas Riedel nachgefragt: Wie wird man zum besten Absolventen?"
+      },
+      {
+        "title": "HdM meets Inholland - Eine erfolgreiche Austauschwoche",
+        "link": "news_191024.html",
+        "linkText": "Details zur Meldung 'HdM meets Inholland'",
+        "img": "191024/inholland.jpg",
+        "text": "Im Oktober 2019 waren zum ersten Mal holländische Studierende aus Alkmaar zu Gast. Von Studierenden, Professoren und Mitarbeitern des Studiengangs Wirtschaftsingenieurwesen Medien wurde dafür ein spannendes Programm auf die Beine gestellt."
+      },
+      {
+        "title": "Wirtschaftsingenieurwesen Medien auf Exkursionen",
+        "link": "news_190514.html",
+        "linkText": "Details zur Meldung 'Exkursionen'",
+        "img": "190514/IMG_0815-K_ausschnitt.jpg",
+        "text": "Einmal im Jahr verlagert der Studiengang Wirtschaftsingenieurwesen Medien seinen Lehrort in die Industrie: unsere Studenten haben die Möglichkeit, im Rahmen organisierter Exkursionen interessante Unternehmen zu besuchen und teilweise auch bei Abendveranstaltungen die Mitstudenten und Professoren besser kennenzulernen."
+      }
+    ]
+  }
+  
