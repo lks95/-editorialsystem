@@ -1,5 +1,9 @@
 {
 	"berichte": [
-		
+		{
+			"img": "archiv.jpg",
+			"text": "Archiv",
+			"author": "Testbeitrag, Archiv"
+		}
 	]
 }
