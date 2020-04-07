@@ -3,21 +3,28 @@
         <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
         <EditPraxissemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
         <ul class="list-group">
-            <li v-for="data in dataToShow" v-bind:key="data.author" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            <li v-for="(data, index) in dataToShow" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
                 {{data.author}}
-                <div>
-                    <button v-if="!displayArchive" class="btn btn-outline-primary mx-1" @click="editItem(data)">
-                        <font-awesome-icon icon="edit" />
-                    </button>
-                    <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
-                        <font-awesome-icon icon="archive" />
-                    </button>
-                    <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
-                        <font-awesome-icon icon="undo" />
-                    </button>
-                    <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
-                        <font-awesome-icon icon="trash" />
-                    </button>
+                <div class="d-flex">
+                  <div>
+                      <button v-if="!displayArchive" class="btn btn-outline-primary mx-1" @click="editItem(data)">
+                          <font-awesome-icon icon="edit" />
+                      </button>
+                      <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                          <font-awesome-icon icon="archive" />
+                      </button>
+                      <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                          <font-awesome-icon icon="undo" />
+                      </button>
+                      <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                          <font-awesome-icon icon="trash" />
+                      </button>
+                      
+                  </div>
+                  <div class="btn-group mx-1" style="width:5em;" v-if(!displayArchive)>
+                    <button v-if="!(index == 0)" class="btn btn-outline-primary" @click="arrayMove(index, index-1)"><font-awesome-icon icon="chevron-up" /></button>
+                    <button v-if="!(index == dataToShow.length-1)" class="btn btn-outline-primary" @click="arrayMove(index, index+1)"><font-awesome-icon icon="chevron-down" /></button>
+                  </div>
                 </div>
             </li>
         </ul>
@@ -138,6 +145,9 @@ export default {
     cancelInput: function(){
         this.selectedItem = {};
         this.showForm = false;
+    },
+    arrayMove: function(old_index, new_index){
+      this.praxissemester.splice(new_index, 0, this.praxissemester.splice(old_index, 1)[0]);
     }
   },
   mounted() {
