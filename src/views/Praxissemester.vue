@@ -21,7 +21,7 @@
                       </button>
                       
                   </div>
-                  <div class="btn-group mx-1" style="width:5em;" v-if(!displayArchive)>
+                  <div class="btn-group mx-1" style="width:5em;" v-if="!displayArchive">
                     <button v-if="!(index == 0)" class="btn btn-outline-primary" @click="arrayMove(index, index-1)"><font-awesome-icon icon="chevron-up" /></button>
                     <button v-if="!(index == dataToShow.length-1)" class="btn btn-outline-primary" @click="arrayMove(index, index+1)"><font-awesome-icon icon="chevron-down" /></button>
                   </div>
@@ -167,6 +167,6 @@ export default {
           return item;
         }))
     );
-  },
+  }
 }
 </script>
