@@ -31,8 +31,8 @@
 
 <script>
 import WingHeader from '../components/WingHeader'
-import json from '../json/auslandssemester.json'
-import archive_json from '../json/archive/auslandssemester.json'
+//import json from '../json/auslandssemester.json'
+//import archive_json from '../json/archive/auslandssemester.json'
 export default {
   name: 'Auslandssemester',
   components: {
@@ -40,8 +40,8 @@ export default {
   },
   data(){
     return{
-        auslandssemester: json.berichte,
-        archive: archive_json.berichte,
+        auslandssemester: [],
+        archive: [],
         }
   },
   methods: {
