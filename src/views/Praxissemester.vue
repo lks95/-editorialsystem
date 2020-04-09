@@ -1,23 +1,30 @@
 <template>
     <div>
-        <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addNewForm" />
-        <EditPraxissemester v-if="showForm" @add="addItem" @cancelEdit="cancelInput" :selectedItem="selectedItem" />
+        <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
+        <EditPraxissemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
         <ul class="list-group">
-            <li v-for="data in dataToShow" v-bind:key="data.author" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+            <li v-for="(data, index) in dataToShow" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
                 {{data.author}}
-                <div>
-                    <button class="btn btn-outline-primary mx-1" @click="editItem(data)">
-                        <font-awesome-icon icon="edit" />
-                    </button>
-                    <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
-                        <font-awesome-icon icon="archive" />
-                    </button>
-                    <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
-                        <font-awesome-icon icon="undo" />
-                    </button>
-                    <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
-                        <font-awesome-icon icon="trash" />
-                    </button>
+                <div class="d-flex">
+                  <div>
+                      <button v-if="!displayArchive" class="btn btn-outline-primary mx-1" @click="editItem(data)">
+                          <font-awesome-icon icon="edit" />
+                      </button>
+                      <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                          <font-awesome-icon icon="archive" />
+                      </button>
+                      <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                          <font-awesome-icon icon="undo" />
+                      </button>
+                      <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                          <font-awesome-icon icon="trash" />
+                      </button>
+                      
+                  </div>
+                  <div class="btn-group mx-1" style="width:5em;" v-if="!displayArchive">
+                    <button v-if="!(index == 0)" class="btn btn-outline-primary" @click="arrayMove(index, index-1)"><font-awesome-icon icon="chevron-up" /></button>
+                    <button v-if="!(index == dataToShow.length-1)" class="btn btn-outline-primary" @click="arrayMove(index, index+1)"><font-awesome-icon icon="chevron-down" /></button>
+                  </div>
                 </div>
             </li>
         </ul>
@@ -27,8 +34,7 @@
 <script>
 import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
-import json from '../json/praxissemester.json'
-import archive_json from '../json/archive/praxissemester.json'
+import axios from "axios"
 
 export default {
   name: 'Praxissemester',
@@ -38,12 +44,12 @@ export default {
   },
   data(){
     return{
-        praxissemester: json.berichte,
-        archive: archive_json.berichte,
+        praxissemester: [],
+        archive: [],
         displayArchive: false,
         showForm: false,
         selectedItem: {},
-        isNewItem: true
+        psIndex: 0
     }
   },
   computed: {
@@ -115,27 +121,52 @@ export default {
     selectArchive: function(archiveSelected){
         this.displayArchive = archiveSelected;
     },
-    addItem: function(newItem){
-        if(this.isNewItem){
+    addItem: function(){
+        this.showForm = true;
+    },
+    editItem: function(item){
+        this.selectedItem = item;
+        this.showForm = true;
+    },
+    saveInput: function(newItem){
+        if(Object.keys(this.selectedItem).length === 0){
+            newItem.psId = this.psIndex;
+            this.psIndex++;
             this.praxissemester.push(newItem);
+            this.displayArchive = false;
+        }else{
+            newItem.psId = this.selectedItem.psId;
+            let foundIndex = this.praxissemester.findIndex(x => x.psId === newItem.psId);
+            this.praxissemester[foundIndex] = newItem;
         }
         this.showForm = false;
         this.selectedItem = {};
-        this.isNewItem = true;
-    },
-    addNewForm: function(){
-        this.showForm = true;
     },
     cancelInput: function(){
         this.selectedItem = {};
         this.showForm = false;
-        this.isNewItem = true;
     },
-    editItem: function(item){
-        this.isNewItem = false;
-        this.selectedItem = item;
-        this.showForm = true;
+    arrayMove: function(old_index, new_index){
+      this.praxissemester.splice(new_index, 0, this.praxissemester.splice(old_index, 1)[0]);
     }
+  },
+  mounted() {
+    axios.get("./data/praxissemester.json").then(
+      response =>
+        (this.praxissemester = response.data.berichte.map(item => {
+          item.psId = this.psIndex;
+          this.psIndex++;
+          return item;
+        }))
+    );
+    axios.get("./data/archive/praxissemester.json").then(
+      response =>
+        (this.archive = response.data.berichte.map(item => {
+          item.psId = this.psIndex;
+          this.psIndex++;
+          return item;
+        }))
+    );
   }
 }
 </script>
