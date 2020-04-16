@@ -1,0 +1,70 @@
+auslandssemester.json
+	bericht_title			--> Text (ohne HTML)
+	bericht_title_position		--> kann raus (lt. Dörsam 16.04.)
+	bericht_img			--> Bild (Text mit Dateiname)
+	bericht_text			--> Text (ohne HTML)
+	bericht_author			--> Text (ohne HTML)
+
+dates.json
+	title				--> Text (ohne HTML)
+	headline			--> Text (ohne HTML)
+	description			--> HTML-Text
+	date.start			--> Datum
+	date.end			--> Datum
+	time.start			--> Uhrzeit
+	time.end			--> Uhrzeit
+	place				--> Text (ohne HTML)
+	contact				--> Array / Auswahl von Profs (aus teams.json)
+	links				--> Array von Objekten {href (Link); text (Text ohne HTML)}
+
+news.json
+	title				--> Text (ohne HTML)
+	link				--> Text (ohne HTML)
+	linkText			--> Text (ohne HTML)
+	img				--> Bild (Text mit Dateiname)
+	text				--> Text (ohne HTML)
+
+praxissemester.json
+	img				--> Bild (Text mit Dateiname)
+	text				--> Text (ohne HTML)
+	author				--> Text (ohne HTML)
+
+projects.json
+	study				--> eins davon oder leer(dann grau) (imp, dp, mdm) --> Farben (nach Schwerpunkt Industrial Media Production, Digital Publishing Technologies und Media Design Management)
+	category			--> Array [App, Web, Design] --> Auswahlliste aus den dreien (Mehrfachnennung möglich)
+	intro_title			--> Text (ohne HTML)
+	intro_text			--> Text (ohne HTML)
+        intro_img_src			--> Bild (Text mit Dateiname)
+        intro_img_alt			--> Text (ohne HTML)
+        detail_headline			--> Text (ohne HTML)
+        detail_header_img_src		--> Bild (Text mit Dateiname)
+        detail_header_img_alt		--> Text (ohne HTML)
+        detail_header_intro		--> Text (ohne HTML)
+        detail_text			--> HTML-Text
+	detail_media			--> Array von Objekten {detail_img_src (Bild (Text mit Dateiname)); detail_img_alt (Text ohne HTML)}
+        date				--> Datum
+        contacts			--> Array / Auswahl von Profs (aus teams.json)
+
+publikationen.json
+	publikation_title		--> Text (ohne HTML)
+	publikation_subtitle		--> Text (ohne HTML)
+	publikation_text": 		--> Text (ohne HTML)
+	publikation_color		--> kann raus (lt. Dörsam 16.04.)
+	publikation_backgroundcolor	--> kann raus (lt. Dörsam 16.04.)
+	publikation_author		--> Text (ohne HTML)
+	publikation_betreuer		--> Text (ohne HTML)
+	img				--> Bild (Text mit Dateiname)
+	pdf				--> Dokument (Upload? oder Text?) //vermutlich auch nur Dateiname
+
+team.json
+	id				--> Text (ohne HTML)
+        name				--> Text (ohne HTML)
+        phone				--> Telefonnummer
+        mail				--> Email Adresse
+        room				--> Text (ohne HTML)
+        job_title			--> Text (ohne HTML)
+        text				--> Text (ohne HTML)
+        subject				--> Text (ohne HTML)
+        times				--> Text (ohne HTML)
+        focus				--> eins davon oder leer(dann grau) (imp, dp, mdm) --> Farben (nach Schwerpunkt Industrial Media Production, Digital Publishing Technologies und Media Design Management)
+        img				--> Bild (Text mit Dateiname)
