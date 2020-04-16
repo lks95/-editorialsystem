@@ -36,6 +36,7 @@ import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
 import axios from "axios"
 
+
 export default {
   name: 'Praxissemester',
   components: {
@@ -52,6 +53,9 @@ export default {
         psIndex: 0
     }
   },
+
+
+
   computed: {
     dataToShow: function () {
             if(this.displayArchive === true){
