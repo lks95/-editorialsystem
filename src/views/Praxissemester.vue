@@ -80,7 +80,7 @@ export default {
           .then(value => {
               if(value){
                 this.praxissemester.splice(this.praxissemester.indexOf(item), 1);
-                this.archive.push(item);
+                this.archive.unshift(item);
               }
           })
           .catch(err => {
@@ -98,7 +98,7 @@ export default {
           .then(value => {
               if(value){
                 this.archive.splice(this.archive.indexOf(item), 1);
-                this.praxissemester.push(item);
+                this.praxissemester.unshift(item);
               }
           })
           .catch(err => {
@@ -140,7 +140,7 @@ export default {
         if(Object.keys(this.selectedItem).length === 0){
             newItem.psId = this.psIndex;
             this.psIndex++;
-            this.praxissemester.push(newItem);
+            this.praxissemester.unshift(newItem);
             this.displayArchive = false;
         }else{
             newItem.psId = this.selectedItem.psId;
