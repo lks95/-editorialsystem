@@ -12,7 +12,7 @@
                 <label for="imgInput">Bild:</label>
                 <input type="text" class="form-control" id="imgInput" v-model.trim="img" @input="updateImg($event.target.value)">
             </div>
-            <div class="error" v-if="!$v.img.required">Field is requiretextd</div>
+            <div class="error" v-if="!$v.img.required">Field is required</div>
             <div class="form-group" :class="{'form-group--error': $v.text.$error}">
                 <label for="textInput">Bericht:</label>
                 <textarea class="form-control" id="textInput" rows="3" v-model.trim="text" @input="updateText($event.target.value)"></textarea>
@@ -23,9 +23,9 @@
             
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
+                <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
-                <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
             </div>
         </form>
     </div>
@@ -45,56 +45,28 @@ export default {
             submitStatus: null,
         };
     },
-
     validations:{
-        author: { required, minLength: minLength(3), maxLength: maxLength(25)},
+        author: { required, minLength: minLength(3), maxLength: maxLength(50)},
         img: { required },
-        text: { required, minLength: minLength(15), maxLength: maxLength(50) }
+        text: { required, minLength: minLength(15), maxLength: maxLength(1500) }
     },
-    
-   /* computed: {
-        authorErrors(){
-            const errors =[];
-            if(!this.$v.author.$dirty) return errors;
-            !this.$v.author.required && errors.push("Author is required")
-            !this.$v.author.minLength && errors.push("Password must be minimum of 3 characters")
-                return errors;
-        },
-        imgErrors(){
-             const errors =[];
-            if(!this.$v.img.$dirty) return errors;
-            !this.$v.author.required &&errors.push("Author is required")
-                return errors;
-        },
-        textErrors(){
-             const errors =[];
-            if(!this.$v.text.$dirty) return errors;
-            !this.$v.author.required &&errors.push("Author is required")
-               !this.$v.author.minLength && errors.push("Password must be minimum of 15 characters")
-               return errors;
-        }
-    },*/
-
     methods: {
         submit: function() {
-            console.log('submit!')
             this.$v.$touch()
             if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
                 this.submitStatus = 'ERROR'
             } else {
                 let formData = {
-                img: this.img || this.selectedItem.img,
-                text: this.text || this.selectedItem.text,
-                author: this.author || this.selectedItem.author,
-            };
-            this.$emit("save", formData);
+                    img: this.img || this.selectedItem.img,
+                    text: this.text || this.selectedItem.text,
+                    author: this.author || this.selectedItem.author
+                };
+                this.$emit("save", formData);
                 this.submitStatus = 'PENDING'
                 setTimeout(() => {
-                this.submitStatus = 'OK'
+                    this.submitStatus = 'OK'
                 }, 500)
-            }
-            
-            
+            } 
         },
         updateText(value){
             this.text = value;
@@ -108,20 +80,12 @@ export default {
         updateImg(value){
             this.img = value;
             this.$v.img.$touch();
-        },
-       /* submit() {
-            console.log('submit!')
-            this.$v.$touch()
-            if (this.$v.$invalid) {
-                this.submitStatus = 'ERROR'
-            } else {
-                // do your submit logic here
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                this.submitStatus = 'OK'
-                }, 500)
-            }
-        }*/
+        }
+    },
+    mounted(){
+        this.author = this.selectedItem.author;
+        this.img = this.selectedItem.img;
+        this.text = this.selectedItem.text;
     }
 }
 </script>
