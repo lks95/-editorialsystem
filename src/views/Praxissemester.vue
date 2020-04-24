@@ -2,7 +2,8 @@
     <div>
         <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
         <EditPraxissemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
-        <ul class="list-group">
+        <LoadingSpinner v-if="!dataLoaded" />
+        <ul v-else class="list-group">
             <li v-for="(data, index) in dataToShow" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
                 {{data.author}}
                 <div class="d-flex">
@@ -34,6 +35,7 @@
 <script>
 import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
+import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
 
 
@@ -41,7 +43,8 @@ export default {
   name: 'Praxissemester',
   components: {
     WingHeader,
-    EditPraxissemester
+    EditPraxissemester,
+    LoadingSpinner
   },
   data(){
     return{
@@ -50,7 +53,8 @@ export default {
         displayArchive: false,
         showForm: false,
         selectedItem: {},
-        psIndex: 0
+        psIndex: 0,
+        dataLoaded: false
     }
   },
 
@@ -76,7 +80,7 @@ export default {
           .then(value => {
               if(value){
                 this.praxissemester.splice(this.praxissemester.indexOf(item), 1);
-                this.archive.push(item);
+                this.archive.unshift(item);
               }
           })
           .catch(err => {
@@ -94,7 +98,7 @@ export default {
           .then(value => {
               if(value){
                 this.archive.splice(this.archive.indexOf(item), 1);
-                this.praxissemester.push(item);
+                this.praxissemester.unshift(item);
               }
           })
           .catch(err => {
@@ -136,7 +140,7 @@ export default {
         if(Object.keys(this.selectedItem).length === 0){
             newItem.psId = this.psIndex;
             this.psIndex++;
-            this.praxissemester.push(newItem);
+            this.praxissemester.unshift(newItem);
             this.displayArchive = false;
         }else{
             newItem.psId = this.selectedItem.psId;
@@ -161,7 +165,9 @@ export default {
           item.psId = this.psIndex;
           this.psIndex++;
           return item;
-        }))
+        }),
+        this.dataLoaded = true
+        )
     );
     axios.get("./data/archive/praxissemester.json").then(
       response =>

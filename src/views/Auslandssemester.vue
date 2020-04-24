@@ -81,7 +81,7 @@ export default {
           .then(value => {
               if(value){
                 this.auslandssemester.splice(this.auslandssemester.indexOf(item), 1);
-                this.archive.push(item);
+                this.archive.unshift(item);
               }
           })
           .catch(err => {
@@ -99,7 +99,7 @@ export default {
           .then(value => {
               if(value){
                 this.archive.splice(this.archive.indexOf(item), 1);
-                this.auslandssemester.push(item);
+                this.auslandssemester.unshift(item);
               }
           })
           .catch(err => {
@@ -141,7 +141,7 @@ export default {
         if(Object.keys(this.selectedItem).length === 0){
             newItem.psId = this.psIndex;
             this.asIndex++;
-            this.auslandssemester.push(newItem);
+            this.auslandssemester.unshift(newItem);
             this.displayArchive = false;
         }else{
             newItem.asId = this.selectedItem.asId;
