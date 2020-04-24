@@ -9,7 +9,7 @@
                         {{data.bericht_title}}
                     </div>
                     <div>
-                        <small clas="text-muted">
+                        <small class="text-muted">
                             {{data.bericht_author}}
                         </small>
                     </div>
