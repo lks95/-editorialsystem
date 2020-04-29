@@ -2,37 +2,55 @@
     <div>
         <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
         <EditPraxissemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
+        
+        
         <LoadingSpinner v-if="!dataLoaded" />
-        <ul v-else class="list-group">
-            <li v-for="(data, index) in dataToShow" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
-                {{data.author}}
-                <div class="d-flex">
-                  <div>
-                      <button v-if="!displayArchive" class="btn btn-outline-primary mx-1" @click="editItem(data)">
-                          <font-awesome-icon icon="edit" />
-                      </button>
-                      <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
-                          <font-awesome-icon icon="archive" />
-                      </button>
-                      <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
-                          <font-awesome-icon icon="undo" />
-                      </button>
-                      <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
-                          <font-awesome-icon icon="trash" />
-                      </button>
-                      
-                  </div>
-                  <div class="btn-group mx-1" style="width:5em;" v-if="!displayArchive">
-                    <button v-if="!(index == 0)" class="btn btn-outline-primary" @click="arrayMove(index, index-1)"><font-awesome-icon icon="chevron-up" /></button>
-                    <button v-if="!(index == dataToShow.length-1)" class="btn btn-outline-primary" @click="arrayMove(index, index+1)"><font-awesome-icon icon="chevron-down" /></button>
-                  </div>
-                </div>
-            </li>
-        </ul>
+        <draggable v-else-if="!displayArchive" v-model="praxissemester" group="praxissemester" @start="drag=true" @end="drag=false">
+          <div v-for="data in praxissemester" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+            <div>
+              <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+              {{data.author}}
+            </div>
+            <div class="d-flex">
+              <div>
+                  <button class="btn btn-outline-primary mx-1" @click="editItem(data)">
+                      <font-awesome-icon icon="edit" />
+                  </button>
+                  <button class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                      <font-awesome-icon icon="archive" />
+                  </button>
+                  <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                      <font-awesome-icon icon="trash" />
+                  </button>
+                  
+              </div>
+            </div>
+          </div>
+        </draggable>
+        <draggable v-else v-model="archive" group="praxissemester-archive" @start="drag=true" @end="drag=false">
+          <div v-for="data in archive" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+            <div>
+              <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+              {{data.author}}
+            </div>
+            <div class="d-flex">
+              <div>
+                  <button class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                      <font-awesome-icon icon="undo" />
+                  </button>
+                  <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                      <font-awesome-icon icon="trash" />
+                  </button>
+                  
+              </div>
+            </div>
+          </div>
+        </draggable>
     </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
 import LoadingSpinner from '../components/LoadingSpinner'
@@ -44,7 +62,8 @@ export default {
   components: {
     WingHeader,
     EditPraxissemester,
-    LoadingSpinner
+    LoadingSpinner,
+    draggable
   },
   data(){
     return{
@@ -153,9 +172,6 @@ export default {
     cancelInput: function(){
         this.selectedItem = {};
         this.showForm = false;
-    },
-    arrayMove: function(old_index, new_index){
-      this.praxissemester.splice(new_index, 0, this.praxissemester.splice(old_index, 1)[0]);
     }
   },
   mounted() {
@@ -180,3 +196,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .drag-drop{
+    cursor: move;
+  }
+</style>
