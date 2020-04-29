@@ -1,30 +1,32 @@
 <template>
     <div>
         <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
-        <EditPraxissemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
-        
-        
+        <CreatePraxissemester v-if="showForm" @save="saveNew" @cancel="cancelNew" />
         <LoadingSpinner v-if="!dataLoaded" />
         <draggable v-else-if="!displayArchive" v-model="praxissemester" group="praxissemester" @start="drag=true" @end="drag=false">
-          <div v-for="data in praxissemester" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
-            <div>
-              <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-              {{data.author}}
-            </div>
-            <div class="d-flex">
+          <div v-for="data in praxissemester" v-bind:key="data.psId" class="list-group-item drag-drop">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ">
               <div>
-                  <button class="btn btn-outline-primary mx-1" @click="editItem(data)">
-                      <font-awesome-icon icon="edit" />
-                  </button>
-                  <button class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
-                      <font-awesome-icon icon="archive" />
-                  </button>
-                  <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
-                      <font-awesome-icon icon="trash" />
-                  </button>
-                  
+                <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+                {{data.author}}
+              </div>
+              <div class="d-flex">
+                <div>
+                    <button v-b-toggle="'collapse-' + data.psId" variant="primary" class="btn btn-outline-primary mx-1">
+                        <font-awesome-icon icon="edit" />
+                    </button>
+                    <button class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                        <font-awesome-icon icon="archive" />
+                    </button>
+                    <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                        <font-awesome-icon icon="trash" />
+                    </button>
+                </div>
               </div>
             </div>
+            <b-collapse :id="'collapse-' + data.psId" class="border-top mt-3">
+                <EditPraxissemester :selectedItem="data" :selectedIndex="data.psId"  @save="updateItem" />
+            </b-collapse>
           </div>
         </draggable>
         <draggable v-else v-model="archive" group="praxissemester-archive" @start="drag=true" @end="drag=false">
@@ -53,16 +55,17 @@
 import draggable from 'vuedraggable'
 import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
+import CreatePraxissemester from '../components/CreatePraxissemester'
 import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
 //import { Editor } from 'tiptap'
 //import {Heading} from 'tiptap-extensions'
 
-
 export default {
   name: 'Praxissemester',
   components: {
     WingHeader,
+    CreatePraxissemester,
     EditPraxissemester,
     LoadingSpinner,
     draggable
@@ -81,9 +84,6 @@ export default {
         dataLoaded: false
     }
   },
-  
-
-
   computed: {
     dataToShow: function () {
             if(this.displayArchive === true){
@@ -185,27 +185,22 @@ export default {
     addItem: function(){
         this.showForm = true;
     },
-    editItem: function(item){
-        this.selectedItem = item;
-        this.showForm = true;
+    saveNew: function(newItem){
+        newItem.psId = this.psIndex;
+        this.psIndex++;
+        this.praxissemester.unshift(newItem);
+        this.displayArchive = false;
+        this.showForm = false;
+        this.selectedItem = {};
     },
-    /*saveInput: function(newItem){
-        if(Object.keys(this.selectedItem).length === 0){
-            newItem.psId = this.psIndex;
-            this.psIndex++;
-            this.praxissemester.unshift(newItem);
-            this.displayArchive = false;
-        }else{
-            newItem.psId = this.selectedItem.psId;
-            let foundIndex = this.praxissemester.findIndex(x => x.psId === newItem.psId);
-            this.praxissemester[foundIndex] = newItem;
-        }
+    cancelNew: function(){
         this.showForm = false;
-        this.selectedItem = {};
-    },*/
-    cancelInput: function(){
-        this.selectedItem = {};
-        this.showForm = false;
+    },
+    updateItem: function(item){
+      let foundIndex = this.praxissemester.findIndex(x => x.psId === item.psId);
+      this.praxissemester[foundIndex].img = item.img;
+      this.praxissemester[foundIndex].text = item.text;
+      this.praxissemester[foundIndex].author = item.author;
     }
   },
   mounted() {
