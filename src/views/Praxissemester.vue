@@ -55,6 +55,8 @@ import WingHeader from '../components/WingHeader'
 import EditPraxissemester from '../components/EditPraxissemester'
 import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
+//import { Editor } from 'tiptap'
+//import {Heading} from 'tiptap-extensions'
 
 
 export default {
@@ -64,6 +66,9 @@ export default {
     EditPraxissemester,
     LoadingSpinner,
     draggable
+
+    
+
   },
   data(){
     return{
@@ -76,7 +81,7 @@ export default {
         dataLoaded: false
     }
   },
-
+  
 
 
   computed: {
@@ -87,7 +92,32 @@ export default {
             return this.praxissemester;
         }
   },
+
+  /*const: editor = new Editor({
+  // other options omitted for brevity
+  extensions: [
+    // The editor will accept paragraphs and headline elements as part of its document schema.
+    new Heading({
+      levels: [1,2,3],
+    }),
+  ],
+  }),*/
+
   methods: {
+
+     saveJson: function(j){
+        this.$http.post('http://localhost:2019/WingSever/save',{
+            
+            saveJson: j,
+        });
+    },
+
+    archivJson: function(j){
+        this.$http.post('http://localhost:2019/WingSever/save',{
+            archivJson: j,
+        });
+    },
+
     confirmArchive: function(item) {
         this.$bvModal.msgBoxConfirm('Ausgewähltes Element archivieren?', {
           title: 'Archivieren bestätigen',
@@ -99,7 +129,13 @@ export default {
           .then(value => {
               if(value){
                 this.praxissemester.splice(this.praxissemester.indexOf(item), 1);
+
                 this.archive.unshift(item);
+
+                //saveJson(this.praxissemester);
+                //this.archive.push(item);
+                //archivJson(this.archivJson);
+
               }
           })
           .catch(err => {
@@ -155,7 +191,7 @@ export default {
         this.selectedItem = item;
         this.showForm = true;
     },
-    saveInput: function(newItem){
+    /*saveInput: function(newItem){
         if(Object.keys(this.selectedItem).length === 0){
             newItem.psId = this.psIndex;
             this.psIndex++;
@@ -168,7 +204,7 @@ export default {
         }
         this.showForm = false;
         this.selectedItem = {};
-    },
+    },*/
     cancelInput: function(){
         this.selectedItem = {};
         this.showForm = false;

@@ -66,8 +66,13 @@ export default {
                 setTimeout(() => {
                     this.submitStatus = 'OK'
                 }, 500)
+
             } 
+
+           // }  
+
         },
+
         updateText(value){
             this.text = value;
             this.$v.text.$touch();
