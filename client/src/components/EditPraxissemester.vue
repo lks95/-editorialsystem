@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
+        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
             <div class="form-group" :class="{'form-group--error': $v.author.$error}">
                 <label for="authorInput">Autor:</label>
                 <input type="text" class="form-control"  id="authorInput" v-model.trim="author"  @input="updateAuthor($event.target.value)">
