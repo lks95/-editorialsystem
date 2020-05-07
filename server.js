@@ -17,16 +17,37 @@ app.use(morgan('tiny'));
 //app.use('/WingSever',express.static(__dirname +'/public'));
 
 
-app.post('WingSever/save', function(req, res){
-    var praxissemester = require('Praxissemester');
+ 
+
+/*app.get('/api', (req, res) =>{
+    const data = {
+        username: 'accimeesterlin',
+        age: 5
+    };
+    res.json(data);
+});
+
+app.get('/api/name', (req, res) =>{
+    const data = {
+        username: 'peterson',
+        age: 5
+    };
+    res.json(data);
+});*/
+
+app.post('/api/save', function(req, res){
+    var praxissemester = require('./client/public/data/praxissemester.json');
     var d = req.body.praxissemester;
-    praxissemester.writeFile('temp.txt', data, (err) =>{
-        if (err) console.log(err);
+    
+    praxissemester.writeFile('temp.txt', d, (err) =>{
+        if (err) {
+            console.log(err);
         console.log("Successfully written to File.");
+        }
     });
     //var data = praxissemester.writeFileSync('./data/FileSync', 'utf8');
     res.send('success');
-}); 
+});
 
 
 

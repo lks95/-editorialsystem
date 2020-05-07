@@ -106,10 +106,8 @@ export default {
   methods: {
 
      saveJson: function(j){
-        this.$http.post('http://localhost:2019/WingSever/save',{
-            
-            saveJson: j,
-        });
+       const postJson =j;
+        this.$http.post('http://localhost:2019/WingSever/save',postJson);
     },
 
     archivJson: function(j){
