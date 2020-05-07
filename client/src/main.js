@@ -5,10 +5,10 @@ import router from './router'
 import Vuelidate from 'vuelidate'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faHome, faWrench, faGlobeAmericas, faCalendarAlt, faClipboardList, faNewspaper, faFile, faUsers, faArchive, faTrash, faEdit, faPlus, faUndo, faChevronUp, faChevronDown, faGripVertical } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faWrench, faGlobeAmericas, faCalendarAlt, faClipboardList, faNewspaper, faFile, faUsers, faArchive, faTrash, faEdit, faPlus, faUndo, faChevronUp, faChevronDown, faGripVertical, faBold, faItalic, faCode, faParagraph, faListUl, faListOl, faQuoteRight, faStrikethrough, faUnderline, faRedo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
  
-library.add(faHome, faWrench, faGlobeAmericas, faCalendarAlt, faClipboardList, faNewspaper, faFile, faUsers, faArchive, faTrash, faEdit, faPlus, faUndo, faChevronUp, faChevronDown, faGripVertical)
+library.add(faHome, faWrench, faGlobeAmericas, faCalendarAlt, faClipboardList, faNewspaper, faFile, faUsers, faArchive, faTrash, faEdit, faPlus, faUndo, faChevronUp, faChevronDown, faGripVertical, faBold, faItalic, faCode, faParagraph, faListUl, faListOl, faQuoteRight, faStrikethrough, faUnderline, faRedo)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
