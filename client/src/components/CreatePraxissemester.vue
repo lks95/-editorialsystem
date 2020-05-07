@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
+        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
             <div class="form-group" :class="{'form-group--error': $v.author.$error}">
                 <label for="authorInput">Autor:</label>
                 <input type="text" class="form-control"  id="authorInput" v-model.trim="author"  @input="updateAuthor($event.target.value)">
@@ -23,7 +23,7 @@
             
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
-                <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
+                <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
             </div>
@@ -35,8 +35,7 @@
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 
 export default {
-    name: 'EditPraxissemester',
-    props: ["selectedItem", "selectedIndex"],
+    name: 'CreatePraxissemester',
     data() {
         return{
             author: '',
@@ -57,21 +56,17 @@ export default {
                 this.submitStatus = 'ERROR'
             } else {
                 let formData = {
-                    img: this.img || this.selectedItem.img,
-                    text: this.text || this.selectedItem.text,
-                    author: this.author || this.selectedItem.author,
-                    psId: this.selectedIndex
+                    img: this.img,
+                    text: this.text,
+                    author: this.author
                 };
                 this.$emit("save", formData);
                 this.submitStatus = 'PENDING'
                 setTimeout(() => {
                     this.submitStatus = 'OK'
                 }, 500)
-
             } 
-            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
         },
-
         updateText(value){
             this.text = value;
             this.$v.text.$touch();
@@ -79,22 +74,11 @@ export default {
         updateAuthor(value){
             this.author = value;
             this.$v.author.$touch();
-            
         },
         updateImg(value){
             this.img = value;
             this.$v.img.$touch();
-        },
-        resetForm(){
-            this.author= this.selectedItem.author;
-            this.img= this.selectedItem.img;
-            this.text= this.selectedItem.text;
         }
-    },
-    mounted(){
-        this.author = this.selectedItem.author;
-        this.img = this.selectedItem.img;
-        this.text = this.selectedItem.text;
     }
 }
 </script>
