@@ -66,11 +66,11 @@ export default {
         };
     },
     validations:{
-        bericht_title: { required, minLength: minLength(3), maxLength: maxLength(25)},
-        bericht_author: { required, minLength: minLength(3), maxLength: maxLength(25)},
+        bericht_title: { required, minLength: minLength(3)},
+        bericht_author: { required, minLength: minLength(3)},
         bericht_img: { required },
-        bericht_text: { required, minLength: minLength(15), maxLength: maxLength(50) },
-        bericht_title_position: { required, minLength: minLength(5), maxLength: maxLength(30) },
+        bericht_text: { required, minLength: minLength(15), maxLength: maxLength(150) },
+        bericht_title_position: { required, minLength: minLength(5) },
     },
     
     methods: {

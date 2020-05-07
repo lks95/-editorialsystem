@@ -46,9 +46,9 @@ export default {
         };
     },
     validations:{
-        author: { required, minLength: minLength(3), maxLength: maxLength(50)},
+        author: { required, minLength: minLength(3)},
         img: { required },
-        text: { required, minLength: minLength(15), maxLength: maxLength(1500) }
+        text: { required, minLength: minLength(15), maxLength: maxLength(150) }
     },
     methods: {
         submit: function() {
