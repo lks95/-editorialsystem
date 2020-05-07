@@ -1,6 +1,5 @@
 {
   "name": "wingredaktionssystem",
-<<<<<<< HEAD
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,6 +21,7 @@
     "vue": "^2.6.11",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.1.5",
+    "vuedraggable": "^2.23.2",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {
@@ -52,25 +52,4 @@
     "> 1%",
     "last 2 versions"
   ]
-=======
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "client": "cd client && npm run serve",
-    "dev": "concurrently -n 'server,client' -c 'red,green' \"nodemon server.js\" \"npm run client\""
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "concurrently": "^5.2.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "morgan": "^1.10.0"
-  }
->>>>>>> anpassungen für merge mit server
 }
