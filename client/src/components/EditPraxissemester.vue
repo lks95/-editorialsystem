@@ -7,7 +7,6 @@
             </div>
             <div class="error" v-if="!$v.author.required">Field is required</div>
             <div class="error" v-if="!$v.author.minLength">Author must have at least {{$v.author.$params.minLength.min}} letters.</div>
-            <div class="error" v-if="!$v.author.maxLength">Author must have at most {{$v.author.$params.maxLength.max}} letters.</div>
             <div class="form-group" :class="{'form-group--error': $v.img.$error}">
                 <label for="imgInput">Bild:</label>
                 <input type="text" class="form-control" id="imgInput" v-model.trim="img" @input="updateImg($event.target.value)">
@@ -48,7 +47,7 @@ export default {
     validations:{
         author: { required, minLength: minLength(3)},
         img: { required },
-        text: { required, minLength: minLength(15), maxLength: maxLength(150) }
+        text: { required, minLength: minLength(15), maxLength: maxLength(550) }
     },
     methods: {
         submit: function() {
