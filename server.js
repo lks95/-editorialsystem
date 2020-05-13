@@ -1,51 +1,56 @@
-//Import npm packages
 const express = require('express');
 const morgan = require('morgan');
-const path = require('path');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-//HTTP request
 app.use(morgan('tiny'));
 app.use(cors());
+app.use(bodyParser.json());
 
-
-//URL= http//localhost:2019/MyWebApp/<Dateipfad> unterhalb des Wurzelverzeichnisses <Pfad der ajaxserver.js Dateii/public
-//app.use('/WingSever',express.static(__dirname +'/public'));
-
-/*app.get('/api', (req, res) =>{
-    const data = {
-        username: 'accimeesterlin',
-        age: 5
-    };
-    res.json(data);
+app.post('/api/praxissemester', (req, res)=>{
+    let data = JSON.stringify(req.body);
+    console.log(data);
+    fs.writeFile('./data/praxissemester.json', data, (err)=>{
+        if(err){
+            res.status(500).send(err);
+        } 
+    })
+    res.json(JSON.parse(data));
 });
 
-app.get('/api/name', (req, res) =>{
-    const data = {
-        username: 'peterson',
-        age: 5
-    };
-    res.json(data);
-});*/
-
-app.post('/api/save', function(req, res){
-    var praxissemester = require('./client/public/data/praxissemester.json');
-    var d = req.body.praxissemester;
-    
-    praxissemester.writeFile('temp.txt', d, (err) =>{
+app.get('/api/praxissemester', (req, res)=>{
+    fs.readFile('./data/praxissemester.json', (err, data)=> {
         if (err) {
-            console.log(err);
-        console.log("Successfully written to File.");
+            res.status(500).send(err);
         }
+        const content = JSON.parse(data);
+        res.json(content);
     });
-    //var data = praxissemester.writeFileSync('./data/FileSync', 'utf8');
-    res.send('success');
+})
+
+app.post('/api/praxissemester/archive', (req, res)=>{
+    let data = JSON.stringify(req.body);
+    fs.writeFile('./data/archive/praxissemester.json', data, (err)=>{
+        if(err){
+            res.status(500).send(err);
+        } 
+    })
+    res.json(JSON.parse(data));
 });
 
-
+app.get('/api/praxissemester/archive', (req, res)=>{
+    fs.readFile('./data/archive/praxissemester.json', (err, data)=> {
+        if (err) {
+            res.status(500).send(err);
+        }
+        const content = JSON.parse(data);
+        res.json(content);
+    });
+})
 
 app.listen(PORT,() => {
     console.log(`Server running at ${PORT}`);
