@@ -58,8 +58,6 @@ import EditPraxissemester from '../components/EditPraxissemester'
 import CreatePraxissemester from '../components/CreatePraxissemester'
 import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
-//import { Editor } from 'tiptap'
-//import {Heading} from 'tiptap-extensions'
 
 export default {
   name: 'Praxissemester',
@@ -69,9 +67,6 @@ export default {
     EditPraxissemester,
     LoadingSpinner,
     draggable
-
-    
-
   },
   data(){
     return{
@@ -92,30 +87,19 @@ export default {
             return this.praxissemester;
         }
   },
-
-  /*const: editor = new Editor({
-  // other options omitted for brevity
-  extensions: [
-    // The editor will accept paragraphs and headline elements as part of its document schema.
-    new Heading({
-      levels: [1,2,3],
-    }),
-  ],
-  }),*/
-
   methods: {
-
-     saveJson: function(j){
-       const postJson =j;
-        this.$http.post('http://localhost:2019/WingSever/save',postJson);
+     saveToBackend: function(){
+       axios.post('http://localhost:5000/api/praxissemester', {"berichte": this.praxissemester})
+       .then((res)=>{
+         this.praxissemester = res.data.berichte;
+       })
     },
-
-    archivJson: function(j){
-        this.$http.post('http://localhost:2019/WingSever/save',{
-            archivJson: j,
-        });
+    saveArchiveToBackend: function(){
+       axios.post('http://localhost:5000/api/praxissemester/archive', {"berichte": this.archive})
+       .then((res)=>{
+         this.archive = res.data.berichte;
+       })
     },
-
     confirmArchive: function(item) {
         this.$bvModal.msgBoxConfirm('Ausgewähltes Element archivieren?', {
           title: 'Archivieren bestätigen',
@@ -127,13 +111,9 @@ export default {
           .then(value => {
               if(value){
                 this.praxissemester.splice(this.praxissemester.indexOf(item), 1);
-
                 this.archive.unshift(item);
-
-                //saveJson(this.praxissemester);
-                //this.archive.push(item);
-                //archivJson(this.archivJson);
-
+                this.saveToBackend();
+                this.saveArchiveToBackend();
               }
           })
           .catch(err => {
@@ -152,6 +132,8 @@ export default {
               if(value){
                 this.archive.splice(this.archive.indexOf(item), 1);
                 this.praxissemester.unshift(item);
+                this.saveToBackend();
+                this.saveArchiveToBackend();
               }
           })
           .catch(err => {
@@ -170,8 +152,10 @@ export default {
             if(value){
                 if(this.displayArchive){
                     this.archive.splice(this.archive.indexOf(item), 1);
+                    this.saveArchiveToBackend();
                 }else{
                     this.praxissemester.splice(this.praxissemester.indexOf(item), 1);
+                    this.saveToBackend();
                 }
             }
         })
@@ -192,6 +176,7 @@ export default {
         this.displayArchive = false;
         this.showForm = false;
         this.selectedItem = {};
+        this.saveToBackend();
     },
     cancelNew: function(){
         this.showForm = false;
@@ -201,10 +186,11 @@ export default {
       this.praxissemester[foundIndex].img = item.img;
       this.praxissemester[foundIndex].text = item.text;
       this.praxissemester[foundIndex].author = item.author;
+      this.saveToBackend();
     }
   },
   mounted() {
-    axios.get("./data/praxissemester.json").then(
+    axios.get("http://localhost:5000/api/praxissemester").then(
       response =>
         (this.praxissemester = response.data.berichte.map(item => {
           item.psId = this.psIndex;
@@ -214,7 +200,7 @@ export default {
         this.dataLoaded = true
         )
     );
-    axios.get("./data/archive/praxissemester.json").then(
+    axios.get("http://localhost:5000/api/praxissemester/archive").then(
       response =>
         (this.archive = response.data.berichte.map(item => {
           item.psId = this.psIndex;
