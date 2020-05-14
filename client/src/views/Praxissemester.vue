@@ -3,7 +3,7 @@
         <WingHeader title="Praxissemester" @selectArchive="selectArchive" @addNew="addItem" />
         <CreatePraxissemester v-if="showForm" @save="saveNew" @cancel="cancelNew" />
         <LoadingSpinner v-if="!dataLoaded" />
-        <draggable v-else-if="!displayArchive" v-model="praxissemester" group="praxissemester" @start="drag=true" @end="drag=false" handle=".handle">
+        <draggable v-else-if="!displayArchive" v-model="praxissemester" group="praxissemester" @start="drag=true" @end="drag=false;" handle=".handle" @change="saveToBackend()">
           <div v-for="data in praxissemester" v-bind:key="data.psId" class="list-group-item">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
               <div>
@@ -29,7 +29,7 @@
             </b-collapse>
           </div>
         </draggable>
-        <draggable v-else v-model="archive" group="praxissemester-archive" @start="drag=true" @end="drag=false">
+        <draggable v-else v-model="archive" group="praxissemester-archive" @start="drag=true" @end="drag=false" @change="saveArchiveToBackend()">
           <div v-for="data in archive" v-bind:key="data.psId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
             <div>
               <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
