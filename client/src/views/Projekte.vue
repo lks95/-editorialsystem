@@ -1,262 +1,219 @@
 <template>
-<div>
-    <WingHeader title="Projekte"/>
-    <div class="editor">
-    <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }" class="mb-3">
-      <div class="menubar">
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <font-awesome-icon icon="bold" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <font-awesome-icon icon="italic" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.strike() }"
-          @click="commands.strike"
-        >
-          <font-awesome-icon icon="strikethrough" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <font-awesome-icon icon="underline" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.code() }"
-          @click="commands.code"
-        >
-          <font-awesome-icon icon="code" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.paragraph() }"
-          @click="commands.paragraph"
-        >
-          <font-awesome-icon icon="paragraph" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >
-          H1
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >
-          H2
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.heading({ level: 3 }) }"
-          @click="commands.heading({ level: 3 })"
-        >
-          H3
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.heading({ level: 4 }) }"
-          @click="commands.heading({ level: 4 })"
-        >
-          H4
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.heading({ level: 5 }) }"
-          @click="commands.heading({ level: 5 })"
-        >
-          H5
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.bullet_list() }"
-          @click="commands.bullet_list"
-        >
-          <font-awesome-icon icon="list-ul" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.ordered_list() }"
-          @click="commands.ordered_list"
-        >
-          <font-awesome-icon icon="list-ol" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.blockquote() }"
-          @click="commands.blockquote"
-        >
-          <font-awesome-icon icon="quote-right" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          :class="{ 'active': isActive.code_block() }"
-          @click="commands.code_block"
-        >
-          <font-awesome-icon icon="code" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          @click="commands.horizontal_rule"
-        >
-          Hr
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          @click="commands.undo"
-        >
-          <font-awesome-icon icon="undo" />
-        </b-button>
-
-        <b-button
-          variant="outline-secondary"
-          size="sm"
-          class="menubar__button mr-1"
-          @click="commands.redo"
-        >
-          <font-awesome-icon icon="redo" />
-        </b-button>
-
-      </div>
-    </editor-menu-bar>
-
-    <editor-content class="editor__content border p-2" :editor="editor"/>
-  </div>
-</div>
+    <div>
+        <WingHeader title="Projekte" @selectArchive="selectArchive" @addNew="addItem" />
+        <CreateProjekte v-if="showForm" @save="saveNew" @cancel="cancelNew" />
+        <LoadingSpinner v-if="!dataLoaded" />
+        <draggable v-else-if="!displayArchive" v-model="projekte" group="projekte" @start="drag=true" @end="drag=false;" handle=".handle" @change="saveToBackend()">
+          <div v-for="data in projekte" v-bind:key="data.prId" class="list-group-item">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
+              <div>
+                <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+                {{data.author}}
+              </div>
+              <div class="d-flex">
+                <div>
+                    <button v-b-toggle="'collapse-' + data.prId" variant="primary" class="btn btn-outline-primary mx-1">
+                        <font-awesome-icon icon="edit" />
+                    </button>
+                    <button class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                        <font-awesome-icon icon="archive" />
+                    </button>
+                    <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                        <font-awesome-icon icon="trash" />
+                    </button>
+                </div>
+              </div>
+            </div>
+            <b-collapse :id="'collapse-' + data.prId" class="border-top mt-3">
+                <EditProjekte :selectedItem="data" :selectedIndex="data.prId"  @save="updateItem" />
+            </b-collapse>
+          </div>
+        </draggable>
+        <draggable v-else v-model="archive" group="projekte-archive" @start="drag=true" @end="drag=false" @change="saveArchiveToBackend()">
+          <div v-for="data in archive" v-bind:key="data.prId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+            <div>
+              <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+              {{data.author}}
+            </div>
+            <div class="d-flex">
+              <div>
+                  <button class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                      <font-awesome-icon icon="undo" />
+                  </button>
+                  <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                      <font-awesome-icon icon="trash" />
+                  </button>
+                  
+              </div>
+            </div>
+          </div>
+        </draggable>
+    </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import WingHeader from '../components/WingHeader'
-import axios from 'axios'
-
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
-import {
-  Blockquote,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
-  Bold,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-} from 'tiptap-extensions'
+import EditProjekte from '../components/EditProjekte'
+import CreateProjekte from '../components/CreateProjekte'
+import LoadingSpinner from '../components/LoadingSpinner'
+import axios from "axios"
 
 export default {
   name: 'Projekte',
   components: {
-    EditorContent,
-    EditorMenuBar,
-    WingHeader
+    WingHeader,
+    CreateProjekte,
+    EditProjekte,
+    LoadingSpinner,
+    draggable
   },
-  data() {
-    return {
-      editor: new Editor({
-        extensions: [
-          new Blockquote(),
-          new BulletList(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3, 4, 5] }),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Strike(),
-          new Underline(),
-          new History(),
-        ],
-        content: "",
-      }),
+  data(){
+    return{
+        projekte: [],
+        archive: [],
+        displayArchive: false,
+        showForm: false,
+        selectedItem: {},
+        prIndex: 0,
+        dataLoaded: false
     }
   },
-  beforeDestroy() {
-    this.editor.destroy()
+  computed: {
+    dataToShow: function () {
+            if(this.displayArchive === true){
+                return this.archive;
+            }
+            return this.projekte;
+        }
+  },
+  methods: {
+     saveToBackend: function(){
+       axios.post('http://localhost:5000/api/projekte', {"berichte": this.projekte})
+       .then((res)=>{
+         this.projekte = res.data.berichte;
+       })
+    },
+    saveArchiveToBackend: function(){
+       axios.post('http://localhost:5000/api/projekte/archive', {"berichte": this.archive})
+       .then((res)=>{
+         this.archive = res.data.berichte;
+       })
+    },
+    confirmArchive: function(item) {
+        this.$bvModal.msgBoxConfirm('Ausgewähltes Element archivieren?', {
+          title: 'Archivieren bestätigen',
+          okVariant: 'warning',
+          cancelTitle: 'Abbrechen',
+          hideHeaderClose: true,
+          centered: true
+        })
+          .then(value => {
+              if(value){
+                this.projekte.splice(this.projekte.indexOf(item), 1);
+                this.archive.unshift(item);
+                this.saveToBackend();
+                this.saveArchiveToBackend();
+              }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+    },
+    restoreFromArchive: function(item){
+        this.$bvModal.msgBoxConfirm('Ausgewähltes Element wiederherstellen?', {
+          title: 'Wiederherstellung bestätigen',
+          okVariant: 'warning',
+          cancelTitle: 'Abbrechen',
+          hideHeaderClose: true,
+          centered: true
+        })
+          .then(value => {
+              if(value){
+                this.archive.splice(this.archive.indexOf(item), 1);
+                this.projekte.unshift(item);
+                this.saveToBackend();
+                this.saveArchiveToBackend();
+              }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+    },
+    confirmDelete: function(item){
+        this.$bvModal.msgBoxConfirm('Ausgewähltes Element unwiderruflich löschen?', {
+          title: 'Löschen bestätigen',
+          okVariant: 'danger',
+          cancelTitle: 'Abbrechen',
+          hideHeaderClose: true,
+          centered: true
+        })
+        .then(value => {
+            if(value){
+                if(this.displayArchive){
+                    this.archive.splice(this.archive.indexOf(item), 1);
+                    this.saveArchiveToBackend();
+                }else{
+                    this.projekte.splice(this.projekte.indexOf(item), 1);
+                    this.saveToBackend();
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    },
+    selectArchive: function(archiveSelected){
+        this.displayArchive = archiveSelected;
+    },
+    addItem: function(){
+        this.showForm = true;
+    },
+    saveNew: function(newItem){
+        newItem.prId = this.prIndex;
+        this.prIndex++;
+        this.projekte.unshift(newItem);
+        this.displayArchive = false;
+        this.showForm = false;
+        this.selectedItem = {};
+        this.saveToBackend();
+    },
+    cancelNew: function(){
+        this.showForm = false;
+    },
+    updateItem: function(item){
+      let foundIndex = this.projekte.findIndex(x => x.prId === item.prId);
+      this.projekte[foundIndex].img = item.img;
+      this.projekte[foundIndex].text = item.text;
+      this.projekte[foundIndex].author = item.author;
+      this.saveToBackend();
+    }
   },
   mounted() {
-    axios.get("./data/projects.json").then(
-      response =>{
-        this.editor.setContent(response.data.projects[5].detail_text)
-      }
+    axios.get("http://localhost:5000/api/projekte").then(
+      response =>
+        (this.projekte = response.data.berichte.map(item => {
+          item.prId = this.prIndex;
+          this.prIndex++;
+          return item;
+        }),
+        this.dataLoaded = true
+        )
+    );
+    axios.get("http://localhost:5000/api/projekte/archive").then(
+      response =>
+        (this.archive = response.data.berichte.map(item => {
+          item.prId = this.prIndex;
+          this.prIndex++;
+          return item;
+        }))
     );
   }
 }
 </script>
+
+<style scoped>
+  .handle{
+    cursor: move;
+  }
+</style>
