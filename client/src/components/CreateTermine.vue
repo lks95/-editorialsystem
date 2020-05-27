@@ -1,7 +1,40 @@
 <template>
     <div>
         <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
+            <div class="form-group" :class="{'form-group--error': $v.title.$error}">
+                <label for="titleInput">Titel:</label>
+                <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateHeadline($event.target.value)">
+            </div>
 
+            <div class="form-group" :class="{'form-group--error': $v.headline.$error}">
+                <label for="headlineInput">Headline:</label>
+                <input type="text" class="form-control" id="headlineInput" v-model.trim="headline" @input="updateTitleTermin($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.description.$error}">
+                <label for="headlineInput">Beschreibung:</label>
+                <input type="text" class="form-control" id="descriptionInput" v-model.trim="description" @input="updateDescription($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.time.$error}">
+                <label for="timeInput">Zeit:</label>
+                <input type="text" class="form-control" id="timeInput" v-model.trim="time" @input="updateTime($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.place.$error}">
+                <label for="placeInput">Place:</label>
+                <input type="text" class="form-control" id="placeInput" v-model.trim="place" @input="updatePlace($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
+                <label for="contactInput">Kontakt:</label>
+                <input type="text" class="form-control" id="contactInput" v-model.trim="contact" @input="updateContact($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.links.$error}">
+                <label for="linkInput">Links:</label>
+                <input type="text" class="form-control" id="linkInput" v-model.trim="links" @input="updatePlace($event.target.value)">
+            </div>
         </form>
     </div>
 </template>
