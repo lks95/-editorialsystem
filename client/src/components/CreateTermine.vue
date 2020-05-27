@@ -12,13 +12,22 @@
             </div>
 
             <div class="form-group" :class="{'form-group--error': $v.description.$error}">
-                <label for="headlineInput">Beschreibung:</label>
+                <label for="descriptionInput">Beschreibung:</label>
                 <input type="text" class="form-control" id="descriptionInput" v-model.trim="description" @input="updateDescription($event.target.value)">
             </div>
 
-            <div class="form-group" :class="{'form-group--error': $v.time.$error}">
-                <label for="timeInput">Zeit:</label>
-                <input type="text" class="form-control" id="timeInput" v-model.trim="time" @input="updateTime($event.target.value)">
+            <div class="form-group" :class="{'form-group--error': $v.startdate.$error}">
+                <label for="startdateInput">Start des Termins:</label>
+                <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
+                <label for="enddateInput">Ende des Termins:</label>
+                <input type="date" class="form-control" id="enddateInput" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.starttime.$error}">
+                <label for="starttimeInput">Beginn des Termins:</label>
+                <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
+                <label for="endtimeInput">Ende des Termins:</label>
+                <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
             </div>
 
             <div class="form-group" :class="{'form-group--error': $v.place.$error}">
@@ -33,8 +42,17 @@
 
             <div class="form-group" :class="{'form-group--error': $v.links.$error}">
                 <label for="linkInput">Links:</label>
-                <input type="text" class="form-control" id="linkInput" v-model.trim="links" @input="updatePlace($event.target.value)">
+                <input type="text" class="form-control" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">
             </div>
+
+
+            <div class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
+                <button class="btn btn-outline-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
+                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
+            </div>
+
         </form>
     </div>
 </template>
@@ -47,8 +65,10 @@
                 title: '',
                 headline: '',
                 description: '',
-                date: '',
-                time: '',
+                startdate: '',
+                enddate: '',
+                starttime: '',
+                endtime: '',
                 place: '',
                 contact: '',
                 links: '',
@@ -66,8 +86,10 @@
                         title: this.title,
                         headline: this.headline,
                         description: this.description,
-                        date: this.date,
-                        time: this.time,
+                        startdate: this.startdate,
+                        enddate: this.enddate,
+                        startime: this.starttime,
+                        endtime: this.endtime,
                         place: this.place,
                         contact: this.contact,
                         links: this.links
@@ -92,13 +114,21 @@
                 this.description = value;
                 this.$v.description.$touch();
             },
-            updateTime(value){
-                this.time = value;
-                this.$v.time.$touch();
+            updateStartdate(value){
+                this.startdate = value;
+                this.$v.startdate.$touch();
             },
-            updateDate(value){
-                this.date = value;
-                this.$v.date.$touch();
+            updateEnddate(value){
+                this.enddate = value;
+                this.$v.enddate.$touch();
+            },
+            updateStarttime(value){
+                this.starttime = value;
+                this.$v.starttime.$touch();
+            },
+            updateEndtime(value){
+                this.endtime = value;
+                this.$v.endtime.$touch();
             },
             updatePlace(value){
                 this.place = value;
