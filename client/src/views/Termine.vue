@@ -2,13 +2,13 @@
     <div>
         <WingHeader title="Termine" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateTermine v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
-        <LoadingSpinner v-if="dataLoaded" />
+        <LoadingSpinner v-if="!dataLoaded" />
         <draggable v-else-if="!displayArchive" v-model="termine" group="termine" @start="drag=true" @end="drag=false" handle=".handle">
             <div v-for="data in termine" v-bind:key="data.tid" class="list-group-item">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
                     <div>
                         <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-                        {{data.termine}}
+                        {{data.headline}}
                     </div>
                     <div class="d-flex">
                         <div>
@@ -26,9 +26,6 @@
                         </div>
                     </div>
                 </div>
-                <b-collapse :id="'collapse-' +data.tid" class="border-top mt-3">
-                    <EditTermine :selectedItem="data" :selectedIndex="data.tid" @save="updateItem"/>
-                </b-collapse>
                 </div>
         </draggable>
     </div>
@@ -101,7 +98,7 @@ export default {
                 })
         },
         confirmArchive: function (item) {
-          this.$bvModal.msgBoxConfirm('Element archivieren=', {
+          this.$bvModal.msgBoxConfirm('Element archivieren?', {
               title: 'Archivieren bestätigen',
               okVariant: 'warning',
               cancelTitle: 'Abbrechen',
@@ -157,7 +154,7 @@ export default {
     mounted() {
         axios.get("http://localhost:5000/api/termine").then(
             response =>
-                (this.praxissemester = response.data.dates.map(item => {
+                (this.termine = response.data.dates.map(item => {
                         item.tid = this.tIndex;
                         this.tIndex++;
                         return item;
@@ -167,9 +164,9 @@ export default {
         );
         axios.get("http://localhost:5000/api/termine/archive").then(
             response =>
-                (this.archive = response.data.berichte.map(item => {
-                    item.psId = this.psIndex;
-                    this.psIndex++;
+                (this.archive = response.data.dates.map(item => {
+                    item.tid = this.tIndex;
+                    this.tIndex++;
                     return item;
                 }))
         );
@@ -177,4 +174,8 @@ export default {
 }
 </script>
 
-
+<style scoped>
+    .handle{
+        cursor: move;
+    }
+</style>
