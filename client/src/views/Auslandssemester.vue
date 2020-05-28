@@ -1,55 +1,72 @@
 <template>
     <div>
         <WingHeader title="Auslandssemester" @selectArchive="selectArchive" @addNew="addItem" />
-        <EditAuslandssemester v-if="showForm" :selectedItem="selectedItem" @save="saveInput" @cancel="cancelInput" />
-        <ul class="list-group">
-            <li v-for="(data, index) in dataToShow" v-bind:key="data.asId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center">
+        <CreateAuslandssemester v-if="showForm" @save="saveNew" @cancel="cancelNew" />
+        <LoadingSpinner v-if="!dataLoaded" />
+        <draggable v-else-if="!displayArchive" v-model="auslandssemester" group="auslandssemester" @start="drag=true" @end="drag=false;" handle=".handle" @change="saveToBackend()">
+          <div v-for="data in auslandssemester" v-bind:key="data.asId" class="list-group-item">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
+              <div>
+                <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+                {{data.bericht_title}}
+              </div>
+              <div class="d-flex">
                 <div>
-                    <div>
-                        {{data.bericht_title}}
-                    </div>
-                    <div>
-                        <small class="text-muted">
-                            {{data.bericht_author}}
-                        </small>
-                    </div>
+                    <button v-b-toggle="'collapse-' + data.asId" variant="primary" class="btn btn-outline-primary mx-1">
+                        <font-awesome-icon icon="edit" />
+                    </button>
+                    <button class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
+                        <font-awesome-icon icon="archive" />
+                    </button>
+                    <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                        <font-awesome-icon icon="trash" />
+                    </button>
                 </div>
-                <div class="d-flex">
-                  <div>
-                      <button v-if="!displayArchive" class="btn btn-outline-primary mx-1" @click="editItem(data)">
-                          <font-awesome-icon icon="edit" />
-                      </button>
-                      <button v-if="!displayArchive" class="btn btn-outline-warning mx-1" @click="confirmArchive(data)" >
-                          <font-awesome-icon icon="archive" />
-                      </button>
-                      <button v-if="displayArchive" class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
-                          <font-awesome-icon icon="undo" />
-                      </button>
-                      <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
-                          <font-awesome-icon icon="trash" />
-                      </button>
-                      
-                  </div>
-                  <div class="btn-group mx-1" style="width:5em;" v-if="!displayArchive">
-                    <button v-if="!(index == 0)" class="btn btn-outline-primary" @click="arrayMove(index, index-1)"><font-awesome-icon icon="chevron-up" /></button>
-                    <button v-if="!(index == dataToShow.length-1)" class="btn btn-outline-primary" @click="arrayMove(index, index+1)"><font-awesome-icon icon="chevron-down" /></button>
-                  </div>
-                </div>
-            </li>
-        </ul>
+              </div>
+            </div>
+            <b-collapse :id="'collapse-' + data.asId" class="border-top mt-3">
+                <EditAuslandssemester :selectedItem="data" :selectedIndex="data.asId"  @save="updateItem" />
+            </b-collapse>
+          </div>
+        </draggable>
+        <draggable v-else v-model="archive" group="auslandssemester-archive" @start="drag=true" @end="drag=false" @change="saveArchiveToBackend()">
+          <div v-for="data in archive" v-bind:key="data.asId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+            <div>
+              <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+              {{data.bericht_title}}
+            </div>
+            <div class="d-flex">
+              <div>
+                  <button class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                      <font-awesome-icon icon="undo" />
+                  </button>
+                  <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                      <font-awesome-icon icon="trash" />
+                  </button>
+                  
+              </div>
+            </div>
+          </div>
+        </draggable>
     </div>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import WingHeader from '../components/WingHeader'
 import EditAuslandssemester from '../components/EditAuslandssemester'
+import CreateAuslandssemester from '../components/CreateAuslandssemester'
+import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
 
 export default {
   name: 'Auslandssemester',
   components: {
     WingHeader,
-    EditAuslandssemester
+    EditAuslandssemester,
+    CreateAuslandssemester,
+    LoadingSpinner,
+    draggable
   },
   data(){
     return{
@@ -58,7 +75,8 @@ export default {
         displayArchive: false,
         showForm: false,
         selectedItem: {},
-        asIndex: 0
+        asIndex: 0,
+        dataLoaded: false
         }
   },
   computed: {
@@ -70,6 +88,18 @@ export default {
         }
   },
   methods: {
+    saveToBackend: function(){
+       axios.post('http://localhost:5000/api/auslandssemester', {"berichte": this.auslandssemester})
+       .then((res)=>{
+         this.auslandssemester = res.data.berichte;
+       })
+    },
+    saveArchiveToBackend: function(){
+       axios.post('http://localhost:5000/api/auslandssemester/archive', {"berichte": this.archive})
+       .then((res)=>{
+         this.archive = res.data.berichte;
+       })
+    },
     confirmArchive: function(item) {
         this.$bvModal.msgBoxConfirm('Ausgewähltes Element archivieren?', {
           title: 'Archivieren bestätigen',
@@ -82,6 +112,8 @@ export default {
               if(value){
                 this.auslandssemester.splice(this.auslandssemester.indexOf(item), 1);
                 this.archive.unshift(item);
+                this.saveToBackend();
+                this.saveArchiveToBackend();
               }
           })
           .catch(err => {
@@ -100,6 +132,8 @@ export default {
               if(value){
                 this.archive.splice(this.archive.indexOf(item), 1);
                 this.auslandssemester.unshift(item);
+                this.saveToBackend();
+                this.saveArchiveToBackend();
               }
           })
           .catch(err => {
@@ -118,8 +152,10 @@ export default {
             if(value){
                 if(this.displayArchive){
                     this.archive.splice(this.archive.indexOf(item), 1);
+                    this.saveArchiveToBackend();
                 }else{
                     this.auslandssemester.splice(this.auslandssemester.indexOf(item), 1);
+                    this.saveToBackend();
                 }
             }
         })
@@ -133,42 +169,39 @@ export default {
     addItem: function(){
         this.showForm = true;
     },
-    editItem: function(item){
-        this.selectedItem = item;
-        this.showForm = true;
-    },
-    saveInput: function(newItem){
-        if(Object.keys(this.selectedItem).length === 0){
-            newItem.psId = this.psIndex;
-            this.asIndex++;
-            this.auslandssemester.unshift(newItem);
-            this.displayArchive = false;
-        }else{
-            newItem.asId = this.selectedItem.asId;
-            let foundIndex = this.auslandssemester.findIndex(x => x.asId === newItem.asId);
-            this.auslandssemester[foundIndex] = newItem;
-        }
+    saveNew: function(newItem){
+        newItem.asId = this.asIndex;
+        this.asIndex++;
+        this.auslandssemester.unshift(newItem);
+        this.displayArchive = false;
         this.showForm = false;
         this.selectedItem = {};
+        this.saveToBackend();
     },
-    cancelInput: function(){
-        this.selectedItem = {};
+    cancelNew: function(){
         this.showForm = false;
     },
-    arrayMove: function(old_index, new_index){
-      this.auslandssemester.splice(new_index, 0, this.auslandssemester.splice(old_index, 1)[0]);
+    updateItem: function(item){
+      let foundIndex = this.auslandssemester.findIndex(x => x.asId === item.asId);
+      this.auslandssemester[foundIndex].bericht_title = item.bericht_title;
+      this.auslandssemester[foundIndex].bericht_img = item.bericht_img;
+      this.auslandssemester[foundIndex].bericht_text = item.bericht_text;
+      this.auslandssemester[foundIndex].bericht_author = item.bericht_author;
+      this.saveToBackend();
     }
   },
   mounted() {
-    axios.get("./data/auslandssemester.json").then(
+    axios.get("http://localhost:5000/api/auslandssemester").then(
       response =>
         (this.auslandssemester = response.data.berichte.map(item => {
           item.asId = this.asIndex;
           this.asIndex++;
           return item;
-        }))
+        }),
+         this.dataLoaded = true
+         )
     );
-    axios.get("./data/archive/auslandssemester.json").then(
+    axios.get("http://localhost:5000/api/auslandssemester/archive").then(
       response =>
         (this.archive = response.data.berichte.map(item => {
           item.asId = this.asIndex;
@@ -179,3 +212,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .handle{
+    cursor: move;
+  }
+</style>
