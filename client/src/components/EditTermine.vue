@@ -32,12 +32,31 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="enddateInput">Ende des Termins</label>
+                <!--<div class="col">
+                    <label for="startdateInput">Start des Termins:</label>
+                    <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
+                </div>
+                <div class="col">
+                    <label for="enddateInput">Ende des Termins:</label>-->
                     <input type="date" class="form-control" id="enddateInput" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="placeInput">Ort</label>
+            <!--<div class="form-row">
+                <div class="col">
+                    <label for="starttimeInput">Beginn des Termins:</label>
+                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
+                </div>
+                <div class="col">
+                    <label for="endtimeInput">Ende des Termins:</label>
+                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="placeInput">Ort:</label>-->
                 <input type="text" class="form-control" id="placeInput" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
 
@@ -45,7 +64,6 @@
                 <label for="contactInput">Kontakt:</label>
                 <input type="text" class="form-control" id="contactInput" v-model.trim="contact" @input="updateContact($event.target.value)">
             </div>
-
 
             <div class="form-group">
                 <label for="linkInput">Links</label>
@@ -56,7 +74,6 @@
                     </button>
                 </div>
             </div>
-
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
@@ -93,33 +110,9 @@ export default {
         title: {required}
     },
     methods: {
-        submit: function () {
-            this.$v.touch();
-            if (this.$v.invalid()) {
-                this.submitStatus = 'ERROR at submitting'
-            } else {
-                let formData = {
-                    title: this.title,
-                    headline: this.headline,
-                    description: this.description,
-                    startdate: this.startdate,
-                    enddate: this.enddate,
-                    startime: this.starttime,
-                    endtime: this.endtime,
-                    place: this.place,
-                    contact: this.contact,
-                    links: this.links
-                };
-                this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500)
-            }
-        },
-        updateTitle(value) {
+        updateTitleTermin(value){
             this.title = value;
-            this.$v.$touch();
+            this.$v.title.$touch();
         },
         updateHeadline(value){
             this.headline = value;
@@ -156,10 +149,55 @@ export default {
         updateLinks(value){
             this.links = value;
             this.$v.links.$touch();
+        },
+        submit: function() {
+            this.$v.$touch()
+
+                let formData = {
+                    title: this.title || this.selectedItem.title,
+                    headline: this.headline || this.selectedItem.headline,
+                    description: this.description || this.selectedItem.description,
+                    startdate: this.startdate || this.selectedItem.startdate,
+                    enddate: this.enddate || this.selectedItem.enddate,
+                    startime: this.startime || this.selectedItem.startime,
+                    endtime: this.endtime || this.selectedItem.endtime,
+                    place: this.place || this.selectedItem.place,
+                    contact: this.contact || this.selectedItem.contact,
+                    links: this.links  || this.selectedItem.links,
+                    nId: this.selectedIndex
+                };
+                this.$emit("save", formData);
+                this.submitStatus = 'PENDING'
+                setTimeout(() => {
+                    this.submitStatus = 'OK'
+                }, 500)
+
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+        },
+        resetForm() {
+            this.title = this.selectedItem.title;
+            this.headline = this.selectedItem.headline;
+            this.description = this.selectedItem.description;
+            this.startdate = this.selectedItem.startdate;
+            this.enddate = this.selectedItem.enddate;
+            this.startime = this.selectedItem.startime;
+            this.endtime = this.selectedItem.endtime;
+            this.place = this.selectedItem.place;
+            this.contact = this.selectedItem.contact;
+            this.links = this.selectedItem.links
         }
+    },
+    mounted() {
+        this.title = this.selectedItem.title;
+        this.headline = this.selectedItem.headline;
+        this.description = this.selectedItem.description;
+        this.startdate = this.selectedItem.startdate;
+        this.enddate = this.selectedItem.enddate;
+        this.startime = this.selectedItem.startime;
+        this.endtime = this.selectedItem.endtime;
+        this.place = this.selectedItem.place;
+        this.contact = this.selectedItem.contact;
+        this.links = this.selectedItem.links
     }
 }
-
-
-
 </script>

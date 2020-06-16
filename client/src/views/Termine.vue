@@ -8,7 +8,9 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
                     <div>
                         <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-                        {{data.headline}}
+                        <b>{{data.headline}}</b>
+                        <p></p>
+                        {{data.date.start}}
                     </div>
                     <div class="d-flex">
                         <div>
@@ -26,6 +28,9 @@
                         </div>
                     </div>
                 </div>
+                <b-collapse :id="'collapse-' + data.nId" class="border-top mt-3">
+                    <EditTermine :selectedItem="data" :selectedIndex="data.nId"  @save="updateItem" />
+                </b-collapse>
                 </div>
         </draggable>
     </div>
@@ -37,6 +42,7 @@ import draggable from 'vuedraggable'
 import LoadingSpinner from "../components/LoadingSpinner";
 import CreateTermine from "../components/CreateTermine";
 import axios from "axios";
+import EditTermine from "../components/EditTermine";
 
 
 
@@ -46,7 +52,8 @@ export default {
     WingHeader,
       LoadingSpinner,
       draggable,
-      CreateTermine
+      CreateTermine,
+      EditTermine
   },
     data(){
       return{
@@ -149,7 +156,27 @@ export default {
             this.termine[foundIndex].place = item.place;
             this.termine[foundIndex].links = item.links;
             this.saveToBackend();
-        }
+        },
+        restoreFromArchive: function(item){
+            this.$bvModal.msgBoxConfirm('Ausgewähltes Element wiederherstellen?', {
+                title: 'Wiederherstellung bestätigen',
+                okVariant: 'warning',
+                cancelTitle: 'Abbrechen',
+                hideHeaderClose: true,
+                centered: true
+            })
+                .then(value => {
+                    if(value){
+                        this.archive.splice(this.archive.indexOf(item), 1);
+                        this.news.unshift(item);
+                        this.saveToBackend();
+                        this.saveArchiveToBackend();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
     },
     mounted() {
         axios.get("http://localhost:5000/api/termine").then(

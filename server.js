@@ -56,7 +56,7 @@ app.post('/api/termine/archive', (req, res)=>{
 });
 
 //get api endpoint termine archive
-/*app.get('/api/termine/archive', (req, res)=>{
+app.get('/api/termine/archive', (req, res)=>{
     fs.readFile('./data/archive/dates.json', (err, data)=> {
         if (err) {
             res.status(500).send(err);
@@ -65,7 +65,7 @@ app.post('/api/termine/archive', (req, res)=>{
         res.json(content);
     });
 })
-*/
+
 
 //portlistening
 app.listen(PORT,() => {
