@@ -8,7 +8,11 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
               <div>
                 <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-                {{data.author}}
+                {{data.intro_title}}
+                <div> </div>
+                {{data.date}}
+                <div> </div>
+                {{data.study}}
               </div>
               <div class="d-flex">
                 <div>
@@ -89,15 +93,15 @@ export default {
   },
   methods: {
      saveToBackend: function(){
-       axios.post('http://localhost:5000/api/projekte', {"berichte": this.projekte})
+       axios.post('http://localhost:5000/api/projects', {"projects": this.projekte})
        .then((res)=>{
-         this.projekte = res.data.berichte;
+         this.projekte = res.data.projects;
        })
     },
     saveArchiveToBackend: function(){
-       axios.post('http://localhost:5000/api/projekte/archive', {"berichte": this.archive})
+       axios.post('http://localhost:5000/api/projects/archive', {"projects": this.archive})
        .then((res)=>{
-         this.archive = res.data.berichte;
+         this.archive = res.data.projects;
        })
     },
     confirmArchive: function(item) {
@@ -183,16 +187,27 @@ export default {
     },
     updateItem: function(item){
       let foundIndex = this.projekte.findIndex(x => x.prId === item.prId);
-      this.projekte[foundIndex].img = item.img;
-      this.projekte[foundIndex].text = item.text;
-      this.projekte[foundIndex].author = item.author;
+      this.projekte[foundIndex].study = item.study;
+      this.projekte[foundIndex].category = item.category;
+      this.projekte[foundIndex].intro_title = item.intro_title;
+      this.projekte[foundIndex].intro_text = item.intro_text;
+      this.projekte[foundIndex].intro_img_src = item.intro_img_src;
+      this.projekte[foundIndex].intro_img_alt = item.intro_img_alt;
+      this.projekte[foundIndex].detail_headline = item.detail_headline;
+      this.projekte[foundIndex].detail_header_img_src = item.detail_header_img_src;
+      this.projekte[foundIndex].detail_header_img_alt = item.detail_header_img_alt;
+      this.projekte[foundIndex].detail_header_intro = item.detail_header_intro;
+      this.projekte[foundIndex].detail_text = item.detail_text;
+      this.projekte[foundIndex].date = item.date;
+      this.projekte[foundIndex].contacts = item.contacts;
+
       this.saveToBackend();
     }
   },
   mounted() {
-    axios.get("http://localhost:5000/api/projekte").then(
+    axios.get("http://localhost:5000/api/projects").then(
       response =>
-        (this.projekte = response.data.berichte.map(item => {
+        (this.projekte = response.data.projects.map(item => {
           item.prId = this.prIndex;
           this.prIndex++;
           return item;
@@ -200,9 +215,9 @@ export default {
         this.dataLoaded = true
         )
     );
-    axios.get("http://localhost:5000/api/projekte/archive").then(
+    axios.get("http://localhost:5000/api/projects/archive").then(
       response =>
-        (this.archive = response.data.berichte.map(item => {
+        (this.archive = response.data.projects.map(item => {
           item.prId = this.prIndex;
           this.prIndex++;
           return item;
