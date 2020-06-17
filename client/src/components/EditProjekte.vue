@@ -3,14 +3,23 @@
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">study:</label>
-                <input type="text" class="form-control"  id="studyInput" v-model.trim="category"  @input="updateStudy($event.target.value)">
-            </div>
+                <select v-model="study">
+                    <option></option>
+                    <option>imp</option>
+                    <option>dp</option>
+                    <option>mdm</option>
+                </select>
+                </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">category:</label>
-                <input type="text" class="form-control"  id="categoryInput" v-model.trim="category"  @input="updateCategory($event.target.value)">
-            </div>
+                <select v-model="category">
+                    <option>App</option>
+                    <option>Web</option>
+                    <option>Design</option>
+                </select>
+                </div>
              <div class="error" v-if="!$v.category.required">Field is required</div>
            
             <div class="form-group" :class="{'form-group--error': $v.intro_title.$error}">
@@ -81,7 +90,7 @@
 
             <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
                 <label for="contactsInput">Kontakte:</label>
-                <input class="form-control" id="contactsInput" v-model.trim="date" @input="updateContacts($event.target.value)">
+                <input class="form-control" id="contactsInput" v-model.trim="contacts" @input="updateContacts($event.target.value)">
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
