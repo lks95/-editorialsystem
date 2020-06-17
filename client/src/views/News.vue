@@ -3,16 +3,16 @@
         <WingHeader title="News" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateNews v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
         <LoadingSpinner v-if="!dataLoaded" />
-        <draggable v-else-if="!displayArchive" v-model="termine" group="termine" @start="drag=true" @end="drag=false" handle=".handle">
-            <div v-for="data in termine" v-bind:key="data.tid" class="list-group-item">
+        <draggable v-else-if="!displayArchive" v-model="news" group="news" @start="drag=true" @end="drag=false" handle=".handle">
+            <div v-for="data in news" v-bind:key="data.nId" class="list-group-item">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
                     <div>
                         <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-                        {{data.news}}
+                        {{data.title}}
                     </div>
                     <div class="d-flex">
                         <div>
-                            <button v-b-toggle="'collapse-' + data.tid" variant="primary" class="btn btn-outline-primary mx-1">
+                            <button v-b-toggle="'collapse-' + data.nId" variant="primary" class="btn btn-outline-primary mx-1">
                                 <font-awesome-icon icon="edit" />
                             </button>
 
@@ -106,7 +106,7 @@ export default {
               })
       },
       saveArchiveToBackend: function(){
-          axios.post('http://localhost:5000/api/news/archive', {"news": this.news})
+          axios.post('http://localhost:5000/api/news/archive', {"news": this.archive})
               .then((res)=>{
                   this.news = res.data.news;
               })

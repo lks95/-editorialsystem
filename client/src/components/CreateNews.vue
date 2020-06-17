@@ -1,27 +1,34 @@
 <template>
     <div>
         <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
-            <div class="form-group" :class="{'form-group--error': $v.title.$error}">
+            <div class="form-group">
                 <label for="titleInput">Titel:</label>
                 <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateTitel($event.target.value)">
             </div>
 
-            <div class="form-group" :class="{'form-group--error': $v.link.$error}">
+            <div class="form-group">
                 <label for="linkInput">Link:</label>
                 <input type="text" class="form-control" id="linkInput" v-model.trim="link" @input="updateLink($event.target.value)">
             </div>
 
-            <div class="form-group" :class="{'form-group--error': $v.linkText.$error}">
+            <div class="form-group">
                 <label for="descriptionInput">Linktext:</label>
                 <input type="text" class="form-control" id="descriptionInput" v-model.trim="linkText" @input="updateLinktext($event.target.value)">
             </div>
 
-            <div class="form-group" :class="{'form-group--error': $v.place.$error}">
-                <label for="placeInput">Bild:</label>
-                <input type="image" class="form-control" id="placeInput" v-model.trim="img" @input="updateImg($event.target.value)">
+            <label>Bild:</label>
+            <div class="input-group">
+
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input v-on:change="img" @input="updateImg($event.target.value)" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" >
+                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
             </div>
 
-            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
+            <div class="form-group">
                 <label for="textInput">Text:</label>
                 <input type="text" class="form-control" id="textInput" v-model.trim="text" @input="updateText($event.target.value)">
             </div>
