@@ -15,6 +15,7 @@ app.use('/api/praxissemester', require('./routes/praxissemester').router);
 app.use('/api/auslandssemester', require('./routes/auslandssemester').router);
 app.use('/api/projekte', require('./routes/projekte').router);
 app.use('/api/team', require('./routes/team').router);
+app.use('/api/projects', require('./routes/projekte').router);
 
 app.listen(PORT,() => {
     console.log(`Server running at ${PORT}`);
