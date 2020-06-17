@@ -73,6 +73,9 @@
                         <b-icon icon="plus-circle"></b-icon>
                     </button>
                 </div>
+                <!--
+                <label for="linkInput">Links:</label>
+                <input type="text" class="form-control" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">-->
             </div>
 
             <div class="d-flex flex-row-reverse">
@@ -91,6 +94,7 @@ import {required} from 'vuelidate/lib/validators'
 
 export default {
     name: 'EditTermine',
+    props: ["selectedItem", "selectedIndex"],
     data() {
         return {
             title: '',

@@ -28,8 +28,8 @@
                         </div>
                     </div>
                 </div>
-                <b-collapse :id="'collapse-' + data.nId" class="border-top mt-3">
-                    <EditTermine :selectedItem="data" :selectedIndex="data.nId"  @save="updateItem" />
+                <b-collapse :id="'collapse-' + data.tid" class="border-top mt-3">
+                    <EditTermine :selectedItem="data" :selectedIndex="data.tid"  @save="updateItem" />
                 </b-collapse>
                 </div>
         </draggable>
