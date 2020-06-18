@@ -88,11 +88,16 @@
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
-                <label for="contactsInput">Kontakte:</label>
-                <input class="form-control" id="contactsInput" v-model.trim="contacts" @input="updateContacts($event.target.value)">
+            <div class="form-group" :class="{'form-group--error': $v.date.$error}">
+                <label for="dateInput">date:</label>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="dateInput">Datum</label>
+                        <input type="date" class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
+                    </div>
+                </div>
             </div>
-            <div class="error" v-if="!$v.contacts.required">Field is required</div>
+            <div class="error" v-if="!$v.date.required">Field is required</div>
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
