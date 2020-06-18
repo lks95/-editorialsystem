@@ -90,12 +90,6 @@
                         <input type="date" class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
                     </div>
                 </div>
-                
-                  <!--  <input type="text" class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
-                    <div class="input-group-addon">
-                        <span class="glyphicon glyphicon-th"></span>
-                    </div>
-                </div>-->
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
