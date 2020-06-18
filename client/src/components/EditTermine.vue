@@ -69,7 +69,7 @@
                 <label for="linkInput">Links</label>
                 <div class="d-flex">
                     <input type="text" class="form-control mr-1" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">
-                    <button size="sm" class="btn btn-secondary" @click="addRow">
+                    <button size="sm" class="btn btn-secondary">
                         <b-icon icon="plus-circle"></b-icon>
                     </button>
                 </div>
