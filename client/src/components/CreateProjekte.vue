@@ -84,7 +84,12 @@
            
            <div class="form-group" :class="{'form-group--error': $v.date.$error}">
                 <label for="dateInput">date:</label>
-                <input class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="dateInput">Datum</label>
+                        <input type="date" class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
+                    </div>
+                </div>
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 

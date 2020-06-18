@@ -37,7 +37,11 @@
           <div v-for="data in archive" v-bind:key="data.prId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
             <div>
               <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
-              {{data.author}}
+               {{data.intro_title}}
+                <div> </div>
+                {{data.date}}
+                <div> </div>
+                {{data.study}}
             </div>
             <div class="d-flex">
               <div>
