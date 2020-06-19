@@ -77,7 +77,18 @@
            
            <div class="form-group" :class="{'form-group--error': $v.detail_text.$error}">
                 <label for="detail_textInput">detail_text:</label>
-                <textarea class="form-control" id="detail_textInput" rows="3" v-model.trim="detail_text" @input="updateDetailText($event.target.value)"></textarea>
+                <Editor
+                    :init="{
+                        height: 500,
+                        menubar : false, 
+                        plugins: [
+                            'advlist autolink lists link charmap preview anchor visualblocks code fullscreen table paste'
+                        ],
+                        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
+                    }"
+                    v-model.trim="detail_text"
+                    @input="updateDetailText($event.target.value)"
+                    />
             </div>
             <div class="error" v-if="!$v.detail_text.required">Field is required</div>
             <div class="error" v-if="!$v.detail_text.minLength">Text must have at least {{$v.detail_text.$params.minLength.min}} letters.</div>
@@ -111,9 +122,13 @@
 
 <script>
 import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
     name: 'CreateProjekte',
+    components: {
+        Editor
+    },
     data() {
         return{
            study: '',
