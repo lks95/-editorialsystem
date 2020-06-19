@@ -1,21 +1,20 @@
-let express = require('express');
-let router = express.Router();
-
-let fs = require('fs');
+var express = require('express');
+var router = express.Router();
+const fs = require('fs');
 
 router.post('/', (req, res)=>{
     let data = JSON.stringify(req.body);
     console.log(data);
-    fs.writeFile('./data/news.json', data, (err)=>{
+    fs.writeFile('./data/publikationen.json', data, (err)=>{
         if(err){
             return res.status(500).send(err);
-        }
+        } 
     })
     res.json(JSON.parse(data));
 });
 
 router.get('/', (req, res)=>{
-    fs.readFile('./data/news.json', (err, data)=> {
+    fs.readFile('./data/publikationen.json', (err, data)=> {
         if (err) {
             return res.status(500).send(err);
         }
@@ -26,16 +25,16 @@ router.get('/', (req, res)=>{
 
 router.post('/archive', (req, res)=>{
     let data = JSON.stringify(req.body);
-    fs.writeFile('./data/archive/news.json', data, (err)=>{
+    fs.writeFile('./data/archive/publikationen.json', data, (err)=>{
         if(err){
             return res.status(500).send(err);
-        }
+        } 
     })
     res.json(JSON.parse(data));
 });
 
 router.get('/archive', (req, res)=>{
-    fs.readFile('./data/archive/news.json', (err, data)=> {
+    fs.readFile('./data/archive/publikationen.json', (err, data)=> {
         if (err) {
             return res.status(500).send(err);
         }
@@ -43,6 +42,5 @@ router.get('/archive', (req, res)=>{
         res.json(content);
     });
 });
-
 
 module.exports.router = router;

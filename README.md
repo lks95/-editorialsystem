@@ -1,24 +1,20 @@
-# wingredaktionssystem
+# WING-Redaktionssystem
 
-## Project setup
+
+## Installation
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Start Server und Frontend
 ```
-npm run serve
+npm run start
 ```
+Aufruf des WING-Redaktionssystems über localhost:8080
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Lints and fixes files
+### Start Server und Frontend mit Hot-reload zur Entwicklung
 ```
-npm run lint
+npm run dev
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Aufruf des Frontends über localhost:8080
