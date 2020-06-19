@@ -1,1 +1,75 @@
-{"dates":[{"title":"MediaNight","headline":"MediaNight Wintersemester 19/20","description":"<p>Demnächst ist es wieder so weit: Studierende der Hochschule der Medien (HdM) stellen vor, woran sie im Wintersemester gearbeitet haben. Insgesamt sind über einhundert Projekte zu sehen. Auch Wirtschaftsingenieurwesen Medien ist dabei. Mehr Details zu den einzelnen Projekten werden wir hier demnächst veröffentlichen.</p>","date":{"start":"2020-01-30","end":""},"time":{"start":"","end":""},"place":"Hochschule der Medien","contact":["schaedel"],"links":[{"href":"https://www.hdm-stuttgart.de/medianight","text":"MediaNight"}],"tid":1},{"title":"Absolventenfeier","headline":"Absolventenfeier","description":"<p>Am 21. Februar 2020 werden die Studienabgänger des Wintersemesters 2019/2020 verabschiedet. Die Absolventenfeier beginnt um 16 Uhr. Nach Grußworten des Rektors werden die Zeugnisse überreicht und die erfolgreichsten Absolventinnen und Absolventen ausgezeichnet.</p>","date":{"start":"2020-02-21","end":""},"time":{"start":"16:00","end":""},"place":"Hochschule der Medien","contact":["schaedel"],"links":[],"tid":2},{"title":"Wirtschaftsingenieurwesen Medien zu Gast bei der it.schule","headline":"Wirtschaftingenieurwesen Medien zu Gast bei der it.schule","description":"<p>Die it.schule ist ein öffentliches Ausbildungszentrum für IT- und Medienberufe in der Region Stuttgart. Mit modernster  Ausstattung bietet die Schule eine fundierte Ausbildung in einem der innovativsten und attraktivsten Wirtschaftsbereiche: der Informations- und Medientechnik. </p><p>Jedes Jahr veranstaltet die it.schule die Hausmesse Studium und Beruf. Dabei stellen sich Ausbildungsfirmen und Hochschulen vor und beraten die Schülerinnen und Schüler des TGI und des BK individuell zu den vielfältigen Berufs- und Studienmöglichkeiten.</p><p>Der Studiengang Wirtschaftsingenieurwesen Medien ist auch dabei. An unserem Stand und im Rahmen zweier Vortäge können Sie sich über das Studium bei Wirtschaftsingenieurwesen Medien informieren.</p>","date":{"start":"2020-03-03","end":""},"time":{"start":"9:00","end":"13:00"},"place":"it.schule stuttgart, Breitwiesenstraße 20-22, 70565 Stuttgart","contact":["thaler"],"links":[],"tid":3},{"title":"Erstsemesterbegrüßung bei Wirtschaftsingenieurwesen Medien","headline":"Erstsemesterbegrüßung bei Wirtschaftsingenieurwesen Medien","description":"<dl>    <dt>10:00Uhr</dt>    <dd>Zentrale Begrüßung der Fakultät Druck und Medien</dd>    <dt>11:00Uhr</dt>    <dd>Begrüßung im Studiengang Wirtschaftsingenieurwesen Medien</dd>    <dt>12:00Uhr</dt>    <dd>Führung durch die HdM durch Studenten älterer Semester</dd>    <dt>ab ca. 13:30Uhr</dt>    <dd>Erstsemesternachmittag (organisiert durch Studenten älterer Semester)</dd></dl>","date":{"start":"2020-03-16","end":""},"time":{"start":"10:00","end":""},"place":"Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart","contact":["schaedel"],"links":[],"tid":4},{"title":"Bachelor-Kolloquium","headline":"Bachelor-Kolloquium","description":"<p>Wir laden alle Interessierten herzlich zu folgenden Bachelorvorträgen ein:</p><p>Tina Kratochwill, <span class='wing-event-title'>Prototypische Optimierung von Produktionsprozessen        beim Mediendienstleister Meyle+Müller im Hinblick auf digitale Herausforderungen</span></p><p>    Ruben Heer, <span class='wing-event-title'>Entwicklung einer generischen Architektur von anwendungsspezifischen        Filtern für das Shopsystem der Würth IT GmbH</span></p>","date":{"start":"2020-03-23","end":""},"time":{"start":"16:00","end":"17:30"},"place":"Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart, Raum 218","contact":["doersam"],"links":[],"tid":5},{"title":"Girls' Day","headline":"Girls' Day","description":"Wir haben für den Girls' Day ein reichhaltiges Programm zusammengestellt: Unsere Besucherinnen können bei Wirtschaftsingenieurwesen Medien an drei Workshops teilnehmen: <ul><li>Auswirkung der Digitalisierung auf die zukünftige Jobwelt</li><li>Erstellung personalisierter Produkte</li><li>Lösungen für globale Fragen im Design Thinking Workshop</li></ul>","date":{"start":"2020-03-26","end":""},"time":{"start":"9:00","end":"14:00"},"place":"Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart","contact":["doersam"],"links":[],"tid":6}]}
+{
+  "dates": [
+    {
+      "title": "MediaNight",
+      "headline": "MediaNight Wintersemester 19/20",
+      "description": "<p>Demnächst ist es wieder so weit: Studierende der Hochschule der Medien (HdM) stellen vor, woran sie im Wintersemester gearbeitet haben. Insgesamt sind über einhundert Projekte zu sehen. Auch Wirtschaftsingenieurwesen Medien ist dabei. Mehr Details zu den einzelnen Projekten werden wir hier demnächst veröffentlichen.</p>",
+      "date": { "start": "2020-01-30", "end": "" },
+      "time": { "start": "", "end": "" },
+      "place": "Hochschule der Medien",
+      "contact": ["schaedel"],
+      "links": [
+        {
+          "href": "https://www.hdm-stuttgart.de/medianight",
+          "text": "MediaNight"
+        }
+      ],
+      "tid": 1
+    },
+    {
+      "title": "Absolventenfeier",
+      "headline": "Absolventenfeier",
+      "description": "<p>Am 21. Februar 2020 werden die Studienabgänger des Wintersemesters 2019/2020 verabschiedet. Die Absolventenfeier beginnt um 16 Uhr. Nach Grußworten des Rektors werden die Zeugnisse überreicht und die erfolgreichsten Absolventinnen und Absolventen ausgezeichnet.</p>",
+      "date": { "start": "2020-02-21", "end": "" },
+      "time": { "start": "16:00", "end": "" },
+      "place": "Hochschule der Medien",
+      "contact": ["schaedel"],
+      "links": [],
+      "tid": 2
+    },
+    {
+      "title": "Wirtschaftsingenieurwesen Medien zu Gast bei der it.schule",
+      "headline": "Wirtschaftingenieurwesen Medien zu Gast bei der it.schule",
+      "description": "<p>Die it.schule ist ein öffentliches Ausbildungszentrum für IT- und Medienberufe in der Region Stuttgart. Mit modernster  Ausstattung bietet die Schule eine fundierte Ausbildung in einem der innovativsten und attraktivsten Wirtschaftsbereiche: der Informations- und Medientechnik. </p><p>Jedes Jahr veranstaltet die it.schule die Hausmesse Studium und Beruf. Dabei stellen sich Ausbildungsfirmen und Hochschulen vor und beraten die Schülerinnen und Schüler des TGI und des BK individuell zu den vielfältigen Berufs- und Studienmöglichkeiten.</p><p>Der Studiengang Wirtschaftsingenieurwesen Medien ist auch dabei. An unserem Stand und im Rahmen zweier Vortäge können Sie sich über das Studium bei Wirtschaftsingenieurwesen Medien informieren.</p>",
+      "date": { "start": "2020-03-03", "end": "" },
+      "time": { "start": "9:00", "end": "13:00" },
+      "place": "it.schule stuttgart, Breitwiesenstraße 20-22, 70565 Stuttgart",
+      "contact": ["thaler"],
+      "links": [],
+      "tid": 3
+    },
+    {
+      "title": "Erstsemesterbegrüßung bei Wirtschaftsingenieurwesen Medien",
+      "headline": "Erstsemesterbegrüßung bei Wirtschaftsingenieurwesen Medien",
+      "description": "<dl>    <dt>10:00Uhr</dt>    <dd>Zentrale Begrüßung der Fakultät Druck und Medien</dd>    <dt>11:00Uhr</dt>    <dd>Begrüßung im Studiengang Wirtschaftsingenieurwesen Medien</dd>    <dt>12:00Uhr</dt>    <dd>Führung durch die HdM durch Studenten älterer Semester</dd>    <dt>ab ca. 13:30Uhr</dt>    <dd>Erstsemesternachmittag (organisiert durch Studenten älterer Semester)</dd></dl>",
+      "date": { "start": "2020-03-16", "end": "" },
+      "time": { "start": "10:00", "end": "" },
+      "place": "Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart",
+      "contact": ["schaedel"],
+      "links": [],
+      "tid": 4
+    },
+    {
+      "title": "Bachelor-Kolloquium",
+      "headline": "Bachelor-Kolloquium",
+      "description": "<p>Wir laden alle Interessierten herzlich zu folgenden Bachelorvorträgen ein:</p><p>Tina Kratochwill, <span class='wing-event-title'>Prototypische Optimierung von Produktionsprozessen        beim Mediendienstleister Meyle+Müller im Hinblick auf digitale Herausforderungen</span></p><p>    Ruben Heer, <span class='wing-event-title'>Entwicklung einer generischen Architektur von anwendungsspezifischen        Filtern für das Shopsystem der Würth IT GmbH</span></p>",
+      "date": { "start": "2020-03-23", "end": "" },
+      "time": { "start": "16:00", "end": "17:30" },
+      "place": "Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart, Raum 218",
+      "contact": ["doersam"],
+      "links": [],
+      "tid": 5
+    },
+    {
+      "title": "Girls' Day",
+      "headline": "Girls' Day",
+      "description": "Wir haben für den Girls' Day ein reichhaltiges Programm zusammengestellt: Unsere Besucherinnen können bei Wirtschaftsingenieurwesen Medien an drei Workshops teilnehmen: <ul><li>Auswirkung der Digitalisierung auf die zukünftige Jobwelt</li><li>Erstellung personalisierter Produkte</li><li>Lösungen für globale Fragen im Design Thinking Workshop</li></ul>",
+      "date": { "start": "2020-03-26", "end": "" },
+      "time": { "start": "9:00", "end": "14:00" },
+      "place": "Hochschule der Medien, Nobelstraße 10, 70569 Stuttgart",
+      "contact": ["doersam"],
+      "links": [],
+      "tid": 6
+    }
+  ]
+}

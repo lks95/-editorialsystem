@@ -14,7 +14,18 @@
 
             <div class="form-group">
                 <label for="descriptionInput">Beschreibung</label>
-                <input type="text" class="form-control" id="descriptionInput" v-model.trim="description" @input="updateDescription($event.target.value)">
+                <Editor
+                    :init="{
+                        height: 500,
+                        menubar : false, 
+                        plugins: [
+                            'advlist autolink lists link charmap preview anchor visualblocks code fullscreen table paste'
+                        ],
+                        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
+                    }"
+                    v-model.trim="description"
+                    @input="updateDescription($event.target.value)"
+                />
             </div>
 
             <div class="form-row">
@@ -91,10 +102,14 @@
 
 <script>
 import {required} from 'vuelidate/lib/validators'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
     name: 'EditTermine',
     props: ["selectedItem", "selectedIndex"],
+    components: {
+        Editor
+    },
     data() {
         return {
             title: '',
