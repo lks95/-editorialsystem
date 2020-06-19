@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "concurrently \"node server.js --debug\" \"npm run serve\"",
+    "start": "concurrently \"node server.js\" \"npm run serve\"",
     "dev": "concurrently -n 'server,client' -c 'red,green' \"nodemon server.js --debug\" \"npm run serve\""
   },
   "keywords": [],
