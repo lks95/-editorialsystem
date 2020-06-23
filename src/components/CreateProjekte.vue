@@ -2,25 +2,18 @@
     <div>
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
-                <label for="studyInput">study:</label>
-                <select v-model="study">
-                    <option></option>
-                    <option>imp</option>
-                    <option>dp</option>
-                    <option>mdm</option>
-                </select>
-                </div>
+                <label for="studyInput">Studiengang</label>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                <pre class="language-json"><code >{{ study }}</code></pre>
+            </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
-                <label for="categoryInput">category:</label>
-                <select v-model="category">
-                    <option>App</option>
-                    <option>Web</option>
-                    <option>Design</option>
-                </select>
-                </div>
-             <div class="error" v-if="!$v.category.required">Field is required</div>
+                <label for="categoryInput">Kategorie</label>
+                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
+                <pre class="language-json"><code >{{ category }}</code></pre>
+            </div>
+            <div class="error" v-if="!$v.category.required">Field is required</div>
            
             <div class="form-group" :class="{'form-group--error': $v.intro_title.$error}">
                 <label for="intro_titleInput">Title:</label>
@@ -94,7 +87,6 @@
             <div class="error" v-if="!$v.detail_text.minLength">Text must have at least {{$v.detail_text.$params.minLength.min}} letters.</div>
            
            <div class="form-group" :class="{'form-group--error': $v.date.$error}">
-                <label for="dateInput">date:</label>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="dateInput">Datum</label>
@@ -105,8 +97,11 @@
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
-                <label for="contactsInput">Kontakte:</label>
-                <input class="form-control" id="contactsInput" v-model.trim="contacts" @input="updateContacts($event.target.value)">
+                <label for="contactsInput">Contacts</label>
+                <multiselect v-model="contacts" deselect-label="Can't remove this contact" track-by="name" :multiple="true" label="name" placeholder="Select one" :options="team" :searchable="false" :allow-empty="false">
+                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong> and ID: <strong>  {{ option.id }}</strong></template>
+                </multiselect>
+                <pre class="language-json"><code v-for="contact in contacts"  :key="contact">{{ contact.name }}<br/></code></pre>
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
             
@@ -123,16 +118,22 @@
 <script>
 import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
+import Multiselect from 'vue-multiselect'
+import axios from "axios"
+
 
 export default {
     name: 'CreateProjekte',
     components: {
-        Editor
+        Editor,
+        Multiselect
     },
     data() {
         return{
-           study: '',
+            study: '',
+            studyOptions:['','imp','dp','mdm'],
             category: '',
+            kategoryOptions: ['App','Web','Design'],
             intro_title: '',
             intro_text: '',
             intro_img_src: '',
@@ -145,6 +146,8 @@ export default {
            // detail_media: '',
             date: '',
             contacts: '',
+            team: [],
+            tIndex: 0,
             submitStatus: null,
         };
     },
@@ -161,7 +164,7 @@ export default {
         detail_header_intro:{required, minLength: minLength(3)},
         detail_text:{required, minLength: minLength(3)},
         date:{required},
-        contacts: {required },
+        contacts: {required},
     },
     methods: {
         submit: function() {
@@ -240,6 +243,15 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
-    }
+        
+    },
+    mounted() {
+        axios.get("http://localhost:5000/api/team").then(
+        response =>{ 
+            this.team = response.data.team;
+            console.log('test')}
+            
+        );
+        }
 }
 </script>

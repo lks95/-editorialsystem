@@ -2,25 +2,18 @@
     <div>
         <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
-                <label :for="'studyInput-' + this.selectedIndex">study:</label>
-                <select class="form-control" v-model="study" :id="'studyInput-' + this.selectedIndex">
-                    <option></option>
-                    <option>imp</option>
-                    <option>dp</option>
-                    <option>mdm</option>
-                </select>
-                </div>
+                <label for="studyInput">Studiengang</label>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                <pre class="language-json"><code >{{ study }}</code></pre>
+            </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
-                <label :for="'categoryInput-' + this.selectedIndex">category:</label>
-                <select class="form-control" v-model="category" :id="'categoryInput-' + this.selectedIndex">
-                    <option>App</option>
-                    <option>Web</option>
-                    <option>Design</option>
-                </select>
-                </div>
-             <div class="error" v-if="!$v.category.required">Field is required</div>
+                <label for="categoryInput">Kategorie</label>
+                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
+                <pre class="language-json"><code >{{ category }}</code></pre>
+            </div>
+            <div class="error" v-if="!$v.category.required">Field is required</div>
            
             <div class="form-group" :class="{'form-group--error': $v.intro_title.$error}">
                 <label :for="'intro_titleInput-' + this.selectedIndex">Title:</label>
@@ -94,15 +87,16 @@
             <div class="error" v-if="!$v.detail_text.required">Field is required</div>
             <div class="error" v-if="!$v.detail_text.minLength">Text must have at least {{$v.detail_text.$params.minLength.min}} letters.</div>
            
-           <!--<div class="form-group" :class="{'form-group--error': $v.date.$error}">
-                <label for="dateInput">date:</label>
-                <input class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
+           <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
+                <label for="contactsInput">Contacts</label>
+            <multiselect v-model="contacts" deselect-label="Can't remove this contact" track-by="name" :multiple="true" label="name" placeholder="Select one" :options="team" :searchable="false" :allow-empty="false">
+                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong> and ID: <strong>  {{ option.id }}</strong></template>
+                </multiselect>
+                <pre class="language-json"><code v-for="contact in contacts"  :key="contact">{{ contact.name }}<br/></code></pre>
             </div>
-            <div class="error" v-if="!$v.date.required">Field is required</div>
-            -->
+            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.date.$error}">
-                <!--<label for="dateInput">date:</label>-->
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label :for="'dateInput-' + this.selectedIndex">Datum</label>
@@ -125,17 +119,22 @@
 <script>
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
+import Multiselect from 'vue-multiselect'
+import axios from "axios"
 
 export default {
     name: 'EditProjekte',
     props: ["selectedItem", "selectedIndex"],
     components: {
-        Editor
+        Editor,
+        Multiselect,
     },
     data() {
         return{
-             study: '',
+            study: '',
+            studyOptions:['','imp','dp','mdm'],
             category: '',
+            kategoryOptions: ['App','Web','Design'],
             intro_title: '',
             intro_text: '',
             intro_img_src: '',
@@ -145,9 +144,11 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            //detail_media: '',
+            
             date: '',
-            contacts: '',
+            contacts: [],
+            team: [],
+            tIndex: 0,
             submitStatus: null,
         };
     },
@@ -266,7 +267,7 @@ export default {
         }
     },
     mounted(){
-         this.study= this.selectedItem.study;
+            this.study= this.selectedItem.study;
             this.category= this.selectedItem.category;
             this.intro_title= this.selectedItem.intro_title;
             this.intro_img_src= this.selectedItem.intro_img_src;
@@ -280,6 +281,13 @@ export default {
             //detail_media: '',
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
+            axios.get("http://localhost:5000/api/team").then(
+            response =>{ 
+                this.team = response.data.team;
+                console.log('test')}
+            
+            );
     }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
