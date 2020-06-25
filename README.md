@@ -1,20 +1,44 @@
 # WING-Redaktionssystem
 
+## Abstract
+Editorial system which Users can create, edit or archive content for e.g. Dates, News and Projects.
+The content can be uploaded/downloaded by json files and be displayed in the view.
+
+## Team
+
+| Name            | ID         |
+| --------------- | ---------- |
+| Lukas Schneider | ls130      |
+| Lina Dreher     | ld038      |
+| Lukas Klein     | lk104      |
+
+## Tech-Stack
+
+### Frontend
+
+* Vue.js with BootstrapVue library
+
+### Backend
+
+* NodeJS (with ExpressJS)
+* API: REST
+* Vue.js
+
 
 ## Installation
 ```
 npm install
 ```
 
-### Start Server und Frontend
+### Start server and frontend
 ```
 npm run start
 ```
-Aufruf des WING-Redaktionssystems über localhost:8080
+Open the web application in the browser at `http://localhost:8080`
 
 
-### Start Server und Frontend mit Hot-reload zur Entwicklung
+### Start server and frontend with hot-reloads for development
 ```
 npm run dev
 ```
-Aufruf des Frontends über localhost:8080
+Open the frontend in the browser at `http://localhost:8080`
