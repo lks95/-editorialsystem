@@ -2,6 +2,7 @@
 
 ## Abstract
 Editorial system which Users can create, edit or archive content for e.g. Dates, News and Projects.
+
 The content can be uploaded/downloaded by json files and be displayed in the view.
 
 ## Team
