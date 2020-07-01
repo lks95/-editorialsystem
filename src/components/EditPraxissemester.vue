@@ -1,20 +1,20 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
+        <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
             <div class="form-group" :class="{'form-group--error': $v.author.$error}">
-                <label for="authorInput">Autor:</label>
-                <input type="text" class="form-control"  id="authorInput" v-model.trim="author"  @input="updateAuthor($event.target.value)">
+                <label :for="'authorInput-' + this.selectedIndex" >Autor:</label>
+                <input type="text" class="form-control"  :id="'authorInput-' + this.selectedIndex" v-model.trim="author"  @input="updateAuthor($event.target.value)">
             </div>
             <div class="error" v-if="!$v.author.required">Field is required</div>
             <div class="error" v-if="!$v.author.minLength">Author must have at least {{$v.author.$params.minLength.min}} letters.</div>
             <div class="form-group" :class="{'form-group--error': $v.img.$error}">
-                <label for="imgInput">Bild:</label>
-                <input type="text" class="form-control" id="imgInput" v-model.trim="img" @input="updateImg($event.target.value)">
+                <label :for="'imgInput-' + this.selectedIndex">Bild:</label>
+                <input type="text" class="form-control" :id="'imgInput-' + this.selectedIndex" v-model.trim="img" @input="updateImg($event.target.value)">
             </div>
             <div class="error" v-if="!$v.img.required">Field is required</div>
             <div class="form-group" :class="{'form-group--error': $v.text.$error}">
-                <label for="textInput">Bericht:</label>
-                <textarea class="form-control" id="textInput" rows="3" v-model.trim="text" @input="updateText($event.target.value)"></textarea>
+                <label :for="'textInput-' + this.selectedIndex">Bericht:</label>
+                <textarea class="form-control" :id="'textInput-' + this.selectedIndex" rows="3" v-model.trim="text" @input="updateText($event.target.value)"></textarea>
             </div>
             <div class="error" v-if="!$v.text.required">Field is required</div>
             <div class="error" v-if="!$v.text.minLength">Text must have at least {{$v.text.$params.minLength.min}} letters.</div>
