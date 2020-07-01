@@ -1,30 +1,30 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
+        <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
             <div class="form-group" :class="{'form-group--error': $v.bericht_title.$error}">
-                <label for="bericht_titleInput">Title:</label>
-                <input type="text" class="form-control"  id="bericht_titleInput" v-model.trim="bericht_title"  @input="updateTitle($event.target.value)">
+                <label :for="'bericht_titleInput-' + this.selectedIndex">Title:</label>
+                <input type="text" class="form-control"  :id="'bericht_titleInput-' + this.selectedIndex" v-model.trim="bericht_title"  @input="updateTitle($event.target.value)">
             </div>
             <div class="error" v-if="!$v.bericht_title.required">Field is required</div>
             <div class="error" v-if="!$v.bericht_title.minLength">Title must have at least {{$v.bericht_title.$params.minLength.min}} letters.</div>
            
             
             <div class="form-group" :class="{'form-group--error': $v.bericht_img.$error}">
-                <label for="bericht_imgInput">Bild:</label>
-                <input type="text" class="form-control" id="bericht_imgInput" v-model.trim="bericht_img" @input="updateImg($event.target.value)">
+                <label :for="'bericht_imgInput-' + this.selectedIndex">Bild:</label>
+                <input type="text" class="form-control" :id="'bericht_imgInput-' + this.selectedIndex" v-model.trim="bericht_img" @input="updateImg($event.target.value)">
             </div>
             <div class="error" v-if="!$v.bericht_img.required">Field is required</div>
             <div class="form-group" :class="{'form-group--error': $v.bericht_text.$error}">
-                <label for="bericht_textInput">Bericht:</label>
-                <textarea class="form-control" id="bericht_textInput" rows="3" v-model.trim="bericht_text" @input="updateText($event.target.value)"></textarea>
+                <label :for="'bericht_textInput-' + this.selectedIndex">Bericht:</label>
+                <textarea class="form-control" :id="'bericht_textInput-' + this.selectedIndex" rows="3" v-model.trim="bericht_text" @input="updateText($event.target.value)"></textarea>
             </div>
             <div class="error" v-if="!$v.bericht_text.required">Field is required</div>
             <div class="error" v-if="!$v.bericht_text.minLength">Text must have at least {{$v.bericht_text.$params.minLength.min}} letters.</div>
             <div class="error" v-if="!$v.bericht_text.maxLength">Text must have at most {{$v.bericht_text.$params.maxLength.max}} letters.</div>
             
             <div class="form-group" :class="{'form-group--error': $v.bericht_author.$error}">
-                <label for="bericht_authorInput">Author:</label>
-                <input type="text" class="form-control"  id="bericht_authorInput" v-model.trim="bericht_author"  @input="updateAuthor($event.target.value)">
+                <label :for="'bericht_authorInput-' + this.selectedIndex">Author:</label>
+                <input type="text" class="form-control"  :id="'bericht_authorInput-' + this.selectedIndex" v-model.trim="bericht_author"  @input="updateAuthor($event.target.value)">
             </div>
             <div class="error" v-if="!$v.bericht_author.required">Field is required</div>
             <div class="error" v-if="!$v.bericht_author.minLength">Author must have at least {{$v.bericht_author.$params.minLength.min}} letters.</div>
