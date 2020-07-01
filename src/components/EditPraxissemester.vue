@@ -66,9 +66,8 @@ export default {
                 setTimeout(() => {
                     this.submitStatus = 'OK'
                 }, 500)
-
-            } 
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+            } 
         },
 
         updateText(value){
