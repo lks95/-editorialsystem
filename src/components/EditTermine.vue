@@ -1,19 +1,19 @@
 <template>
     <div>
-        <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
+        <form @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
 
             <div class="form-group" >
-                <label for="titleInput">Titel</label>
-                <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateHeadline($event.target.value)">
+                <label :for="'titleInput-' + this.selectedIndex">Titel</label>
+                <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateHeadline($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="headlineInput">Überschrift</label>
-                <input type="text" class="form-control" id="headlineInput" v-model.trim="headline" @input="updateTitleTermin($event.target.value)">
+                <label :for="'headlineInput-' + this.selectedIndex">Überschrift</label>
+                <input type="text" class="form-control" :id="'headlineInput-' + this.selectedIndex" v-model.trim="headline" @input="updateTitleTermin($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="descriptionInput">Beschreibung</label>
+                <label :for="'descriptionInput-' + this.selectedIndex">Beschreibung</label>
                 <Editor
                     :init="{
                         height: 500,
@@ -25,36 +25,37 @@
                     }"
                     v-model.trim="description"
                     @input="updateDescription($event.target.value)"
+                    :id="'descriptionInput-' + this.selectedIndex"
                 />
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="starttimeInput">Beginn des Termins</label>
-                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
+                    <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins</label>
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="endtimeInput">Ende des Termins</label>
-                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
+                    <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins</label>
+                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="startdateInput">Start des Termins</label>
-                    <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
+                    <label :for="'startdateInput-' + this.selectedIndex">Start des Termins</label>
+                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="enddateInput">Ende des Termins</label>
+                    <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins</label>
                 <!--<div class="col">
                     <label for="startdateInput">Start des Termins:</label>
                     <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="enddateInput">Ende des Termins:</label>-->
-                    <input type="date" class="form-control" id="enddateInput" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
+                    <input type="date" class="form-control" :id="'enddateInput-' + this.selectedIndex" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="placeInput">Ort</label>
+                <label :for="'placeInput-' + this.selectedIndex">Ort</label>
             <!--<div class="form-row">
                 <div class="col">
                     <label for="starttimeInput">Beginn des Termins:</label>
@@ -68,18 +69,18 @@
 
             <div class="form-group">
                 <label for="placeInput">Ort:</label>-->
-                <input type="text" class="form-control" id="placeInput" v-model.trim="place" @input="updatePlace($event.target.value)">
+                <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="contactInput">Kontakt:</label>
-                <input type="text" class="form-control" id="contactInput" v-model.trim="contact" @input="updateContact($event.target.value)">
+                <label :for="'contactInput-' + this.selectedIndex">Kontakt:</label>
+                <input type="text" class="form-control" :id="'contactInput-' + this.selectedIndex" v-model.trim="contact" @input="updateContact($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="linkInput">Links</label>
+                <label :for="'linkInput-' + this.selectedIndex">Links</label>
                 <div class="d-flex">
-                    <input type="text" class="form-control mr-1" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">
+                    <input type="text" class="form-control mr-1" :id="'linkInput-' + this.selectedIndex" v-model.trim="links" @input="updateLinks($event.target.value)">
                     <button size="sm" class="btn btn-secondary">
                         <b-icon icon="plus-circle"></b-icon>
                     </button>
