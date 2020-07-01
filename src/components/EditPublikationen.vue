@@ -1,43 +1,41 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
+        <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
 
             <div class="form-group">
-                <label for="titleInput">Titel:</label>
-                <input type="text" class="form-control"  id="titleInput" v-model.trim="publikation_title"  @input="updateTitle($event.target.value)">
+                <label :for="'titleInput-' + this.selectedIndex">Titel:</label>
+                <input type="text" class="form-control"  :id="'titleInput-' + this.selectedIndex" v-model.trim="publikation_title"  @input="updateTitle($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="subtitleInput">Untertitel:</label>
-                <input type="text" class="form-control" id="subtitleInput" v-model.trim="publikation_subtitle" @input="updateSubtitle($event.target.value)">
+                <label :for="'subtitleInput-' + this.selectedIndex">Untertitel:</label>
+                <input type="text" class="form-control" :id="'subtitleInput-' + this.selectedIndex" v-model.trim="publikation_subtitle" @input="updateSubtitle($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="textInput">Text:</label>
-                <textarea class="form-control" id="textInput" rows="3" v-model.trim="publikation_title" @input="updateText($event.target.value)"></textarea>
+                <label :for="'textInput-' + this.selectedIndex">Text:</label>
+                <textarea class="form-control" :id="'textInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_title" @input="updateText($event.target.value)"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="authorInput">Author:</label>
-                <textarea class="form-control" id="authorInput" rows="3" v-model.trim="publikation_author" @input="updateAuthor($event.target.value)"></textarea>
+                <label :for="'authorInput-' + this.selectedIndex">Author:</label>
+                <textarea class="form-control" :id="'authorInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_author" @input="updateAuthor($event.target.value)"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="betreuerInput">Betreuer:</label>
-                <textarea class="form-control" id="betreuerInput" rows="3" v-model.trim="publikation_betreuer" @input="updateBetreuer($event.target.value)"></textarea>
+                <label :for="'betreuerInput-' + this.selectedIndex">Betreuer:</label>
+                <textarea class="form-control" :id="'betreuerInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_betreuer" @input="updateBetreuer($event.target.value)"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="imgInput">Bild:</label>
-                <textarea class="form-control" id="imgInput" rows="3" v-model.trim="img" @input="updateImg($event.target.value)"></textarea>
+                <label :for="'imgInput-' + this.selectedIndex">Bild:</label>
+                <textarea class="form-control" :id="'imgInput-' + this.selectedIndex" rows="3" v-model.trim="img" @input="updateImg($event.target.value)"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="pdfInput">Pdf:</label>
-                <textarea class="form-control" id="pdfInput" rows="3" v-model.trim="pdf" @input="updatePdf($event.target.value)"></textarea>
+                <label :for="'pdfInput-' + this.selectedIndex">Pdf:</label>
+                <textarea class="form-control" :id="'pdfInput-' + this.selectedIndex" rows="3" v-model.trim="pdf" @input="updatePdf($event.target.value)"></textarea>
             </div>
-
-
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
