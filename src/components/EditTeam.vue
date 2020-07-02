@@ -1,62 +1,62 @@
 <template>
     <div>
-        <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
+        <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
 
             <div class="form-group" :class="{'form-group--error': $v.id.$error}">
-                <label for="idInput">Id:</label>
-                <input type="text" class="form-control"  id="idInput" v-model.trim="id"  @input="updateId($event.target.value)">
+                <label :for="'idInput-' + this.selectedIndex">Id:</label>
+                <input type="text" class="form-control"  :id="'idInput-' + this.selectedIndex" v-model.trim="id"  @input="updateId($event.target.value)">
             </div>
             <div class="error" v-if="!$v.id.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.name.$error}">
-                <label for="nameInput">Name:</label>
-                <input type="text" class="form-control"  id="nameInput" v-model.trim="name"  @input="updateName($event.target.value)">
+                <label :for="'nameInput-' + this.selectedIndex">Name:</label>
+                <input type="text" class="form-control"  :id="'nameInput-' + this.selectedIndex" v-model.trim="name"  @input="updateName($event.target.value)">
             </div>
             <div class="error" v-if="!$v.name.required">Field is required</div>
 
             <div class="form-group">
-                <label for="phoneInput">Telefon:</label>
-                <input type="tel" class="form-control"  id="phoneInput" v-model.trim="phone"  @input="updatePhone($event.target.value)">
+                <label :for="'phoneInput-' + this.selectedIndex">Telefon:</label>
+                <input type="tel" class="form-control"  :id="'phoneInput-' + this.selectedIndex" v-model.trim="phone"  @input="updatePhone($event.target.value)">
             </div>
             
             <div class="form-group" :class="{'form-group--error': $v.mail.$error}">
-                <label for="mailInput">Email:</label>
-                <input type="mail" class="form-control"  id="mailInput" v-model.trim="mail"  @input="updateMail($event.target.value)">
+                <label :for="'mailInput-' + this.selectedIndex">Email:</label>
+                <input type="mail" class="form-control"  :id="'mailInput-' + this.selectedIndex" v-model.trim="mail"  @input="updateMail($event.target.value)">
             </div>
             <div class="error" v-if="!$v.mail.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.room.$error}">
-                <label for="roomInput">Raum:</label>
-                <input type="text" class="form-control"  id="roomInput" v-model.trim="room"  @input="updateRoom($event.target.value)">
+                <label :for="'roomInput-' + this.selectedIndex">Raum:</label>
+                <input type="text" class="form-control"  :id="'roomInput-' + this.selectedIndex" v-model.trim="room"  @input="updateRoom($event.target.value)">
             </div>
             <div class="error" v-if="!$v.room.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.job_title.$error}">
-                <label for="jobTitle">Berufsbezeichung:</label>
-                <input type="text" class="form-control"  id="jobTitleInput" v-model.trim="job_title"  @input="updateJobTitle($event.target.value)">
+                <label :for="'jobTitle-' + this.selectedIndex">Berufsbezeichung:</label>
+                <input type="text" class="form-control"  :id="'jobTitleInput-' + this.selectedIndex" v-model.trim="job_title"  @input="updateJobTitle($event.target.value)">
             </div>
             <div class="error" v-if="!$v.job_title.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.text.$error}">
-                <label for="textInput">Text:</label>
-                <input type="text" class="form-control"  id="textInput" v-model.trim="text"  @input="updateText($event.target.value)">
+                <label :for="'textInput-' + this.selectedIndex">Text:</label>
+                <input type="text" class="form-control"  :id="'textInput-' + this.selectedIndex" v-model.trim="text"  @input="updateText($event.target.value)">
             </div>
             <div class="error" v-if="!$v.text.maxLength">Text must have at most {{$v.text.$params.maxLength.max}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.subject.$error}">
-                <label for="subjectInput">Fachgebiete:</label>
-                <input type="text" class="form-control"  id="subjectInput" v-model.trim="subject"  @input="updateSubject($event.target.value)">
+                <label :for="'subjectInput-' + this.selectedIndex">Fachgebiete:</label>
+                <input type="text" class="form-control"  :id="'subjectInput-' + this.selectedIndex" v-model.trim="subject"  @input="updateSubject($event.target.value)">
             </div>
             <div class="error" v-if="!$v.subject.maxLength">Subject must have at most {{$v.subject.$params.maxLength.max}} letters.</div>
 
             <div class="form-group">
-                <label for="timesInput">Sprechzeiten:</label>
-                <input type="text" class="form-control"  id="timesInput" v-model.trim="times"  @input="updateTimes($event.target.value)">
+                <label :for="'timesInput-' + this.selectedIndex">Sprechzeiten:</label>
+                <input type="text" class="form-control"  :id="'timesInput-' + this.selectedIndex" v-model.trim="times"  @input="updateTimes($event.target.value)">
             </div>
 
             <div class="form-group">
-                <label for="focusInput">Studienschwerpunkt:</label>
-                <select class="form-control"  id="focusInput" v-model.trim="focus"  @input="updateFocus($event.target.value)">
+                <label :for="'focusInput-' + this.selectedIndex">Studienschwerpunkt:</label>
+                <select class="form-control"  :id="'focusInput-' + this.selectedIndex" v-model.trim="focus"  @input="updateFocus($event.target.value)">
                     <option value=""> </option>
                     <option value="imp">Industrial Media Production</option>
                     <option value="dp">Digital Publishing Technologies</option>
@@ -65,8 +65,8 @@
             </div>
 
             <div class="form-group" :class="{'form-group--error': $v.img.$error}">
-                <label for="imgInput">Bild:</label>
-                <input type="text" class="form-control"  id="imgInput" v-model.trim="img"  @input="updateImg($event.target.value)">
+                <label :for="'imgInput-' + this.selectedIndex">Bild:</label>
+                <input type="text" class="form-control"  :id="'imgInput-' + this.selectedIndex" v-model.trim="img"  @input="updateImg($event.target.value)">
             </div>
             <div class="error" v-if="!$v.img.required">Field is required</div>
 
