@@ -4,14 +4,14 @@
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
                 <multiselect id="studyInput" v-model="study" :multiple="true" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 <pre class="language-json"><code v-for="st in study"  :key="st">{{ st}}<br/></code></pre>
+                 <pre class="language-json"><code v-for="(st, index) in study"  :key="index">{{ st}}<br/></code></pre>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
                 <multiselect id="categoryInput" v-model="category" :multiple="true" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                 <pre class="language-json"><code v-for="cat in category"  :key="cat">{{ cat}}<br/></code></pre>
+                 <pre class="language-json"><code v-for="(cat, index) in category" :key="index">{{ cat}}<br/></code></pre>
             
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
@@ -89,11 +89,19 @@
             <div class="error" v-if="!$v.detail_text.minLength">Text must have at least {{$v.detail_text.$params.minLength.min}} letters.</div>
            
            <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
-                <label for="contactsInput">Contacts</label>
-            <multiselect v-model="contacts" deselect-label="Can't remove this contact" track-by="name" :multiple="true" label="name" placeholder="Select one" :options="team" :searchable="false" :allow-empty="false">
-                    <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong> and ID: <strong>  {{ option.id }}</strong></template>
+                <label for="contactsInput">Kontakt:</label>
+                <multiselect 
+                    v-model="contacts" 
+                    deselect-label="Kontakt entfernen"
+                    select-label="Kontakt auswählen"
+                    selected-label="Ausgewählt"
+                    placeholder="Bitte Kontakte auswählen" 
+                    :multiple="true"
+                    :options="team"
+                    :searchable="true" 
+                    :allow-empty="true"
+                >
                 </multiselect>
-                <pre class="language-json"><code v-for="contact in contacts"  :key="contact">{{ contact.name }}<br/></code></pre>
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
@@ -195,10 +203,9 @@ export default {
                 this.submitStatus = 'PENDING'
                 setTimeout(() => {
                     this.submitStatus = 'OK'
-                }, 500)
-
+                }, 500);
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             } 
-            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
         },
 
         updateCategeory(value){
@@ -284,10 +291,8 @@ export default {
             this.contacts = this.selectedItem.contacts;
             axios.get("http://localhost:5000/api/team").then(
             response =>{ 
-                this.team = response.data.team;
-                console.log('test')}
-            
-            );
+                this.team = response.data.team.map(t => t.id);
+            });
     }
 }
 </script>

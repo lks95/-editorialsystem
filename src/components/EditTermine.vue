@@ -72,10 +72,23 @@
                 <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
 
-            <div class="form-group">
+            <div class="form-group">            
                 <label :for="'contactInput-' + this.selectedIndex">Kontakt:</label>
-                <input type="text" class="form-control" :id="'contactInput-' + this.selectedIndex" v-model.trim="contact" @input="updateContact($event.target.value)">
+                <multiselect 
+                    v-model="contact" 
+                    :id="'contactInput-' + this.selectedIndex"
+                    deselect-label="Kontakt entfernen"
+                    select-label="Kontakt auswählen"
+                    selected-label="Ausgewählt"
+                    placeholder="Bitte Kontakte auswählen" 
+                    :multiple="true"
+                    :options="team"
+                    :searchable="true" 
+                    :allow-empty="true"
+                >
+                </multiselect>
             </div>
+
 
             <div class="form-group">
                 <label :for="'linkInput-' + this.selectedIndex">Links</label>
@@ -104,12 +117,15 @@
 <script>
 import {required} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
+import Multiselect from 'vue-multiselect'
+import axios from "axios"
 
 export default {
     name: 'EditTermine',
     props: ["selectedItem", "selectedIndex"],
     components: {
-        Editor
+        Editor,
+        Multiselect
     },
     data() {
         return {
@@ -121,8 +137,9 @@ export default {
             starttime: '',
             endtime: '',
             place: '',
-            contact: '',
+            contact: [],
             links: '',
+            team: [],
             submitStatus: null,
         };
     },
@@ -218,6 +235,11 @@ export default {
         this.place = this.selectedItem.place;
         this.contact = this.selectedItem.contact;
         this.links = this.selectedItem.links
-    }
+            axios.get("http://localhost:5000/api/team").then(
+            response =>{ 
+                this.team = response.data.team.map(t => t.id);
+            });
+        }
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
