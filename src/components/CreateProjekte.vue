@@ -3,15 +3,15 @@
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                <pre class="language-json"><code >{{ study }}</code></pre>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                 <pre class="language-json"><code v-for="st in study"  :key="st">{{ st}}<br/></code></pre>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
-                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                <pre class="language-json"><code >{{ category }}</code></pre>
+                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
+                 <pre class="language-json"><code v-for="cat in category"  :key="cat">{{ cat }}<br/></code></pre>
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
            
@@ -105,6 +105,14 @@
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
             
+            <!--<DetailMedia v-if="showForm" />
+            <LoadingSpinner v-if="!dataLoaded" />
+            {{data.detail_img_src}}<br/>
+            {{data.detail_img_alt}}
+            <b-collapse :id="'collapse-' + data.prId" class="border-top mt-3">
+                <DetailMedia :selectedItem="data" :selectedIndex="data.prId"  @save="updateItem" />
+            </b-collapse>-->
+
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
                 <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
@@ -120,20 +128,24 @@ import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
+//import DetailMedia from './DetailMedia'
+//import LoadingSpinner from '../components/LoadingSpinner'
 
 
 export default {
     name: 'CreateProjekte',
     components: {
         Editor,
-        Multiselect
+        Multiselect,
+        //DetailMedia,
+        //LoadingSpinner,
     },
     data() {
         return{
             study: '',
             studyOptions:['','imp','dp','mdm'],
             category: '',
-            kategoryOptions: ['App','Web','Design'],
+            kategoryOptions: ['App','Web','Design', 'CMS', 'Print' , 'Social Media', 'Marketing'],
             intro_title: '',
             intro_text: '',
             intro_img_src: '',
@@ -149,6 +161,8 @@ export default {
             team: [],
             tIndex: 0,
             submitStatus: null,
+            dataLoaded: false,
+            showForm: false,
         };
     },
     validations:{
@@ -193,6 +207,11 @@ export default {
                     this.submitStatus = 'OK'
                 }, 500)
             } 
+        },
+        updateItem: function(item){
+             let foundIndex = this.projekte.findIndex(x => x.prId === item.prId);
+             this.projekte[foundIndex].detail_img_src = item.detail_img_src;
+             this.projekte[foundIndex].detail_img_alt = item.detail_img_alt;
         },
         updateCategeory(value){
             this.category = value;
@@ -252,6 +271,10 @@ export default {
             console.log('test')}
             
         );
-        }
+        this.detail_img_src= this.selectedItem.detail_header_img_src;
+        this.detail_img_alt= this.selectedItem.detail_header_img_alt;
+            
+        this.dataLoaded = true
+    }
 }
 </script>

@@ -1,5 +1,13 @@
 <template>
     <div>
+      <h1>Upload a File</h1>
+          <div id="app" v-cloak>
+            <input type="file" ref="myFile" @change="selectedFile"><br/>
+            <input type="submit" value="Upload File" />
+          </div>
+        <b-button class="btn btn-outline-danger mx-1" @click="confirmDownload()" title="Load file">
+          <b-icon icon="download" aria-hidden="true"></b-icon>
+        </b-button>
         <WingHeader title="Auslandssemester" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateAuslandssemester v-if="showForm" @save="saveNew" @cancel="cancelNew" />
         <LoadingSpinner v-if="!dataLoaded" />
@@ -44,6 +52,7 @@
                       <font-awesome-icon icon="trash" />
                   </button>
                   
+                  
               </div>
             </div>
           </div>
@@ -58,6 +67,7 @@ import EditAuslandssemester from '../components/EditAuslandssemester'
 import CreateAuslandssemester from '../components/CreateAuslandssemester'
 import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
+
 
 export default {
   name: 'Auslandssemester',
@@ -75,8 +85,11 @@ export default {
         displayArchive: false,
         showForm: false,
         selectedItem: {},
+        //files: new FormData(),
         asIndex: 0,
-        dataLoaded: false
+        dataLoaded: false,
+        file: [],
+        FileR: null,
         }
   },
   computed: {
@@ -163,6 +176,47 @@ export default {
             console.log(err);
         })
     },
+    confirmDownload: function(){
+        const data = JSON.stringify(this.auslandssemester)
+        const blob = new Blob([data], {type: 'text/plain'})
+        const e = document.createEvent('MouseEvents'),
+          a = document.createElement('a');
+          a.download = "auslandssemester.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+          e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          a.dispatchEvent(e);
+    },
+   selectedFile() {
+      console.log('selected a file');
+      console.log(this.$refs.myFile.files[0]);
+      
+      let file = this.$refs.myFile.files[0];
+      if(!file || file.type !== 'application/json') return;
+      
+     
+      let reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      
+      reader.onload =  evt => {
+        let text = evt.target.result;
+        try {
+          this.auslandssemester = JSON.parse(text);
+          console.log('log1');
+           this.saveToBackend();
+       
+        } catch(e) {
+          alert("Sorry, your file doesn't appear to be valid JSON data.");
+        }
+      }
+      
+      reader.onerror = evt => {
+        console.error(evt);
+      }
+      
+    },
+
+    
     selectArchive: function(archiveSelected){
         this.displayArchive = archiveSelected;
     },

@@ -9,9 +9,9 @@
               <div>
                 <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
                 {{data.intro_title}}
-                <div> </div>
+                <br/>
                 {{data.date}}
-                <div> </div>
+                <br/>
                 {{data.study}}
               </div>
               <div class="d-flex">

@@ -3,15 +3,16 @@
         <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                <pre class="language-json"><code >{{ study }}</code></pre>
+                <multiselect id="studyInput" v-model="study" :multiple="true" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                 <pre class="language-json"><code v-for="st in study"  :key="st">{{ st}}<br/></code></pre>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
-                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                <pre class="language-json"><code >{{ category }}</code></pre>
+                <multiselect id="categoryInput" v-model="category" :multiple="true" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
+                 <pre class="language-json"><code v-for="cat in category"  :key="cat">{{ cat}}<br/></code></pre>
+            
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
            
@@ -134,7 +135,7 @@ export default {
             study: '',
             studyOptions:['','imp','dp','mdm'],
             category: '',
-            kategoryOptions: ['App','Web','Design'],
+            kategoryOptions: ['App','Web','Design', 'CMS', 'Print' , 'Social Media', 'Marketing'],
             intro_title: '',
             intro_text: '',
             intro_img_src: '',

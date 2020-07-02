@@ -23,6 +23,7 @@ app.use('/api/news', require('./routes/news').router);
 app.use('/api/termine', require('./routes/termine').router);
 app.use('/api/publikationen', require('./routes/publikationen').router);
 
+
 app.listen(PORT,() => {
     console.log(`Server running at ${PORT}`);
 });
