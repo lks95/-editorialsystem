@@ -56,10 +56,21 @@
 
             <div class="form-group">
                 <label for="contactInput">Kontakt:</label>
-                <input type="text" class="form-control" id="contactInput" v-model.trim="contact" @input="updateContact($event.target.value)">
+                <multiselect 
+                    v-model="contact" 
+                    id="contactInput"
+                    deselect-label="Kontakt entfernen"
+                    select-label="Kontakt auswählen"
+                    selected-label="Ausgewählt"
+                    placeholder="Bitte Kontakte auswählen" 
+                    :multiple="true"
+                    :options="team"
+                    :searchable="true" 
+                    :allow-empty="true"
+                >
+                </multiselect>
             </div>
-
-<div>
+        <div>
     <table class="table">
         <thead>
             <tr>
@@ -102,11 +113,14 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue'
+import Multiselect from 'vue-multiselect'
+import axios from "axios"
 
     export default {
         name: "CreateTermine",
         components: {
-            Editor
+            Editor,
+            Multiselect
         },
         data() {
             return {
@@ -118,7 +132,8 @@ import Editor from '@tinymce/tinymce-vue'
                 starttime: '',
                 endtime: '',
                 place: '',
-                contact: '',
+                contact: [],
+                team: [],
                 links: '',
                 submitStatus: null,
                 linkrows: []
@@ -201,12 +216,13 @@ import Editor from '@tinymce/tinymce-vue'
             removeLink: function(index){
                 this.linkrows.splice(index, 1);
             },
-
-
+        },
+        mounted(){
+            axios.get("http://localhost:5000/api/team").then(
+            response =>{ 
+                this.team = response.data.team.map(t => t.id);
+            });
         }
     }
 </script>
-
-<style scoped>
-
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
