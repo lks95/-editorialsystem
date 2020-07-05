@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">WING Redaktionssystem</a>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-lg-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-lg-2 mr-0" href="#">WING Redaktionssystem</a>
     </nav>
     <div class="container-fluid">
       <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav class="col-lg-2 d-lg-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column" id="nav">
               <li class="nav-item">
@@ -59,7 +59,7 @@
             </ul>
           </div>
         </nav>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 pb-3">
+        <main role="main" class="col-lg-9 ml-auto px-4 pb-3">
           <router-view/>
         </main>
       </div>
