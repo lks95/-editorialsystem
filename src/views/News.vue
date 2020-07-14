@@ -3,7 +3,7 @@
         <WingHeader title="News" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateNews v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
         <LoadingSpinner v-if="!dataLoaded" />
-        <draggable v-else-if="!displayArchive" v-model="news" group="news" @start="drag=true" @end="drag=false" handle=".handle">
+        <draggable v-else-if="!displayArchive" v-model="news" group="news" @start="drag=true" @end="drag=false" handle=".handle" @change="saveToBackend()">
             <div v-for="data in news" v-bind:key="data.nId" class="list-group-item">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
                     <div>
@@ -29,9 +29,31 @@
                 <b-collapse :id="'collapse-' + data.nId" class="border-top mt-3">
                     <EditNews :selectedItem="data" :selectedIndex="data.nId"  @save="updateItem" />
                 </b-collapse>
-
             </div>
         </draggable>
+
+        <draggable v-else v-model="archive" group="news-archive" @start="drag=true" @end="drag=false" @change="saveArchiveToBackend()">
+            <div v-for="data in archive" v-bind:key="data.nId" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+                <div>
+                    <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+                    {{data.title}}
+                </div>
+                <div class="d-flex">
+                    <div>
+                        <button class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                            <font-awesome-icon icon="undo" />
+                        </button>
+                        <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                            <font-awesome-icon icon="trash" />
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </draggable>
+
     </div>
 </template>
 
@@ -184,7 +206,7 @@ export default {
                         return item;
                     }),
                         this.dataLoaded = true
-                )
+                    )
         );
         axios.get("http://localhost:5000/api/news/archive").then(
             response =>
