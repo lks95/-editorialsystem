@@ -3,8 +3,8 @@
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 <pre class="language-json"><code v-for="(st, index) in study"  :key="index">{{ st}}<br/></code></pre>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                 <pre class="language-json"><code >{{ study }}<br/></code></pre>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
@@ -112,14 +112,30 @@
                 </multiselect>
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
+
+            <LoadJSON title="Load" @addNewImg="addItemImg" />
+            <LoadingSpinner v-if="!dataLoadedImg" />
             
-            <!--<DetailMedia v-if="showForm" />
-            <LoadingSpinner v-if="!dataLoaded" />
-            {{data.detail_img_src}}<br/>
-            {{data.detail_img_alt}}
-            <b-collapse :id="'collapse-' + data.prId" class="border-top mt-3">
-                <DetailMedia :selectedItem="data" :selectedIndex="data.prId"  @save="updateItem" />
-            </b-collapse>-->
+
+             <div class="form-group" >
+                <label for="detail_mediaInput">Weitere Bilder</label>
+                
+                <div>
+                    <div class="form-group my-3 py-3">
+                        <label>Detail media Src</label>
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="detail_media.detail_img_src"> 
+                        <label>Detail media Alt</label>
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="detail_media.detail_img_alt"> 
+                        <div class="d-flex">
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group mr-2">
+                                    <button class="btn btn-outline-secondary" @click="$emit('addNewImg')"><font-awesome-icon icon="plus"/></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
@@ -136,8 +152,9 @@ import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
+import LoadJSON from './LoadJSON'
 //import DetailMedia from './DetailMedia'
-//import LoadingSpinner from '../components/LoadingSpinner'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 
 export default {
@@ -145,8 +162,9 @@ export default {
     components: {
         Editor,
         Multiselect,
+        LoadJSON,
         //DetailMedia,
-        //LoadingSpinner,
+        LoadingSpinner,
     },
     data() {
         return{
@@ -163,14 +181,16 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-           // detail_media: '',
+            detail_media: [],
             date: '',
-            contacts: '',
+            contacts: [],
             team: [],
             tIndex: 0,
             submitStatus: null,
             dataLoaded: false,
             showForm: false,
+            showFormImg: false,
+            dataLoadedImg: false
         };
     },
     validations:{
@@ -208,6 +228,8 @@ export default {
                     detail_text: this.detail_text,
                     date: this.date,
                     contacts: this.contacts,
+                    detail_media: this.detail_media,
+                    
                 };
                 this.$emit("save", formData);
                 this.submitStatus = 'PENDING'
@@ -216,11 +238,11 @@ export default {
                 }, 500)
             } 
         },
-        updateItem: function(item){
+        /*updateItem: function(item){
              let foundIndex = this.projekte.findIndex(x => x.prId === item.prId);
              this.projekte[foundIndex].detail_img_src = item.detail_img_src;
              this.projekte[foundIndex].detail_img_alt = item.detail_img_alt;
-        },
+        },*/
         updateCategeory(value){
             this.category = value;
             this.$v.category.$touch();
@@ -270,17 +292,30 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
+        updateDetailMedia(value){
+            this.detail_media = value;
+            this.$v.detail_media.$touch();
+        },
+        updateDetailImgAlt(value){
+            this.detail_img_alt = value;
+            this.$v.detail_img_alt.$touch();
+        },
+        updateDetailImgSrc(value){
+            this.detail_img_src = value;
+            this.$v.detail_img_src.$touch();
+        },
+        addItemImg: function(){
+        this.showFormIg = true;
+    },
         
     },
-    mounted() {
+    mounted(){
         axios.get("http://localhost:5000/api/team").then(
         response =>{ 
             this.team = response.data.team.map(t => t.id);
         });
-        this.detail_img_src= this.selectedItem.detail_header_img_src;
-        this.detail_img_alt= this.selectedItem.detail_header_img_alt;
-            
-        this.dataLoaded = true
+        
     }
+    
 }
 </script>

@@ -1,13 +1,21 @@
 <template>
     <div>
-      <h1>Upload a File</h1>
-          <div id="app" v-cloak>
-            <input type="file" ref="myFile" @change="selectedFile"><br/>
-            <input type="submit" value="Upload File" />
-          </div>
-        <b-button class="btn btn-outline-danger mx-1" @click="confirmDownload()" title="Load file">
-          <b-icon icon="download" aria-hidden="true"></b-icon>
-        </b-button>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mr-3 border-bottom">
+            <h2>Upload a File</h2>
+            <div class="d-flex">
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <div id="app"  v-cloak>
+                            <input type="file"  class="btn btn-outline-primary mx-2" ref="myFile" @change="selectedFile">
+                            <input type="submit" class="btn btn-primary" value="Upload File" />
+                        </div>  
+                        <b-button class="btn btn-outline-danger mx-1" @click="confirmDownload()" title="Load file">
+                        <b-icon icon="download" aria-hidden="true"></b-icon>
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <WingHeader title="Auslandssemester" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateAuslandssemester v-if="showForm" @save="saveNew" @cancel="cancelNew" />
         <LoadingSpinner v-if="!dataLoaded" />
@@ -85,7 +93,6 @@ export default {
         displayArchive: false,
         showForm: false,
         selectedItem: {},
-        //files: new FormData(),
         asIndex: 0,
         dataLoaded: false,
         file: [],
@@ -202,7 +209,6 @@ export default {
         let text = evt.target.result;
         try {
           this.auslandssemester = JSON.parse(text);
-          console.log('log1');
            this.saveToBackend();
        
         } catch(e) {
@@ -215,8 +221,6 @@ export default {
       }
       
     },
-
-    
     selectArchive: function(archiveSelected){
         this.displayArchive = archiveSelected;
     },

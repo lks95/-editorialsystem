@@ -3,8 +3,8 @@
         <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :multiple="true" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 <pre class="language-json"><code v-for="(st, index) in study"  :key="index">{{ st}}<br/></code></pre>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                <pre class="language-json"><code >{{ study }}<br/></code></pre>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
@@ -115,6 +115,38 @@
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
+            <!--<div class="form-group" :class="{'form-group--error': $v.detail_media.$error}">
+                <label for="detail_mediaInput">detail_media:</label>
+                <ul>
+                    <li><label for="detail_img_srcInput">detail_img_src:</label>
+                        <input type="text" class="form-control" id="detail_img_srcInput"  key="detail_img_alt"  v-model.trim="detail_img_src" @input="updateDetailImgSrc($event.target.value)">
+                    </li>
+                    <li><label for="detail_img_altInput">detail_img_alt:</label>
+                        <input type="text" class="form-control" id="detail_img_altInput"  key="detail_img_alt" v-model.trim="detail_img_alt" @input="updateDetailImgalt($event.target.value)">
+                    </li>
+                </ul>
+            </div>-->
+
+            <div class="form-group" >
+            <label for="detail_mediaInput">Weitere Bilder</label>
+                <div class="form-group bm-3 mp-3">
+                    <div v-if="detail_media[0] ==null">
+                        <label>Detail media Src</label>
+                        <input class="form-control" :id="detail_mediaInput" v-model="detail_media.detail_img_src" > 
+                        <label>Detail media Alt</label>
+                        <input class="form-control" :id="detail_mediaInput" v-model="detail_media.detail_img_alt" > 
+                    </div>
+                    <div v-else>
+                        <div v-for=" (media, index) in detail_media" :key="index">
+                            <label>Detail media Src</label>
+                            <input class="form-control" :id="'detail_mediaInput'+Index" v-model="media.detail_img_src" > 
+                            <label>Detail media Alt</label>
+                            <input class="form-control" :id="'detail_mediaInput'+Index" v-model="media.detail_img_alt" > 
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
                 <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
@@ -142,7 +174,7 @@ export default {
         return{
             study: '',
             studyOptions:['','imp','dp','mdm'],
-            category: '',
+            category: [],
             kategoryOptions: ['App','Web','Design', 'CMS', 'Print' , 'Social Media', 'Marketing'],
             intro_title: '',
             intro_text: '',
@@ -153,7 +185,8 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            
+            detail_media:[
+            ],
             date: '',
             contacts: [],
             team: [],
@@ -175,6 +208,8 @@ export default {
         detail_text:{required, minLength: minLength(3)},
         date:{required},
         contacts: {required },
+        //detail_img_src: {required},
+        //detail_img_alt: {required},
     },
     methods: {
         submit: function() {
@@ -196,7 +231,7 @@ export default {
                     detail_text: this.detail_text || this.selectedItem.detail_text,
                     date: this.date || this.selectedItem.date,
                     contacts: this.contacts || this.selectedItem.img,
-
+                    detail_media: this.detail_media,
                     prId: this.selectedIndex
                 };
                 this.$emit("save", formData);
@@ -257,6 +292,14 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
+        updateDetailImgSrc(value){
+            this.detail_img_src = value;
+            this.$v.detail_img_src.$touch();
+        },
+        updateDetailMedia(value){
+            this.detail_media = value;
+            this.$v.detail_media.$touch();
+        },
         resetForm(){
             this.study= this.selectedItem.study;
             this.category= this.selectedItem.category;
@@ -268,8 +311,10 @@ export default {
             this.detail_header_img_src= this.selectedItem.detail_header_img_src;
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
-            this.detail_text= this.selectedItem.detail_text
-            //detail_media: '',
+            this.detail_text= this.selectedItem.detail_text;
+            this.detail_header_img_src= this.selectedItem.detail_img_src;
+            this.detail_header_img_alt= this.selectedItem.detail_img_alt;
+            this.detail_media= this.slectedItem.detail_media;
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
         }
@@ -285,7 +330,8 @@ export default {
             this.detail_header_img_src= this.selectedItem.detail_header_img_src;
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
-            this.detail_text= this.selectedItem.detail_text
+            this.detail_text= this.selectedItem.detail_text;
+            this.detail_media= this.selectedItem.detail_media,
             //detail_media: '',
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
