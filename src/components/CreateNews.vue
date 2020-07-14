@@ -1,37 +1,40 @@
 <template>
     <div>
         <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
-            <div class="form-group">
+
+            <div class="form-group" :class="{'form-group-error': $v.title.$error}">
                 <label for="titleInput">Titel:</label>
                 <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateTitel($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.title.required">Field is required</div>
+            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
+            <div class="error" v-if="!$v.title.maxLength">Title must have at most {{$v.title.$params.maxLength.max}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group-error': $v.link.$error}">
                 <label for="linkInput">Link:</label>
                 <input type="text" class="form-control" id="linkInput" v-model.trim="link" @input="updateLink($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.link.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group-error': $v.linkText.$error}">
                 <label for="descriptionInput">Linktext:</label>
                 <input type="text" class="form-control" id="descriptionInput" v-model.trim="linkText" @input="updateLinktext($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.linkText.required">Field is required</div>
 
-            <label>Bild:</label>
-            <div class="input-group">
-
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                </div>
-                <div class="custom-file">
-                    <input v-on:change="img" @input="updateImg($event.target.value)" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" >
-                    <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                </div>
+            <div class="form-group" :class="{'form-group-error': $v.img.$error}">
+                <label for="picInput">Bild:</label>
+                <input type="text" class="form-control" id="picInput" v-model.trim="img" @input="updateImg($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.img.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group-error': $v.text.$error}">
                 <label for="textInput">Text:</label>
                 <input type="text" class="form-control" id="textInput" v-model.trim="text" @input="updateText($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.text.required">Field is required</div>
+            <div class="error" v-if="!$v.text.maxLength">Text must have at most {{$v.text.$params.maxLength.max}} letters.</div>
+
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
@@ -46,6 +49,8 @@
 
 
 <script>
+import {required, minLength, maxLength} from 'vuelidate/lib/validators'
+
     export default {
         name: "CreateNews",
         data(){
@@ -58,9 +63,19 @@
                 submitStatus: null,
             };
         },
+        validations:{
+            title: {required, minLength: minLength(3), maxLength: maxLength(60)},
+            link: {required},
+            linkText: {required},
+            img: {required},
+            text: {required, maxLength: maxLength(300)}
+        },
         methods: {
             submit: function() {
                 this.$v.$touch()
+                if(this.$v.$invalid || this.$v.minLength ||this.$v.maxLength){
+                    this.submitStatus = 'ERROR'
+                } else {
                     let formData = {
                         title: this.title,
                         link: this.link,
@@ -68,11 +83,13 @@
                         img: this.img,
                         text: this.text,
                     };
+
                     this.$emit("save", formData);
                     this.submitStatus = 'PENDING'
                     setTimeout(() => {
                         this.submitStatus = 'OK'
                     }, 500)
+                }
                 },
 
             updateTitel(value){
