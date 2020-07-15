@@ -32,7 +32,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins</label>
-                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.valueAsDate)">
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins</label>
@@ -40,35 +40,16 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'startdateInput-' + this.selectedIndex">Start des Termins</label>
-                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="startdate" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins</label>
-                <!--<div class="col">
-                    <label for="startdateInput">Start des Termins:</label>
-                    <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
-                </div>
-                <div class="col">
-                    <label for="enddateInput">Ende des Termins:</label>-->
                     <input type="date" class="form-control" :id="'enddateInput-' + this.selectedIndex" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
 
             <div class="form-group">
                 <label :for="'placeInput-' + this.selectedIndex">Ort</label>
-            <!--<div class="form-row">
-                <div class="col">
-                    <label for="starttimeInput">Beginn des Termins:</label>
-                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
-                </div>
-                <div class="col">
-                    <label for="endtimeInput">Ende des Termins:</label>
-                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="placeInput">Ort:</label>-->
                 <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
 
@@ -143,17 +124,39 @@ export default {
             submitStatus: null,
         };
     },
-    validations: {
-        title: {required}
-    },
+
     methods: {
+        submit: function() {
+            this.$v.$touch()
+
+            let formData = {
+                title: this.title || this.selectedItem.title,
+                headline: this.headline || this.selectedItem.headline,
+                description: this.description || this.selectedItem.description,
+                startdate: this.startdate || this.selectedItem.startdate,
+                enddate: this.enddate || this.selectedItem.enddate,
+                startime: this.startime || this.selectedItem.startime,
+                endtime: this.endtime || this.selectedItem.endtime,
+                place: this.place || this.selectedItem.place,
+                contact: this.contact || this.selectedItem.contact,
+                links: this.links  || this.selectedItem.links,
+                nId: this.selectedIndex
+            };
+            this.$emit("save", formData);
+            this.submitStatus = 'PENDING'
+            setTimeout(() => {
+                this.submitStatus = 'OK'
+            }, 500)
+
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+        },
         updateTitleTermin(value){
-            this.title = value;
-            this.$v.title.$touch();
+             this.title = value;
+             this.$v.title.$touch();
         },
         updateHeadline(value){
-            this.headline = value;
-            this.$v.headline.$touch();
+             this.headline = value;
+             this.$v.headline.$touch();
         },
         updateDescription(value){
             this.description = value;
@@ -186,30 +189,6 @@ export default {
         updateLinks(value){
             this.links = value;
             this.$v.links.$touch();
-        },
-        submit: function() {
-            this.$v.$touch()
-
-                let formData = {
-                    title: this.title || this.selectedItem.title,
-                    headline: this.headline || this.selectedItem.headline,
-                    description: this.description || this.selectedItem.description,
-                    startdate: this.startdate || this.selectedItem.startdate,
-                    enddate: this.enddate || this.selectedItem.enddate,
-                    startime: this.startime || this.selectedItem.startime,
-                    endtime: this.endtime || this.selectedItem.endtime,
-                    place: this.place || this.selectedItem.place,
-                    contact: this.contact || this.selectedItem.contact,
-                    links: this.links  || this.selectedItem.links,
-                    nId: this.selectedIndex
-                };
-                this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500)
-
-            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
         },
         resetForm() {
             this.title = this.selectedItem.title;

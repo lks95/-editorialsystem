@@ -3,7 +3,7 @@
         <WingHeader title="Termine" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateTermine v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
         <LoadingSpinner v-if="!dataLoaded" />
-        <draggable v-else-if="!displayArchive" v-model="termine" group="termine" @start="drag=true" @end="drag=false" handle=".handle">
+        <draggable v-else-if="!displayArchive" v-model="termine" group="termine" @start="drag=true" @end="drag=false" handle=".handle" @change="saveToBackend()">
             <div v-for="data in termine" v-bind:key="data.tid" class="list-group-item">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center handle">
                     <div>
@@ -32,6 +32,28 @@
                     <EditTermine :selectedItem="data" :selectedIndex="data.tid"  @save="updateItem" />
                 </b-collapse>
                 </div>
+        </draggable>
+
+        <draggable v-else v-model="archive" group="termine-archive" @start="drag=true" @end="drag=false" @change="saveArchiveToBackend()">
+            <div v-for="data in archive" v-bind:key="data.tid" class="list-group-item d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center drag-drop">
+                <div>
+                    <font-awesome-icon icon="grip-vertical" class="mr-3 text-muted"/>
+                    <b>{{data.headline}}</b>
+                    <p></p>
+                    {{data.date.start}}
+                </div>
+                <div class="d-flex">
+                    <div>
+                        <button class="btn btn-outline-warning mx-1" @click="restoreFromArchive(data)" >
+                            <font-awesome-icon icon="undo" />
+                        </button>
+                        <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
+                            <font-awesome-icon icon="trash" />
+                        </button>
+
+                    </div>
+                </div>
+            </div>
         </draggable>
     </div>
 </template>
@@ -152,6 +174,7 @@ export default {
             this.termine[foundIndex].headline = item.headline;
             this.termine[foundIndex].description = item.description;
             this.termine[foundIndex].date = item.date;
+            this.termine[foundIndex].date.start = item.date.start;
             this.termine[foundIndex].time = item.time;
             this.termine[foundIndex].place = item.place;
             this.termine[foundIndex].links = item.links;

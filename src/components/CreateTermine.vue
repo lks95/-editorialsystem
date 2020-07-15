@@ -1,17 +1,20 @@
 <template>
     <div>
         <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.title.$error}">
                 <label for="titleInput">Titel:</label>
-                <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateHeadline($event.target.value)">
+                <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateTitleTermin($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.title.required">Field is required</div>
+            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.headline.$error}">
                 <label for="headlineInput">Headline:</label>
-                <input type="text" class="form-control" id="headlineInput" v-model.trim="headline" @input="updateTitleTermin($event.target.value)">
+                <input type="text" class="form-control" id="headlineInput" v-model.trim="headline" @input="updateHeadline($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.headline.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.description.$error}">
                 <label for="descriptionInput">Beschreibung:</label>
                 <Editor
                     :init="{
@@ -26,35 +29,44 @@
                     @input="updateDescription($event.target.value)"
                 />
             </div>
+            <div class="error" v-if="!$v.description.required">Field is required</div>
+            <div class="error" v-if="!$v.description.maxLength">Text must have at most {{$v.description.$params.maxLength.max}} letters.</div>
 
-            <div class="form-row">
+            <div class="form-row" :class="{'form-group--error': $v.startdate.$error}">
                 <div class="col">
-                    <label for="startdateInput">Start des Termins:</label>
+                    <label for="startdateInput">Start des Termins: (Datum)</label>
                     <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
                 </div>
-                <div class="col">
-                    <label for="enddateInput">Ende des Termins:</label>
+                <div class="col" :class="{'form-group--error': $v.enddate.$error}">
+                    <label for="enddateInput">Ende des Termins: (Datum)</label>
                     <input type="date" class="form-control" id="enddateInput" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
+            <div class="error" v-if="!$v.startdate.required">Startdate is required</div>
+            <div class="error" v-if="!$v.enddate.required">Enddate is required</div>
+
+
 
             <div class="form-row">
-                <div class="col">
-                    <label for="starttimeInput">Beginn des Termins:</label>
+                <div class="col" :class="{'form-group--error': $v.starttime.$error}">
+                    <label for="starttimeInput">Beginn des Termins: (Uhrzeit)</label>
                     <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
                 </div>
-                <div class="col">
-                    <label for="endtimeInput">Ende des Termins:</label>
+                <div class="col" :class="{'form-group--error': $v.endtime.$error}">
+                    <label for="endtimeInput">Ende des Termins: (Uhrzeit)</label>
                     <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
+            <div class="error" v-if="!$v.starttime.required">Field is required</div>
+            <div class="error" v-if="!$v.endtime.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.place.$error}">
                 <label for="placeInput">Ort:</label>
                 <input type="text" class="form-control" id="placeInput" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.place.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
                 <label for="contactInput">Kontakt:</label>
                 <multiselect 
                     v-model="contact" 
@@ -70,33 +82,8 @@
                 >
                 </multiselect>
             </div>
+            <div class="error" v-if="!$v.contact.required">Field is required</div>
         <div>
-    <table class="table">
-        <thead>
-            <tr>
-                    <div class="form-group">
-                        <label for="linkInput">Links:</label>
-                        <div class="d-flex">
-                            <input class="form-control mr-1" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">
-                            <button class="btn btn-secondary" onclick="addLink()">+</button>
-                        </div>
-                    </div>
-            </tr>
-        </thead>
-        <tbody>
-
-        <tr v-for="(row, index) in linkrows" :key="index.id">
-                    <td>
-                        <input type="text" v-model="row.links">
-                    </td>
-                    <td>
-                        <a v-on:click="removeLink(index)" style="cursor: pointer">-</a>
-                    </td>
-        </tr>
-
-
-        </tbody>
-    </table>
 </div>
 
 
@@ -115,6 +102,7 @@
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
+import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "CreateTermine",
@@ -139,12 +127,25 @@ import axios from "axios"
                 linkrows: []
             };
         },
-        validations: {},
+        validations: {
+            title: {required, minLength: minLength(3)},
+            headline: {required, minLength: minLength(3)},
+            description: {required, maxLength: maxLength(300)},
+            date: {required},
+            time: {required},
+            startdate: {required},
+            enddate: {required},
+            starttime: {required},
+            endtime: {required},
+            place: {required},
+            contact: {required},
+            links: {required}
+        },
         methods: {
             submit: function () {
                 this.$v.$touch()
-                if(this.$v.$invalid()){
-                    this.submitStatus = 'ERROR at submitting'
+                if(this.$v.$invalid || this.$v.minLength || this.$v.maxLength){
+                    this.submitStatus = 'ERROR'
                 } else {
                     let formData = {
                         title: this.title,
@@ -155,7 +156,7 @@ import axios from "axios"
                         startime: this.starttime,
                         endtime: this.endtime,
                         place: this.place,
-                        contact: this.contact,
+                        contacts: this.contacts,
                         links: this.links
                     };
                     this.$emit("save", formData);
@@ -198,29 +199,16 @@ import axios from "axios"
                 this.place = value;
                 this.$v.place.$touch();
             },
-            updateContact(value){
-                this.contact = value;
-                this.$v.contact.$touch();
+            updateContacts(value){
+                this.contacts = value;
+                this.$v.contacts.$touch();
             },
-            updateLinks(value){
-                this.links = value;
-                this.$v.links.$touch();
-            },
-            addLink: function(){
-                // eslint-disable-next-line no-unused-vars
-                let elem = document.createElement('div');
-                this.linkrows.push({
-                    link: ""
-                });
-            },
-            removeLink: function(index){
-                this.linkrows.splice(index, 1);
-            },
+
         },
         mounted(){
             axios.get("http://localhost:5000/api/team").then(
             response =>{ 
-                this.team = response.data.team.map(t => t.id);
+                    this.team = response.data.team.map(t => t.id);
             });
         }
     }
