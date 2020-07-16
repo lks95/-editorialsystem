@@ -96,7 +96,6 @@
 </template>
 
 <script>
-import {required} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
@@ -135,7 +134,7 @@ export default {
                 description: this.description || this.selectedItem.description,
                 startdate: this.startdate || this.selectedItem.startdate,
                 enddate: this.enddate || this.selectedItem.enddate,
-                startime: this.startime || this.selectedItem.startime,
+                starttime: this.starttime || this.selectedItem.starttime,
                 endtime: this.endtime || this.selectedItem.endtime,
                 place: this.place || this.selectedItem.place,
                 contact: this.contact || this.selectedItem.contact,
@@ -196,7 +195,7 @@ export default {
             this.description = this.selectedItem.description;
             this.startdate = this.selectedItem.startdate;
             this.enddate = this.selectedItem.enddate;
-            this.startime = this.selectedItem.startime;
+            this.starttime = this.selectedItem.starttime;
             this.endtime = this.selectedItem.endtime;
             this.place = this.selectedItem.place;
             this.contact = this.selectedItem.contact;
@@ -207,10 +206,11 @@ export default {
         this.title = this.selectedItem.title;
         this.headline = this.selectedItem.headline;
         this.description = this.selectedItem.description;
-        this.startdate = this.selectedItem.startdate;
-        this.enddate = this.selectedItem.enddate;
-        this.startime = this.selectedItem.startime;
-        this.endtime = this.selectedItem.endtime;
+        this.startdate = this.selectedItem.date.start;
+        this.enddate = this.selectedItem.date.end;
+        this.starttime = this.selectedItem.time.start;
+        this.endtime = this.selectedItem.time.end;
+        console.log(this.selectedItem.time.start)
         this.place = this.selectedItem.place;
         this.contact = this.selectedItem.contact;
         this.links = this.selectedItem.links
