@@ -1,5 +1,21 @@
 <template>
     <div>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mr-3 border-bottom">
+            <h2>Upload a File</h2>
+            <div class="d-flex">
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <div id="app"  v-cloak>
+                            <input type="file"  class="btn btn-outline-primary mx-2" ref="myFile" @change="selectedFile">
+                            <input type="submit" class="btn btn-primary" value="Upload File" />
+                        </div>  
+                        <b-button class="btn btn-outline-danger mx-1" @click="confirmDownload()" title="Load file">
+                        <b-icon icon="download" aria-hidden="true"></b-icon>
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <WingHeader title="Termine" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateTermine v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
         <LoadingSpinner v-if="!dataLoaded" />
@@ -97,6 +113,44 @@ export default {
       }
     },
     methods: {
+        confirmDownload: function(){
+        const data = JSON.stringify(this.Praxissemester)
+        const blob = new Blob([data], {type: 'text/plain'})
+        const e = document.createEvent('MouseEvents'),
+          a = document.createElement('a');
+          a.download = "Praxissemester.json";
+          a.href = window.URL.createObjectURL(blob);
+          a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+          e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+          a.dispatchEvent(e);
+    },
+    selectedFile() {
+      console.log('selected a file');
+      console.log(this.$refs.myFile.files[0]);
+      
+      let file = this.$refs.myFile.files[0];
+      if(!file || file.type !== 'application/json') return;
+      
+     
+      let reader = new FileReader();
+      reader.readAsText(file, "UTF-8");
+      
+      reader.onload =  evt => {
+        let text = evt.target.result;
+        try {
+          this.Praxissemester = JSON.parse(text);
+           this.saveToBackend();
+       
+        } catch(e) {
+          alert("Sorry, your file doesn't appear to be valid JSON data.");
+        }
+      }
+      
+      reader.onerror = evt => {
+        console.error(evt);
+      }
+      
+    },
       addItem: function(){
           this.showForm = true;
       },

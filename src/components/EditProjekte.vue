@@ -3,16 +3,13 @@
         <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :multiple="true" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 <pre class="language-json"><code v-for="(st, index) in study"  :key="index">{{ st}}<br/></code></pre>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
                 <multiselect id="categoryInput" v-model="category" :multiple="true" :options="kategoryOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                 <pre class="language-json"><code v-for="(cat, index) in category" :key="index">{{ cat}}<br/></code></pre>
-            
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
            
@@ -115,6 +112,22 @@
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
+            <div class="form-group" >
+            <label for="detail_mediaInput">Weitere Bilder</label>
+                <div class="form-group bm-3 mp-3">
+                    
+                    <div >
+                        <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
+                        <label>Detail media Src</label>
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <label>Detail media Alt</label>
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
+                    </div>
+                    <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
+                    </div>
+                </div>
+            </div>
+
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
                 <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
@@ -130,6 +143,8 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
+//import DetailMedia from './DetailMedia'
+import LoadMedia from './LoadMedia'
 
 export default {
     name: 'EditProjekte',
@@ -137,12 +152,14 @@ export default {
     components: {
         Editor,
         Multiselect,
+        //DetailMedia,
+        LoadMedia,
     },
     data() {
         return{
             study: '',
             studyOptions:['','imp','dp','mdm'],
-            category: '',
+            category: [],
             kategoryOptions: ['App','Web','Design', 'CMS', 'Print' , 'Social Media', 'Marketing'],
             intro_title: '',
             intro_text: '',
@@ -153,12 +170,15 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            
+            detail_media:[
+            ],
             date: '',
             contacts: [],
             team: [],
             tIndex: 0,
             submitStatus: null,
+            showFormImg: false,
+            imgIndex: 0,
         };
     },
     validations:{
@@ -175,6 +195,8 @@ export default {
         detail_text:{required, minLength: minLength(3)},
         date:{required},
         contacts: {required },
+        //detail_img_src: {required},
+        //detail_img_alt: {required},
     },
     methods: {
         submit: function() {
@@ -196,7 +218,7 @@ export default {
                     detail_text: this.detail_text || this.selectedItem.detail_text,
                     date: this.date || this.selectedItem.date,
                     contacts: this.contacts || this.selectedItem.img,
-
+                    detail_media: this.detail_media,
                     prId: this.selectedIndex
                 };
                 this.$emit("save", formData);
@@ -257,6 +279,20 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
+        updateDetailImgSrcI(value, index){
+            this.detail_media.detail_img_src[index] = value;
+            this.$v.detail_media.detail_img_src[index].$touch();
+        },
+        updateDetailImgAltI(value,index){
+            this.detail_media.detail_img_alt[index] = value;
+            this.$v.detail_media.detail_img_alt[index].$touch();
+        },
+        addItemImg: function(){
+            this.detail_media.push({detail_img_src: '', detail_img_alt:'',})
+        },
+        popItemImg: function(){
+            this.detail_media.pop()
+        },
         resetForm(){
             this.study= this.selectedItem.study;
             this.category= this.selectedItem.category;
@@ -268,8 +304,8 @@ export default {
             this.detail_header_img_src= this.selectedItem.detail_header_img_src;
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
-            this.detail_text= this.selectedItem.detail_text
-            //detail_media: '',
+            this.detail_text= this.selectedItem.detail_text;
+            this.detail_media= this.selectedItem.detail_media;
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
         }
@@ -285,8 +321,12 @@ export default {
             this.detail_header_img_src= this.selectedItem.detail_header_img_src;
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
-            this.detail_text= this.selectedItem.detail_text
-            //detail_media: '',
+            this.detail_text= this.selectedItem.detail_text;
+            
+            this.detail_media= this.selectedItem.detail_media;
+            if(this.detail_media[0] ==null){
+                this.detail_media.push({detail_img_src: '', detail_img_alt:''});
+            }
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
             axios.get("http://localhost:5000/api/team").then(
