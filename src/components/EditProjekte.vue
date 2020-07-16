@@ -305,8 +305,6 @@ export default {
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
             this.detail_text= this.selectedItem.detail_text;
-            this.detail_header_img_src= this.selectedItem.detail_img_src;
-            this.detail_header_img_alt= this.selectedItem.detail_img_alt;
             this.detail_media= this.selectedItem.detail_media;
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
