@@ -112,18 +112,6 @@
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
 
-            <!--<div class="form-group" :class="{'form-group--error': $v.detail_media.$error}">
-                <label for="detail_mediaInput">detail_media:</label>
-                <ul>
-                    <li><label for="detail_img_srcInput">detail_img_src:</label>
-                        <input type="text" class="form-control" id="detail_img_srcInput"  key="detail_img_alt"  v-model.trim="detail_img_src" @input="updateDetailImgSrc($event.target.value)">
-                    </li>
-                    <li><label for="detail_img_altInput">detail_img_alt:</label>
-                        <input type="text" class="form-control" id="detail_img_altInput"  key="detail_img_alt" v-model.trim="detail_img_alt" @input="updateDetailImgalt($event.target.value)">
-                    </li>
-                </ul>
-            </div>-->
-
             <div class="form-group" >
             <label for="detail_mediaInput">Weitere Bilder</label>
                 <div class="form-group bm-3 mp-3">
@@ -133,10 +121,9 @@
                         <label>Detail media Src</label>
                         <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value)"> 
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
-                        <!--<DetailMedia v-if="showFormImg"  />-->
                     </div>
                 </div>
             </div>
@@ -292,15 +279,6 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
-        updateDetailImgSrc(value){
-            this.detail_media[this.imgIndex] = value;
-            this.$v.detail_media[this.imgIndex].$touch();
-        },
-        updateDetailImgAlt(value){
-            this.detail_media[this.imgIndex] = value;
-            this.$v.detail_media[this.imgIndex].$touch();
-        },
-        
         updateDetailImgSrcI(value, index){
             this.detail_media.detail_img_src[index] = value;
             this.$v.detail_media.detail_img_src[index].$touch();
@@ -309,11 +287,6 @@ export default {
             this.detail_media.detail_img_alt[index] = value;
             this.$v.detail_media.detail_img_alt[index].$touch();
         },
-        updateDetailMedia(value){
-            this.detail_media = value;
-            this.$v.detail_media.$touch();
-        },
-        
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',})
         },

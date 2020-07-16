@@ -113,10 +113,6 @@
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
-            
-            <!--<LoadingSpinner v-if="!dataLoaded" />-->
-            
-
              <div class="form-group" >
                 <label for="detail_mediaInput">Weitere Bilder</label>
                 <div>
@@ -127,7 +123,6 @@
                         <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
-                    
                 </div>
             </div>
 
@@ -175,10 +170,7 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            detail_media: [{
-                //detail_img_src: '',
-                //detail_img_alt:'',
-            }],
+            detail_media: [],
             date: '',
             contacts: [],
             team: [],
@@ -234,11 +226,6 @@ export default {
                 }, 500)
             } 
         },
-        /*updateItem: function(item){
-             let foundIndex = this.projekte.findIndex(x => x.prId === item.prId);
-             this.projekte[foundIndex].detail_img_src = item.detail_img_src;
-             this.projekte[foundIndex].detail_img_alt = item.detail_img_alt;
-        },*/
         updateCategeory(value){
             this.category = value;
             this.$v.category.$touch();
@@ -288,14 +275,6 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
-        updateDetailMedia(value){
-            this.detail_media = value;
-            this.$v.detail_media.$touch();
-        },
-        updateDetailImgAlt(value){
-            this.detail_img_alt = value;
-            this.$v.detail_img_alt.$touch();
-        },
          updateDetailImgSrcI(value, index){
             this.detail_media.detail_img_src[index] = value;
             this.$v.detail_media.detail_img_src[index].$touch();
@@ -304,17 +283,12 @@ export default {
             this.detail_media.detail_img_alt[index] = value;
             this.$v.detail_media.detail_img_alt[index].$touch();
         },
-        updateDetailImgSrc(value){
-            this.detail_img_src = value;
-            this.$v.detail_img_src.$touch();
-        },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
         },
         popItemImg: function(){
             this.detail_media.pop();
-        },
-        
+        }, 
     },
     mounted(){
         axios.get("http://localhost:5000/api/team").then(
