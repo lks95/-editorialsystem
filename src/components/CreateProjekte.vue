@@ -4,14 +4,14 @@
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
                 <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 <pre class="language-json"><code >{{ study }}<br/></code></pre>
+                 
             </div>
              <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
                 <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                <pre class="language-json"><code v-for="(cat, index) in category" :key="index">{{ cat}}<br/></code></pre>
+                 
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
            
@@ -26,8 +26,14 @@
                 <label for="intro_img_srcInput">Bildname:</label>
                 <input type="text" class="form-control" id="intro_img_srcInput" v-model.trim="intro_img_src" @input="updateImgSrc($event.target.value)">
             </div>
+
             <div class="error" v-if="!$v.intro_img_src.required">Field is required</div>
-            
+            <div class="form-group" :class="{'form-group--error': $v.intro_img_alt.$error}">
+                <label for="intro_img_altInput">Bild Alternativtext:</label>
+                <input type="text" class="form-control" id="intro_img_altInput" v-model.trim="intro_img_alt" @input="updateImgAlt($event.target.value)">
+            </div>
+            <div class="error" v-if="!$v.intro_img_alt.required">Field is required</div>
+
             <div class="form-group" :class="{'form-group--error': $v.intro_text.$error}">
                 <label for="intro_textInput">Bericht:</label>
                 <textarea class="form-control" id="intro_textInput" rows="3" v-model.trim="intro_text" @input="updateText($event.target.value)"></textarea>
@@ -35,12 +41,6 @@
             <div class="error" v-if="!$v.intro_text.required">Field is required</div>
             <div class="error" v-if="!$v.intro_text.minLength">Text must have at least {{$v.intro_text.$params.minLength.min}} letters.</div>
             <div class="error" v-if="!$v.intro_text.maxLength">Text must have at most {{$v.intro_text.$params.maxLength.max}} letters.</div>
-            
-             <div class="form-group" :class="{'form-group--error': $v.intro_img_alt.$error}">
-                <label for="intro_img_altInput">Bild Alternativtext:</label>
-                <input type="text" class="form-control" id="intro_img_altInput" v-model.trim="intro_img_alt" @input="updateImgAlt($event.target.value)">
-            </div>
-            <div class="error" v-if="!$v.intro_img_alt.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.detail_headline.$error}">
                 <label for="detail_headlineInput">Detail Headline:</label>
@@ -113,27 +113,21 @@
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
-            <LoadJSON title="Load" @addNewImg="addItemImg" />
-            <LoadingSpinner v-if="!dataLoadedImg" />
+            
+            <!--<LoadingSpinner v-if="!dataLoaded" />-->
             
 
              <div class="form-group" >
                 <label for="detail_mediaInput">Weitere Bilder</label>
-                
                 <div>
-                    <div class="form-group my-3 py-3">
+                    <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
                         <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="detail_media.detail_img_src"> 
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="detail_media.detail_img_alt"> 
-                        <div class="d-flex">
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <div class="btn-group mr-2">
-                                    <button class="btn btn-outline-secondary" @click="$emit('addNewImg')"><font-awesome-icon icon="plus"/></button>
-                                </div>
-                            </div>
-                        </div>
+                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
+                    <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
+                    
                 </div>
             </div>
 
@@ -152,9 +146,9 @@ import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import axios from "axios"
-import LoadJSON from './LoadJSON'
+import LoadMedia from './LoadMedia'
 //import DetailMedia from './DetailMedia'
-import LoadingSpinner from '../components/LoadingSpinner'
+//import LoadingSpinner from '../components/LoadingSpinner'
 
 
 export default {
@@ -162,9 +156,9 @@ export default {
     components: {
         Editor,
         Multiselect,
-        LoadJSON,
+        LoadMedia,
         //DetailMedia,
-        LoadingSpinner,
+        //LoadingSpinner,
     },
     data() {
         return{
@@ -181,13 +175,15 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            detail_media: [],
+            detail_media: [{
+                //detail_img_src: '',
+                //detail_img_alt:'',
+            }],
             date: '',
             contacts: [],
             team: [],
             tIndex: 0,
             submitStatus: null,
-            dataLoaded: false,
             showForm: false,
             showFormImg: false,
             dataLoadedImg: false
@@ -300,21 +296,36 @@ export default {
             this.detail_img_alt = value;
             this.$v.detail_img_alt.$touch();
         },
+         updateDetailImgSrcI(value, index){
+            this.detail_media.detail_img_src[index] = value;
+            this.$v.detail_media.detail_img_src[index].$touch();
+        },
+        updateDetailImgAltI(value,index){
+            this.detail_media.detail_img_alt[index] = value;
+            this.$v.detail_media.detail_img_alt[index].$touch();
+        },
         updateDetailImgSrc(value){
             this.detail_img_src = value;
             this.$v.detail_img_src.$touch();
         },
         addItemImg: function(){
-        this.showFormIg = true;
-    },
+            this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
+        },
+        popItemImg: function(){
+            this.detail_media.pop();
+        },
         
     },
     mounted(){
         axios.get("http://localhost:5000/api/team").then(
         response =>{ 
             this.team = response.data.team.map(t => t.id);
+            this.dataLoadedImg = true
         });
         
+        if(this.detail_media[0] ==null || this.detail_media[0] ==undefined){
+                this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
+            }
     }
     
 }
