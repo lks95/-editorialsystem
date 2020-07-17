@@ -23,7 +23,7 @@
             <div class="error" v-if="!$v.bericht_text.maxLength">Text must have at most {{$v.bericht_text.$params.maxLength.max}} letters.</div>
             
             <div class="form-group" :class="{'form-group--error': $v.bericht_author.$error}">
-                <label :for="'bericht_authorInput-' + this.selectedIndex">Author:</label>
+                <label :for="'bericht_authorInput-' + this.selectedIndex">Autor:</label>
                 <input type="text" class="form-control"  :id="'bericht_authorInput-' + this.selectedIndex" v-model.trim="bericht_author"  @input="updateAuthor($event.target.value)">
             </div>
             <div class="error" v-if="!$v.bericht_author.required">Field is required</div>
@@ -32,7 +32,7 @@
             
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
-                <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
+                <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
             </div>
@@ -79,8 +79,8 @@ export default {
                 this.submitStatus = 'PENDING'
                 setTimeout(() => {
                     this.submitStatus = 'OK'
-                }, 500)
-                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+                }, 500);
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             } 
             
         },
@@ -107,6 +107,7 @@ export default {
             this.bericht_img= this.selectedItem.bericht_img;
             this.bericht_text= this.selectedItem.bericht_text;
             this.bericht_author= this.selectedItem.bericht_author;
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         }
     },
     mounted(){

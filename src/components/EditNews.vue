@@ -27,7 +27,7 @@
             </div>
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
-                <button class="btn btn-outline-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
             </div>
@@ -64,8 +64,8 @@
                     this.submitStatus = 'PENDING'
                     setTimeout(() => {
                         this.submitStatus = 'OK'
-                    }, 500)
-                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+                    }, 500);
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             },
 
             updateTitel(value){
@@ -95,6 +95,7 @@
                 this.linkText = this.selectedItem.linkText;
                 this.img = this.selectedItem.img;
                 this.text = this.selectedItem.text;
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             }
         },
         mounted() {

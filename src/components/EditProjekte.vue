@@ -78,7 +78,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="detail_text"
-                    @input="updateDetailText($event.target.value)"
                     :id="'detail_textInput-' + this.selectedIndex"
                     />
             </div>
@@ -119,9 +118,9 @@
                     <div >
                         <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
                         <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <input class="form-control" :id="`detail_mediaSrcInput-${selectedIndex}-${index}`"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
+                        <input class="form-control" :id="`detail_mediaAltInput-${selectedIndex}-${index}`"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
                     </div>
@@ -130,7 +129,7 @@
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
-                <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
+                <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
             </div>
@@ -142,13 +141,12 @@
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 //import DetailMedia from './DetailMedia'
 import LoadMedia from './LoadMedia'
 
 export default {
     name: 'EditProjekte',
-    props: ["selectedItem", "selectedIndex"],
+    props: ["selectedItem", "selectedIndex", "team"],
     components: {
         Editor,
         Multiselect,
@@ -174,7 +172,6 @@ export default {
             ],
             date: '',
             contacts: [],
-            team: [],
             tIndex: 0,
             submitStatus: null,
             showFormImg: false,
@@ -267,10 +264,6 @@ export default {
             this.detail_header_intro = value;
             this.$v.detail_header_intro.$touch();
         },
-        updateDetailText(value){
-            this.detail_text = value;
-            this.$v.detail_text.$touch();
-        },
         updateDate(value){
             this.date = value;
             this.$v.date.$touch();
@@ -308,6 +301,7 @@ export default {
             this.detail_media= this.selectedItem.detail_media;
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         }
     },
     mounted(){
@@ -322,17 +316,12 @@ export default {
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
             this.detail_text= this.selectedItem.detail_text;
-            
             this.detail_media= this.selectedItem.detail_media;
             if(this.detail_media[0] ==null){
                 this.detail_media.push({detail_img_src: '', detail_img_alt:''});
             }
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                this.team = response.data.team.map(t => t.id);
-            });
     }
 }
 </script>

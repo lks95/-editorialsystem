@@ -39,7 +39,7 @@
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
-                <b-button class="mx-2" v-b-toggle="'collapse-' + selectedIndex" @click="resetForm">Abbrechen</b-button>
+                <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
             </div>
@@ -81,11 +81,9 @@
                     this.submitStatus = 'PENDING'
                     setTimeout(() => {
                         this.submitStatus = 'OK'
-                    }, 500)
-
-                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+                    }, 500);
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             },
-
             updateTitle(value){
                 this.publikation_title = value;
                 this.$v.publikation_title.$touch();
@@ -123,6 +121,7 @@
                 this.publikation_betreuer= this.selectedItem.publikation_betreuer;
                 this.img= this.selectedItem.img;
                 this.pdf= this.selectedItem.pdf;
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             }
         },
         mounted(){

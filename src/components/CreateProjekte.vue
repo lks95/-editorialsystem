@@ -80,7 +80,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="detail_text"
-                    @input="updateDetailText($event.target.value)"
                     />
             </div>
             <div class="error" v-if="!$v.detail_text.required">Field is required</div>
@@ -140,7 +139,6 @@
 import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 import LoadMedia from './LoadMedia'
 //import DetailMedia from './DetailMedia'
 //import LoadingSpinner from '../components/LoadingSpinner'
@@ -148,6 +146,7 @@ import LoadMedia from './LoadMedia'
 
 export default {
     name: 'CreateProjekte',
+    props: ["team"],
     components: {
         Editor,
         Multiselect,
@@ -173,12 +172,10 @@ export default {
             detail_media: [],
             date: '',
             contacts: [],
-            team: [],
             tIndex: 0,
             submitStatus: null,
             showForm: false,
-            showFormImg: false,
-            dataLoadedImg: false
+            showFormImg: false
         };
     },
     validations:{
@@ -263,10 +260,6 @@ export default {
             this.detail_header_intro = value;
             this.$v.detail_header_intro.$touch();
         },
-        updateDetailText(value){
-            this.detail_text = value;
-            this.$v.detail_text.$touch();
-        },
         updateDate(value){
             this.date = value;
             this.$v.date.$touch();
@@ -291,12 +284,6 @@ export default {
         }, 
     },
     mounted(){
-        axios.get("http://localhost:5000/api/team").then(
-        response =>{ 
-            this.team = response.data.team.map(t => t.id);
-            this.dataLoadedImg = true
-        });
-        
         if(this.detail_media[0] ==null || this.detail_media[0] ==undefined){
                 this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
             }

@@ -24,7 +24,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="description"
-                    @input="updateDescription($event.target.value)"
                     :id="'descriptionInput-' + this.selectedIndex"
                 />
             </div>
@@ -86,7 +85,7 @@
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
-                <button class="btn btn-outline-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
                 <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
                 <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
             </div>
@@ -98,11 +97,10 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 
 export default {
     name: 'EditTermine',
-    props: ["selectedItem", "selectedIndex"],
+    props: ["selectedItem", "selectedIndex", "team"],
     components: {
         Editor,
         Multiselect
@@ -119,7 +117,6 @@ export default {
             place: '',
             contact: [],
             links: '',
-            team: [],
             submitStatus: null,
         };
     },
@@ -145,9 +142,8 @@ export default {
             this.submitStatus = 'PENDING'
             setTimeout(() => {
                 this.submitStatus = 'OK'
-            }, 500)
-
-            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex)
+            }, 500);
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         },
         updateTitleTermin(value){
              this.title = value;
@@ -156,10 +152,6 @@ export default {
         updateHeadline(value){
              this.headline = value;
              this.$v.headline.$touch();
-        },
-        updateDescription(value){
-            this.description = value;
-            this.$v.description.$touch();
         },
         updateStartdate(value){
             this.startdate = value;
@@ -199,7 +191,8 @@ export default {
             this.endtime = this.selectedItem.endtime;
             this.place = this.selectedItem.place;
             this.contact = this.selectedItem.contact;
-            this.links = this.selectedItem.links
+            this.links = this.selectedItem.links;
+            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         }
     },
     mounted() {
@@ -210,15 +203,10 @@ export default {
         this.enddate = this.selectedItem.date.end;
         this.starttime = this.selectedItem.time.start;
         this.endtime = this.selectedItem.time.end;
-        console.log(this.selectedItem.time.start)
         this.place = this.selectedItem.place;
         this.contact = this.selectedItem.contact;
-        this.links = this.selectedItem.links
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                this.team = response.data.team.map(t => t.id);
-            });
-        }
+        this.links = this.selectedItem.links;
+    }
 }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

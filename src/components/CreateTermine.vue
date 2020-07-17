@@ -26,7 +26,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="description"
-                    @input="updateDescription($event.target.value)"
                 />
             </div>
             <div class="error" v-if="!$v.description.required">Field is required</div>
@@ -101,11 +100,11 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "CreateTermine",
+        props: ["team"],
         components: {
             Editor,
             Multiselect
@@ -121,7 +120,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 endtime: '',
                 place: '',
                 contact: [],
-                team: [],
                 links: '',
                 submitStatus: null,
                 linkrows: []
@@ -175,10 +173,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 this.headline = value;
                 this.$v.headline.$touch();
             },
-            updateDescription(value){
-                this.description = value;
-                this.$v.description.$touch();
-            },
             updateStartdate(value){
                 this.startdate = value;
                 this.$v.startdate.$touch();
@@ -204,12 +198,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 this.$v.contacts.$touch();
             },
 
-        },
-        mounted(){
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                    this.team = response.data.team.map(t => t.id);
-            });
         }
     }
 </script>
