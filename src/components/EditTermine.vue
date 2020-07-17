@@ -98,11 +98,10 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 
 export default {
     name: 'EditTermine',
-    props: ["selectedItem", "selectedIndex"],
+    props: ["selectedItem", "selectedIndex", "team"],
     components: {
         Editor,
         Multiselect
@@ -119,7 +118,6 @@ export default {
             place: '',
             contact: [],
             links: '',
-            team: [],
             submitStatus: null,
         };
     },
@@ -210,15 +208,10 @@ export default {
         this.enddate = this.selectedItem.date.end;
         this.starttime = this.selectedItem.time.start;
         this.endtime = this.selectedItem.time.end;
-        console.log(this.selectedItem.time.start)
         this.place = this.selectedItem.place;
         this.contact = this.selectedItem.contact;
-        this.links = this.selectedItem.links
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                this.team = response.data.team.map(t => t.id);
-            });
-        }
+        this.links = this.selectedItem.links;
+    }
 }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

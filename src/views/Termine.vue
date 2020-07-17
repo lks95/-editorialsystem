@@ -17,7 +17,7 @@
             </div>
         </div>
         <WingHeader title="Termine" @selectArchive="selectArchive" @addNew="addItem" />
-        <CreateTermine v-if="showForm" @save="saveNew" @cancel="cancelNew"/>
+        <CreateTermine v-if="showForm" @save="saveNew" @cancel="cancelNew" :team="team"/>
         <LoadingSpinner v-if="!dataLoaded" />
         <draggable v-else-if="!displayArchive" v-model="termine" group="termine" @start="drag=true" @end="drag=false" handle=".handle" @change="saveToBackend()">
             <div v-for="data in termine" v-bind:key="data.tid" class="list-group-item">
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <b-collapse :id="'collapse-' + data.tid" class="border-top mt-3">
-                    <EditTermine :selectedItem="data" :selectedIndex="data.tid"  @save="updateItem" />
+                    <EditTermine :selectedItem="data" :selectedIndex="data.tid" :team="team"  @save="updateItem" />
                 </b-collapse>
                 </div>
         </draggable>
@@ -97,6 +97,7 @@ export default {
       return{
          termine: [],
          archive: [],
+         team: [],
          displayArchive: false,
          showForm: false,
          selectedItem: {},
@@ -273,6 +274,11 @@ export default {
                     this.tIndex++;
                     return item;
                 }))
+        );
+        axios.get("http://localhost:5000/api/team").then(
+            response =>{ 
+                    this.team = response.data.team.map(t => t.id);
+            }
         );
     }
 }

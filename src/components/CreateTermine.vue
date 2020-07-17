@@ -101,11 +101,11 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 
     export default {
         name: "CreateTermine",
+        props: ["team"],
         components: {
             Editor,
             Multiselect
@@ -121,7 +121,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 endtime: '',
                 place: '',
                 contact: [],
-                team: [],
                 links: '',
                 submitStatus: null,
                 linkrows: []
@@ -204,12 +203,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 this.$v.contacts.$touch();
             },
 
-        },
-        mounted(){
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                    this.team = response.data.team.map(t => t.id);
-            });
         }
     }
 </script>
