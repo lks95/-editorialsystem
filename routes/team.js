@@ -4,7 +4,6 @@ const fs = require('fs');
 
 router.post('/', (req, res)=>{
     let data = JSON.stringify(req.body);
-    console.log(data);
     fs.writeFile('./data/team.json', data, (err)=>{
         if(err){
             return res.status(500).send(err);
