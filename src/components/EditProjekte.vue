@@ -118,9 +118,9 @@
                     <div >
                         <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
                         <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <input class="form-control" :id="`detail_mediaSrcInput-${selectedIndex}-${index}`"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
+                        <input class="form-control" :id="`detail_mediaAltInput-${selectedIndex}-${index}`"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
                     </div>
