@@ -23,7 +23,7 @@
             <div class="error" v-if="!$v.bericht_text.maxLength">Text must have at most {{$v.bericht_text.$params.maxLength.max}} letters.</div>
             
             <div class="form-group" :class="{'form-group--error': $v.bericht_author.$error}">
-                <label :for="'bericht_authorInput-' + this.selectedIndex">Author:</label>
+                <label :for="'bericht_authorInput-' + this.selectedIndex">Autor:</label>
                 <input type="text" class="form-control"  :id="'bericht_authorInput-' + this.selectedIndex" v-model.trim="bericht_author"  @input="updateAuthor($event.target.value)">
             </div>
             <div class="error" v-if="!$v.bericht_author.required">Field is required</div>
