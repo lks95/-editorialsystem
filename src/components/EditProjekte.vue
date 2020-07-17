@@ -78,7 +78,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="detail_text"
-                    @input="updateDetailText($event.target.value)"
                     :id="'detail_textInput-' + this.selectedIndex"
                     />
             </div>
@@ -264,10 +263,6 @@ export default {
         updateDetailHeaderIntro(value){
             this.detail_header_intro = value;
             this.$v.detail_header_intro.$touch();
-        },
-        updateDetailText(value){
-            this.detail_text = value;
-            this.$v.detail_text.$touch();
         },
         updateDate(value){
             this.date = value;

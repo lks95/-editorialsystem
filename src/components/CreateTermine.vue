@@ -26,7 +26,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="description"
-                    @input="updateDescription($event.target.value)"
                 />
             </div>
             <div class="error" v-if="!$v.description.required">Field is required</div>
@@ -173,10 +172,6 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
             updateHeadline(value){
                 this.headline = value;
                 this.$v.headline.$touch();
-            },
-            updateDescription(value){
-                this.description = value;
-                this.$v.description.$touch();
             },
             updateStartdate(value){
                 this.startdate = value;

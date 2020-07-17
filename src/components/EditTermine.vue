@@ -24,7 +24,6 @@
                         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
                     }"
                     v-model.trim="description"
-                    @input="updateDescription($event.target.value)"
                     :id="'descriptionInput-' + this.selectedIndex"
                 />
             </div>
@@ -154,10 +153,6 @@ export default {
         updateHeadline(value){
              this.headline = value;
              this.$v.headline.$touch();
-        },
-        updateDescription(value){
-            this.description = value;
-            this.$v.description.$touch();
         },
         updateStartdate(value){
             this.startdate = value;
