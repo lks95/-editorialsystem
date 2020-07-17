@@ -142,13 +142,12 @@
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-import axios from "axios"
 //import DetailMedia from './DetailMedia'
 import LoadMedia from './LoadMedia'
 
 export default {
     name: 'EditProjekte',
-    props: ["selectedItem", "selectedIndex"],
+    props: ["selectedItem", "selectedIndex", "team"],
     components: {
         Editor,
         Multiselect,
@@ -174,7 +173,6 @@ export default {
             ],
             date: '',
             contacts: [],
-            team: [],
             tIndex: 0,
             submitStatus: null,
             showFormImg: false,
@@ -322,17 +320,12 @@ export default {
             this.detail_header_img_alt= this.selectedItem.detail_header_img_alt;
             this.detail_header_intro = this.selectedItem.detail_header_intro;
             this.detail_text= this.selectedItem.detail_text;
-            
             this.detail_media= this.selectedItem.detail_media;
             if(this.detail_media[0] ==null){
                 this.detail_media.push({detail_img_src: '', detail_img_alt:''});
             }
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
-            axios.get("http://localhost:5000/api/team").then(
-            response =>{ 
-                this.team = response.data.team.map(t => t.id);
-            });
     }
 }
 </script>
