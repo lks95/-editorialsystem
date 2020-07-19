@@ -206,6 +206,7 @@ export default {
         try {
           this.Praxissemester = JSON.parse(text);
            this.saveToBackend();
+           this.$refs.myFile.value = '';
        
         } catch(e) {
           alert("Sorry, your file doesn't appear to be valid JSON data.");

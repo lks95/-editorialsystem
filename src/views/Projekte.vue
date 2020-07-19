@@ -215,6 +215,7 @@ export default {
         try {
           this.projekte = JSON.parse(text);
            this.saveToBackend();
+           this.$refs.myFile.value = '';
        
         } catch(e) {
           alert("Sorry, your file doesn't appear to be valid JSON data.");
@@ -224,6 +225,7 @@ export default {
       reader.onerror = evt => {
         console.error(evt);
       }
+      
       
     },
     selectArchive: function(archiveSelected){
