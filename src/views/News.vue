@@ -241,6 +241,9 @@ export default {
           this.news = JSON.parse(text);
            this.saveToBackend();
            this.$refs.myFile.value = '';
+           //this.$refs.myFile.value = 'File wurde gespeichert';
+           alert("File wurde gespeichert");
+       
        
         } catch(e) {
           alert("Sorry, your file doesn't appear to be valid JSON data.");
