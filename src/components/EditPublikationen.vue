@@ -2,40 +2,52 @@
     <div>
         <form @submit.prevent="submit"  class="pb-2 mb-3 mr-3">
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.publikation_title.$error}">
                 <label :for="'titleInput-' + this.selectedIndex">Titel:</label>
                 <input type="text" class="form-control"  :id="'titleInput-' + this.selectedIndex" v-model.trim="publikation_title"  @input="updateTitle($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.publikation_title.required">Field is required</div>
+            <div class="error" v-if="!$v.publikation_title.minLength">Title must have at least {{$v.publikation_title.$params.minLength.min}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.publikation_subtitle.$error}">
                 <label :for="'subtitleInput-' + this.selectedIndex">Untertitel:</label>
                 <input type="text" class="form-control" :id="'subtitleInput-' + this.selectedIndex" v-model.trim="publikation_subtitle" @input="updateSubtitle($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.publikation_subtitle.required">Field is required</div>
+            <div class="error" v-if="!$v.publikation_subtitle.minLength">Title must have at least {{$v.publikation_subtitle.$params.minLength.min}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.publikation_text.$error}">
                 <label :for="'textInput-' + this.selectedIndex">Text:</label>
-                <textarea class="form-control" :id="'textInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_title" @input="updateText($event.target.value)"></textarea>
+                <textarea class="form-control" :id="'textInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_text" @input="updateText($event.target.value)"></textarea>
             </div>
+            <div class="error" v-if="!$v.publikation_text.required">Field is required</div>
+            <div class="error" v-if="!$v.publikation_text.minLength">Text must have at least {{$v.publikation_text.$params.minLength.min}} letters.</div>
+            <div class="error" v-if="!$v.publikation_text.maxLength">Text must have at most {{$v.publikation_text.$params.maxLength.max}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.publikation_author.$error}">
                 <label :for="'authorInput-' + this.selectedIndex">Author:</label>
                 <textarea class="form-control" :id="'authorInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_author" @input="updateAuthor($event.target.value)"></textarea>
             </div>
+            <div class="error" v-if="!$v.publikation_author.required">Field is required</div>
+            <div class="error" v-if="!$v.publikation_author.minLength">Title must have at least {{$v.publikation_author.$params.minLength.min}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.publikation_betreuer.$error}">
                 <label :for="'betreuerInput-' + this.selectedIndex">Betreuer:</label>
                 <textarea class="form-control" :id="'betreuerInput-' + this.selectedIndex" rows="3" v-model.trim="publikation_betreuer" @input="updateBetreuer($event.target.value)"></textarea>
             </div>
+            <div class="error" v-if="!$v.publikation_betreuer.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.img.$error}">
                 <label :for="'imgInput-' + this.selectedIndex">Bild:</label>
                 <textarea class="form-control" :id="'imgInput-' + this.selectedIndex" rows="3" v-model.trim="img" @input="updateImg($event.target.value)"></textarea>
             </div>
+            <div class="error" v-if="!$v.img.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.pdf.$error}">
                 <label :for="'pdfInput-' + this.selectedIndex">Pdf:</label>
                 <textarea class="form-control" :id="'pdfInput-' + this.selectedIndex" rows="3" v-model.trim="pdf" @input="updatePdf($event.target.value)"></textarea>
             </div>
+            <div class="error" v-if="!$v.pdf.required">Field is required</div>
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
@@ -48,6 +60,8 @@
 </template>
 
 <script>
+    import {maxLength, minLength, required} from "vuelidate/lib/validators";
+
     export default {
         name: "EditPublikationen",
         props: ["selectedItem", "selectedIndex"],
@@ -63,10 +77,21 @@
                 submitStatus: null,
             };
         },
+        validations: {
+            publikation_title: {required, minLength: minLength(3)},
+            publikation_subtitle: {required, minLength: minLength(3)},
+            publikation_text: {required, minLength: minLength(15), maxLength: maxLength(550)},
+            publikation_author: {required, minLength: minLength(3)},
+            publikation_betreuer: {required},
+            img: {required},
+            pdf: {required},
+        },
         methods: {
             submit: function() {
                 this.$v.$touch()
-
+                if(this.$v.$invalid || this.$v.minLength || this.$v.maxLength){
+                    this.submitStatus = 'ERROR'
+                } else {
                     let formData = {
                         publikation_title: this.publikation_title || this.selectedItem.publikation_title,
                         publikation_subtitle: this.publikation_subtitle || this.selectedItem.publikation_subtitle,
@@ -76,13 +101,14 @@
                         img: this.img || this.selectedItem.img,
                         pdf: this.pdf || this.selectedItem.pdf,
                         pId: this.selectedIndex
-                    }
+                    };
                     this.$emit("save", formData);
                     this.submitStatus = 'PENDING'
                     setTimeout(() => {
                         this.submitStatus = 'OK'
                     }, 500);
-                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+                    this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+                }
             },
             updateTitle(value){
                 this.publikation_title = value;
