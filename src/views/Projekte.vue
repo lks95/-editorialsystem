@@ -1,9 +1,8 @@
 <template>
     <div>
        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mr-3 border-bottom">
-             <LoadJSON title="file" @Download="confirmDownload()"  :item="file"   @update-cart="selectedFile"  />
+             <LoadJSON title="file" @Download="confirmDownload()"  @update-cart="selectedFile"/>
         </div>
-        <!--@Upload="selectedFile()"-->
         <WingHeader title="Projekte" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateProjekte v-if="showForm" @save="saveNew" @cancel="cancelNew" :team="team"/>
         <LoadingSpinner v-if="!dataLoaded" />
@@ -91,9 +90,8 @@ export default {
         showForm: false,
         selectedItem: {},
         prIndex: 0,
-        cart:[],
         dataLoaded: false,
-        file: '',
+        
     }
   },
   computed: {
@@ -194,20 +192,16 @@ export default {
      
    
    selectedFile(file) {
-     //this.cart.push(a);
       console.log('show a file');
-      
       console.log(file);
-      //console.log(this.$refs.myFile.files[0]);
       
-     let fileA = file;
-     //console.log('show this file');
-     console.log(fileA);
+      let fileA = file;
+      console.log('show this file');
+      console.log(fileA);
       if(!fileA || fileA.type !== 'application/json') return;
-      
      
       let reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
+      reader.readAsText(fileA, "UTF-8");
       console.log(reader);
       
       reader.onload =  evt => {
@@ -215,20 +209,17 @@ export default {
         try {
           this.projekte = JSON.parse(text);
            this.saveToBackend();
-           fileA ='';
            alert("File wurde gespeichert");
        
         } catch(e) {
          alert("Sorry, your file doesn't appear to be valid JSON data.");
         }
       }
-      
       reader.onerror = evt => {
         console.error(evt);
       }
-      
-      
     },
+
     selectArchive: function(archiveSelected){
         this.displayArchive = archiveSelected;
     },
