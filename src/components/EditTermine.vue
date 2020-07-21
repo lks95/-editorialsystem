@@ -2,17 +2,20 @@
     <div>
         <form @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
 
-            <div class="form-group" >
+            <div class="form-group" :class="{'form-group--error': $v.title.$error}">
                 <label :for="'titleInput-' + this.selectedIndex">Titel</label>
-                <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateHeadline($event.target.value)">
+                <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateTitleTermin($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.title.required">Field is required</div>
+            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.headline.$error}">
                 <label :for="'headlineInput-' + this.selectedIndex">Überschrift</label>
-                <input type="text" class="form-control" :id="'headlineInput-' + this.selectedIndex" v-model.trim="headline" @input="updateTitleTermin($event.target.value)">
+                <input type="text" class="form-control" :id="'headlineInput-' + this.selectedIndex" v-model.trim="headline" @input="updateHeadline($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.headline.required">Field is required</div>
 
-            <div class="form-group">
+            <div class="form-group" :class="{'form-group--error': $v.description.$error}">
                 <label :for="'descriptionInput-' + this.selectedIndex">Beschreibung</label>
                 <Editor
                     :init="{
@@ -27,32 +30,39 @@
                     :id="'descriptionInput-' + this.selectedIndex"
                 />
             </div>
+            <div class="error" v-if="!$v.description.required">Field is required</div>
 
-            <div class="form-row">
+
+            <div class="form-row" :class="{'form-group--error': $v.startdate.$error}">
                 <div class="form-group col-md-6">
-                    <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins</label>
-                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.valueAsDate)">
-                </div>
-                <div class="form-group col-md-6">
-                    <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins</label>
-                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
-                </div>
-                <div class="form-group col-md-6">
-                    <label :for="'startdateInput-' + this.selectedIndex">Start des Termins</label>
+                    <label :for="'startdateInput-' + this.selectedIndex">Start des Termins: (Datum)</label>
                     <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="startdate" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
-                    <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins</label>
+                    <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins: (Datum)</label>
                     <input type="date" class="form-control" :id="'enddateInput-' + this.selectedIndex" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
+            <div class="error" v-if="!$v.startdate.required">Startdate is required</div>
 
-            <div class="form-group">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins: (Uhrzeit)</label>
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.valueAsDate)">
+                </div>
+                <div class="col">
+                    <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins: (Uhrzeit)</label>
+                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
+                </div>
+            </div>
+
+            <div class="form-group" :class="{'form-group--error': $v.place.$error}">
                 <label :for="'placeInput-' + this.selectedIndex">Ort</label>
                 <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="place" @input="updatePlace($event.target.value)">
             </div>
+            <div class="error" v-if="!$v.place.required">Field is required</div>
 
-            <div class="form-group">            
+            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
                 <label :for="'contactInput-' + this.selectedIndex">Kontakt:</label>
                 <multiselect 
                     v-model="contact" 
@@ -68,20 +78,8 @@
                 >
                 </multiselect>
             </div>
+            <div class="error" v-if="!$v.contact.required">Field is required</div>
 
-
-            <div class="form-group">
-                <label :for="'linkInput-' + this.selectedIndex">Links</label>
-                <div class="d-flex">
-                    <input type="text" class="form-control mr-1" :id="'linkInput-' + this.selectedIndex" v-model.trim="links" @input="updateLinks($event.target.value)">
-                    <button size="sm" class="btn btn-secondary">
-                        <b-icon icon="plus-circle"></b-icon>
-                    </button>
-                </div>
-                <!--
-                <label for="linkInput">Links:</label>
-                <input type="text" class="form-control" id="linkInput" v-model.trim="links" @input="updateLinks($event.target.value)">-->
-            </div>
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
@@ -97,6 +95,7 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
+import {minLength, required} from "vuelidate/lib/validators";
 
 export default {
     name: 'EditTermine',
@@ -120,30 +119,46 @@ export default {
             submitStatus: null,
         };
     },
-
+    validations: {
+        title: {required, minLength: minLength(3)},
+        headline: {required, minLength: minLength(3)},
+        description: {required},
+        date: {required},
+        time: {required},
+        startdate: {required},
+        enddate: {required},
+        starttime: {required},
+        endtime: {required},
+        place: {required},
+        contact: {required},
+        links: {required}
+    },
     methods: {
         submit: function() {
             this.$v.$touch()
-
-            let formData = {
-                title: this.title || this.selectedItem.title,
-                headline: this.headline || this.selectedItem.headline,
-                description: this.description || this.selectedItem.description,
-                startdate: this.startdate || this.selectedItem.startdate,
-                enddate: this.enddate || this.selectedItem.enddate,
-                starttime: this.starttime || this.selectedItem.starttime,
-                endtime: this.endtime || this.selectedItem.endtime,
-                place: this.place || this.selectedItem.place,
-                contact: this.contact || this.selectedItem.contact,
-                links: this.links  || this.selectedItem.links,
-                nId: this.selectedIndex
-            };
-            this.$emit("save", formData);
-            this.submitStatus = 'PENDING'
-            setTimeout(() => {
-                this.submitStatus = 'OK'
-            }, 500);
-            this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+            if(this.$v.$invalid || this.$v.minLength || this.$v.maxLength){
+                this.submitStatus = 'ERROR'
+            } else {
+                let formData = {
+                    title: this.title || this.selectedItem.title,
+                    headline: this.headline || this.selectedItem.headline,
+                    description: this.description || this.selectedItem.description,
+                    startdate: this.startdate || this.selectedItem.startdate,
+                    enddate: this.enddate || this.selectedItem.enddate,
+                    starttime: this.starttime || this.selectedItem.starttime,
+                    endtime: this.endtime || this.selectedItem.endtime,
+                    place: this.place || this.selectedItem.place,
+                    contact: this.contact || this.selectedItem.contact,
+                    links: this.links || this.selectedItem.links,
+                    nId: this.selectedIndex
+                };
+                this.$emit("save", formData);
+                this.submitStatus = 'PENDING'
+                setTimeout(() => {
+                    this.submitStatus = 'OK'
+                }, 500);
+                this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+            }
         },
         updateTitleTermin(value){
              this.title = value;
