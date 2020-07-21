@@ -1,8 +1,9 @@
 <template>
     <div>
        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mr-3 border-bottom">
-             <LoadJSON title="File" @Download="confirmDownload()"  @Upload="selectedFile()"/>
+             <LoadJSON title="file" @Download="confirmDownload()"  :item="file"   @update-cart="selectedFile"  />
         </div>
+        <!--@Upload="selectedFile()"-->
         <WingHeader title="Projekte" @selectArchive="selectArchive" @addNew="addItem" />
         <CreateProjekte v-if="showForm" @save="saveNew" @cancel="cancelNew" :team="team"/>
         <LoadingSpinner v-if="!dataLoaded" />
@@ -90,7 +91,9 @@ export default {
         showForm: false,
         selectedItem: {},
         prIndex: 0,
-        dataLoaded: false
+        cart:[],
+        dataLoaded: false,
+        file: '',
     }
   },
   computed: {
@@ -188,24 +191,31 @@ export default {
           e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
           a.dispatchEvent(e);
     },
-   selectedFile() {
-      console.log('selected a file');
-      console.log(this.$refs.myFile.files[0]);
+     
+   
+   selectedFile(file) {
+     //this.cart.push(a);
+      console.log('show a file');
       
-      let file = this.$refs.myFile.files[0];
       console.log(file);
-      if(!file || file.type !== 'application/json') return;
+      //console.log(this.$refs.myFile.files[0]);
+      
+     let fileA = file;
+     //console.log('show this file');
+     console.log(fileA);
+      if(!fileA || fileA.type !== 'application/json') return;
       
      
       let reader = new FileReader();
       reader.readAsText(file, "UTF-8");
+      console.log(reader);
       
       reader.onload =  evt => {
         let text = evt.target.result;
         try {
           this.projekte = JSON.parse(text);
            this.saveToBackend();
-           this.$refs.myFile.value ='';
+           fileA ='';
            alert("File wurde gespeichert");
        
         } catch(e) {
