@@ -129,8 +129,9 @@ export default {
           let foundIndex = this.news.findIndex(x => x.nId === item.nId);
           this.news[foundIndex].title = item.title;
           this.news[foundIndex].link = item.link;
+          this.news[foundIndex].linkText = item.linkText;
           this.news[foundIndex].img = item.img;
-          this.text[foundIndex].img = item.text;
+          this.news[foundIndex].text = item.text;
           this.saveToBackend();
       },
       selectArchive: function(archiveSelected){

@@ -89,7 +89,7 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                     setTimeout(() => {
                         this.submitStatus = 'OK'
                     }, 500)
-                }
+                    }
                 },
 
             updateTitel(value){
