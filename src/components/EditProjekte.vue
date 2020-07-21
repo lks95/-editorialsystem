@@ -101,12 +101,10 @@
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.date.$error}">
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label :for="'dateInput-' + this.selectedIndex">Datum</label>
-                        <input type="date" class="form-control" :id="'dateInput-' + this.selectedIndex" v-model.trim="date" @input="updateDate($event.target.value)">
-                    </div>
+            <div class="form-row" :class="{'form-group--error': $v.date.$error}">
+                <div class="form-group col-md-6">
+                    <label :for="'startdateInput-' + this.selectedIndex">Start des Termins: (Datum)</label>
+                    <input type="date" class="form-control" :id="'dateInput-' + this.selectedIndex" v-model="date" @input="updateDate($event.target.value)">
                 </div>
             </div>
             <div class="error" v-if="!$v.date.required">Field is required</div>
