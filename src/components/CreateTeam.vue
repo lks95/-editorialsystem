@@ -84,7 +84,7 @@
 import {required, maxLength} from 'vuelidate/lib/validators'
 
 export default {
-    name: 'CreatePraxissemester',
+    name: 'CreateTeam',
     data() {
         return{
             id: '',

@@ -1,20 +1,7 @@
 <template>
     <div>
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 mr-3 border-bottom">
-            <h2>Upload a File</h2>
-            <div class="d-flex">
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group mr-2">
-                        <div id="app"  v-cloak>
-                            <input type="file"  class="btn btn-outline-primary mx-2" ref="myFile" @change="selectedFile">
-                            <input type="submit" class="btn btn-primary" value="Upload File" />
-                        </div>  
-                        <b-button class="btn btn-outline-danger mx-1" @click="confirmDownload()" title="Load file">
-                        <b-icon icon="download" aria-hidden="true"></b-icon>
-                        </b-button>
-                    </div>
-                </div>
-            </div>
+             <LoadJSON title="file" @Download="confirmDownload()"  @update-cart="selectedFile"/>
         </div>
       <WingHeader title="Team" @selectArchive="selectArchive" @addNew="addItem" />
       <CreateTeam v-if="showForm" @save="saveNew" @cancel="cancelNew" />
@@ -74,6 +61,7 @@ import EditTeam from '../components/EditTeam'
 import CreateTeam from '../components/CreateTeam'
 import LoadingSpinner from '../components/LoadingSpinner'
 import axios from "axios"
+import LoadJSON from '../components/LoadJSON'
 
 export default {
   name: 'Team',
@@ -82,7 +70,8 @@ export default {
     CreateTeam,
     EditTeam,
     LoadingSpinner,
-    draggable
+    draggable,
+    LoadJSON,
   },
   data(){
     return{
@@ -191,33 +180,33 @@ export default {
           e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
           a.dispatchEvent(e);
     },
-   selectedFile() {
-      console.log('selected a file');
-      console.log(this.$refs.myFile.files[0]);
+   selectedFile(file) {
+      console.log('show a file');
+      console.log(file);
       
-      let file = this.$refs.myFile.files[0];
-      if(!file || file.type !== 'application/json') return;
-      
+      let fileA = file;
+      console.log('show this file');
+      console.log(fileA);
+      if(!fileA || fileA.type !== 'application/json') return;
      
       let reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
+      reader.readAsText(fileA, "UTF-8");
+      console.log(reader);
       
       reader.onload =  evt => {
         let text = evt.target.result;
         try {
           this.team = JSON.parse(text);
-           this.saveToBackend();
-           this.$refs.myFile.value = '';
+           this.saveToBackend();       
+           alert("File wurde gespeichert");
        
         } catch(e) {
-          alert("Sorry, your file doesn't appear to be valid JSON data.");
+         alert("Sorry, your file doesn't appear to be valid JSON data.");
         }
       }
-      
       reader.onerror = evt => {
         console.error(evt);
       }
-      
     },
     selectArchive: function(archiveSelected){
         this.displayArchive = archiveSelected;
