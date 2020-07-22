@@ -139,7 +139,6 @@
 import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-//import DetailMedia from './DetailMedia'
 import LoadMedia from './LoadMedia'
 
 export default {
@@ -148,7 +147,6 @@ export default {
     components: {
         Editor,
         Multiselect,
-        //DetailMedia,
         LoadMedia,
     },
     data() {
@@ -166,8 +164,7 @@ export default {
             detail_header_img_alt:'',
             detail_header_intro: '',
             detail_text: '',
-            detail_media:[
-            ],
+            detail_media:[],
             date: '',
             contacts: [],
             tIndex: 0,
@@ -267,12 +264,10 @@ export default {
         },
         updateDetailImgSrcI(value, index){
             this.detail_media[index].detail_img_src = value;
-            //this.$v.detail_media[index].detail_img_src.$touch();
-        },
+            },
         updateDetailImgAltI(value,index){
             this.detail_media[index].detail_img_alt = value;
-           // this.$v.detail_media[index].detail_img_alt.$touch();
-        },
+            },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',})
         },
