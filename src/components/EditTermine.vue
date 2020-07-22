@@ -35,12 +35,7 @@
             <div class="form-row" >
                 <div class="form-group col-md-6">
                     <label :for="'startdateInput-' + this.selectedIndex">Start des Termins: (Datum)</label>
-<<<<<<< HEAD
                     <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="date.start" @input="updateStartdate($event.target.value)">
-=======
-                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="startdate" @input="updateStartdate($event.target.value)">
-                    <div class="error ml-2" v-if="!$v.startdate.required">Pflichtfeld</div>
->>>>>>> ebacec3... #41 Termine: Validierungs Hinweistexte auf Deutsch übersetzt, Darstellung verbessert
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins: (Datum)</label>
@@ -81,7 +76,6 @@
                 </multiselect>
                 <div class="error ml-2" v-if="!$v.contact.required">Pflichtfeld</div>
             </div>
-<<<<<<< HEAD
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
             <div class="form-group" >
@@ -92,8 +86,6 @@
                 <input type="text" class="form-control" :id="'linkstextInput-' + this.selectedIndex" v-model.trim="links.text" @input="updateLinksText($event.target.value)">
             </div>
 
-=======
->>>>>>> ebacec3... #41 Termine: Validierungs Hinweistexte auf Deutsch übersetzt, Darstellung verbessert
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
