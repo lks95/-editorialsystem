@@ -1,18 +1,19 @@
 <template>
     <div>
         <form id="addTermineForm" @submit.prevent="submit" class="pb-2 mb-3 mr-3 border-bottom">
+            
             <div class="form-group" :class="{'form-group--error': $v.title.$error}">
                 <label for="titleInput">Titel:</label>
                 <input type="text" class="form-control" id="titleInput" v-model.trim="title" @input="updateTitleTermin($event.target.value)">
+                <div class="error ml-2" v-if="!$v.title.required">Pflichtfeld</div>
+                <div class="error ml-2" v-if="!$v.title.minLength">Titel muss mindestens {{$v.title.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.title.required">Field is required</div>
-            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.headline.$error}">
                 <label for="headlineInput">Headline:</label>
                 <input type="text" class="form-control" id="headlineInput" v-model.trim="headline" @input="updateHeadline($event.target.value)">
+                <div class="error ml-2" v-if="!$v.headline.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.headline.required">Field is required</div>
 
             <div class="form-group" >
                 <label for="descriptionInput">Beschreibung:</label>
@@ -27,6 +28,8 @@
                     }"
                     v-model.trim="description"
                 />
+                <div class="error ml-2" v-if="!$v.description.required">Pflichtfeld</div>
+                <div class="error ml-2" v-if="!$v.description.maxLength">Text darf maximal {{$v.description.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
 
             <div class="form-row">
@@ -55,8 +58,8 @@
             <div class="form-group" :class="{'form-group--error': $v.place.$error}">
                 <label for="placeInput">Ort:</label>
                 <input type="text" class="form-control" id="placeInput" v-model.trim="place" @input="updatePlace($event.target.value)">
+                <div class="error ml-2" v-if="!$v.place.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.place.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
                 <label for="contactsInput">Kontakt:</label>
@@ -72,6 +75,7 @@
                     :allow-empty="true"
                 >
                 </multiselect>
+                <div class="error ml-2" v-if="!$v.contact.required">Pflichtfeld</div>
             </div>
             <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
@@ -85,11 +89,10 @@
                 </div>
             </div>
 
-
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
                 <button class="btn btn-outline-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
-                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
 
         </form>
