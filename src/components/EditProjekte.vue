@@ -139,6 +139,7 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import LoadMedia from './LoadMedia'
+import moment from 'moment'
 
 export default {
     name: 'EditProjekte',
@@ -192,6 +193,7 @@ export default {
             if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
                 this.submitStatus = 'ERROR';
             } else {
+                let dateString = new Date(this.date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
                 let formData = {
                     study: this.study || this.selectedItem.study,
                     category: this.category || this.selectedItem.category,
@@ -204,7 +206,7 @@ export default {
                     detail_header_img_alt: this.detail_header_img_alt || this.selectedItem.detail_header_img_alt,
                     detail_header_intro: this.detail_header_intro || this.selectedItem.detail_header_intro,
                     detail_text: this.detail_text || this.selectedItem.detail_text,
-                    date: this.date || this.selectedItem.date,
+                    date: dateString || this.selectedItem.date,
                     contacts: this.contacts || this.selectedItem.img,
                     detail_media: this.detail_media,
                     prId: this.selectedIndex
@@ -307,7 +309,7 @@ export default {
             if(this.detail_media[0] ==null){
                 this.detail_media.push({detail_img_src: '', detail_img_alt:''});
             }
-            this.date = this.selectedItem.date;
+            this.date = moment(this.selectedItem.date , 'LLL', 'de').format('YYYY-MM-DD');
             this.contacts = this.selectedItem.contacts;
     }
 }
