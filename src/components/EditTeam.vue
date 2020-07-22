@@ -71,10 +71,9 @@
             <div class="error" v-if="!$v.img.required">Field is required</div>
 
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
                 <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
             </div>
         </form>
     </div>
@@ -117,9 +116,9 @@ export default {
     },
     methods: {
         submit: function() {
-            this.$v.$touch()
+            this.$v.$touch();
             if (this.$v.$invalid || this.$v.maxLength) {
-                this.submitStatus = 'ERROR'
+                this.submitStatus = 'ERROR';
             } else {
                 let formData = {
                     id: this.id,
@@ -136,10 +135,7 @@ export default {
                     tId: this.selectedIndex
                 };
                 this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500);
+                this.submitStatus = 'OK';
             }
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         },

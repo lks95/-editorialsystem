@@ -87,10 +87,9 @@
 
 
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
                 <button class="btn btn-outline-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
             </div>
 
         </form>
@@ -142,9 +141,9 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
         },
         methods: {
             submit: function () {
-                this.$v.$touch()
+                this.$v.$touch();
                 if(this.$v.$invalid || this.$v.minLength || this.$v.maxLength){
-                    this.submitStatus = 'ERROR'
+                    this.submitStatus = 'ERROR';
                 } else {
                     let formData = {
                         title: this.title,
@@ -157,10 +156,7 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
                         links: this.links
                     };
                     this.$emit("save", formData);
-                    this.submitStatus = 'PENDING'
-                    setTimeout(() => {
-                        this.submitStatus = 'OK'
-                    }, 500)
+                    this.submitStatus = 'OK';
                 }
             },
 

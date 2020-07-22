@@ -21,10 +21,9 @@
             <div class="error" v-if="!$v.text.maxLength">Text must have at most {{$v.text.$params.maxLength.max}} letters.</div>
             
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
                 <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
             </div>
         </form>
     </div>
@@ -50,9 +49,9 @@ export default {
     },
     methods: {
         submit: function() {
-            this.$v.$touch()
+            this.$v.$touch();
             if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
-                this.submitStatus = 'ERROR'
+                this.submitStatus = 'ERROR';
             } else {
                 let formData = {
                     img: this.img,
@@ -60,10 +59,7 @@ export default {
                     author: this.author
                 };
                 this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500)
+                this.submitStatus = 'OK';
             } 
         },
         updateText(value){

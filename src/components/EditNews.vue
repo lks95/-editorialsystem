@@ -35,10 +35,9 @@
             <div class="error" v-if="!$v.text.maxLength">Text must have at most {{$v.text.$params.maxLength.max}} letters.</div>
 
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
                 <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
             </div>
 
         </form>
@@ -69,9 +68,9 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
         },
         methods: {
             submit: function() {
-                this.$v.$touch()
+                this.$v.$touch();
                 if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
-                    this.submitStatus = 'ERROR'
+                    this.submitStatus = 'ERROR';
                 } else {
                     let formData = {
                         title: this.title || this.selectedItem.title,
@@ -82,10 +81,7 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
                         nId: this.selectedIndex
                     };
                     this.$emit("save", formData);
-                    this.submitStatus = 'PENDING'
-                    setTimeout(() => {
-                        this.submitStatus = 'OK'
-                    }, 500);
+                    this.submitStatus = 'OK';
                 this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
                 }
             },
