@@ -115,9 +115,9 @@
                 <div>
                     <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
                         <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaSrcInput'+index"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <input class="form-control" :id="'detail_mediaSrcInput'+index" v-model.trim="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaAltInput'+index"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
+                        <input class="form-control" :id="'detail_mediaAltInput'+index"  v-model.trim="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
                 </div>
@@ -138,8 +138,6 @@ import {required, minLength, maxLength, } from 'vuelidate/lib/validators'
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import LoadMedia from './LoadMedia'
-//import DetailMedia from './DetailMedia'
-//import LoadingSpinner from '../components/LoadingSpinner'
 
 
 export default {
@@ -149,8 +147,6 @@ export default {
         Editor,
         Multiselect,
         LoadMedia,
-        //DetailMedia,
-        //LoadingSpinner,
     },
     data() {
         return{
@@ -173,7 +169,7 @@ export default {
             tIndex: 0,
             submitStatus: null,
             showForm: false,
-            showFormImg: false
+            showFormImg: false,
         };
     },
     validations:{
@@ -267,12 +263,12 @@ export default {
             this.$v.contacts.$touch();
         },
          updateDetailImgSrcI(value, index){
-            this.detail_media.detail_img_src[index] = value;
-            this.$v.detail_media.detail_img_src[index].$touch();
+            this.detail_media[index].detail_img_src = value;
+           // this.$v.detail_media[index].detail_img_src.$touch();
         },
         updateDetailImgAltI(value,index){
-            this.detail_media.detail_img_alt[index] = value;
-            this.$v.detail_media.detail_img_alt[index].$touch();
+            this.detail_media[index].detail_img_alt = value;
+            //this.$v.detail_media[index].detail_img_alt.$touch();
         },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',});

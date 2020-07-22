@@ -189,8 +189,6 @@ export default {
         detail_text:{required, minLength: minLength(3)},
         date:{required},
         contacts: {required },
-        //detail_img_src: {required},
-        //detail_img_alt: {required},
     },
     methods: {
         submit: function() {
@@ -270,12 +268,12 @@ export default {
             this.$v.contacts.$touch();
         },
         updateDetailImgSrcI(value, index){
-            this.detail_media.detail_img_src[index] = value;
-            this.$v.detail_media.detail_img_src[index].$touch();
+            this.detail_media[index].detail_img_src = value;
+            //this.$v.detail_media[index].detail_img_src.$touch();
         },
         updateDetailImgAltI(value,index){
-            this.detail_media.detail_img_alt[index] = value;
-            this.$v.detail_media.detail_img_alt[index].$touch();
+            this.detail_media[index].detail_img_alt = value;
+           // this.$v.detail_media[index].detail_img_alt.$touch();
         },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',})

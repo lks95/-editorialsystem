@@ -20,7 +20,7 @@ app.use('/api/projekte', require('./routes/projekte').router);
 app.use('/api/team', require('./routes/team').router);
 app.use('/api/projects', require('./routes/projekte').router);
 app.use('/api/news', require('./routes/news').router);
-app.use('/api/termine', require('./routes/termine').router);
+app.use('/api/dates', require('./routes/dates').router);
 app.use('/api/publikationen', require('./routes/publikationen').router);
 
 

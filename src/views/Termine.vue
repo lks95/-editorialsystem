@@ -85,11 +85,11 @@ export default {
       return{
          termine: [],
          archive: [],
-         team: [],
          displayArchive: false,
          showForm: false,
          selectedItem: {},
          tIndex: 0,
+         team:[],
          dataLoaded: false
       }
     },
@@ -107,7 +107,7 @@ export default {
         const blob = new Blob([data], {type: 'text/plain'})
         const e = document.createEvent('MouseEvents'),
           a = document.createElement('a');
-          a.download = "Praxissemester.json";
+          a.download = "dates.json";
           a.href = window.URL.createObjectURL(blob);
           a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
           e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -154,20 +154,21 @@ export default {
           this.displayArchive = false;
           this.showForm = false;
           this.selectedItem = {};
+          this.saveToBackend();
       },
       cancelNew: function () {
           this.showForm = false;
       },
       saveToBackend: function(){
-         axios.post('http://localhost:5000/api/termine', {"dates": this.termine})
+         axios.post('http://localhost:5000/api/dates', {"dates": this.termine})
              .then((res)=>{
                  this.termine = res.data.dates;
              })
       },
         saveArchiveToBackend: function(){
-            axios.post('http://localhost:5000/api/termine/archive', {"dates": this.termine})
+            axios.post('http://localhost:5000/api/dates/archive', {"dates": this.archive})
                 .then((res)=>{
-                    this.archive = res.data.berichte;
+                    this.archive = res.data.dates;
                 })
         },
         confirmArchive: function (item) {
@@ -218,9 +219,9 @@ export default {
             this.termine[foundIndex].headline = item.headline;
             this.termine[foundIndex].description = item.description;
             this.termine[foundIndex].date = item.date;
-            this.termine[foundIndex].date.start = item.date.start;
             this.termine[foundIndex].time = item.time;
             this.termine[foundIndex].place = item.place;
+            this.termine[foundIndex].contacts = item.contacts;
             this.termine[foundIndex].links = item.links;
             this.saveToBackend();
         },
@@ -235,7 +236,7 @@ export default {
                 .then(value => {
                     if(value){
                         this.archive.splice(this.archive.indexOf(item), 1);
-                        this.news.unshift(item);
+                        this.termine.unshift(item);
                         this.saveToBackend();
                         this.saveArchiveToBackend();
                     }
@@ -246,7 +247,7 @@ export default {
         },
     },
     mounted() {
-        axios.get("http://localhost:5000/api/termine").then(
+        axios.get("http://localhost:5000/api/dates").then(
             response =>
                 (this.termine = response.data.dates.map(item => {
                         item.tid = this.tIndex;
@@ -256,7 +257,7 @@ export default {
                         this.dataLoaded = true
                 )
         );
-        axios.get("http://localhost:5000/api/termine/archive").then(
+        axios.get("http://localhost:5000/api/dates/archive").then(
             response =>
                 (this.archive = response.data.dates.map(item => {
                     item.tid = this.tIndex;

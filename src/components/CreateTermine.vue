@@ -14,7 +14,7 @@
             </div>
             <div class="error" v-if="!$v.headline.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.description.$error}">
+            <div class="form-group" >
                 <label for="descriptionInput">Beschreibung:</label>
                 <Editor
                     :init="{
@@ -28,33 +28,29 @@
                     v-model.trim="description"
                 />
             </div>
-            <div class="error" v-if="!$v.description.required">Field is required</div>
-            <div class="error" v-if="!$v.description.maxLength">Text must have at most {{$v.description.$params.maxLength.max}} letters.</div>
 
             <div class="form-row">
-                <div class="col" :class="{'form-group--error': $v.startdate.$error}">
+                <div class="col" >
                     <label for="startdateInput">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="startdateInput" v-model.trim="startdate" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" id="startdateInput" v-model.trim="date.start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="enddateInput">Ende des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="enddateInput" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
+                    <input type="date" class="form-control" id="enddateInput" v-model.trim="date.end" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
-            <div class="error" v-if="!$v.startdate.required">Startdate is required</div>
-
 
             <div class="form-row">
                 <div class="col">
                     <label for="starttimeInput">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="starttime" @input="updateStarttime($event.target.value)">
+                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="time.start" @input="updateStarttime($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="endtimeInput">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
-
+           
 
             <div class="form-group" :class="{'form-group--error': $v.place.$error}">
                 <label for="placeInput">Ort:</label>
@@ -62,11 +58,10 @@
             </div>
             <div class="error" v-if="!$v.place.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
-                <label for="contactInput">Kontakt:</label>
+            <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
+                <label for="contactsInput">Kontakt:</label>
                 <multiselect 
-                    v-model="contact" 
-                    id="contactInput"
+                    v-model="contacts" 
                     deselect-label="Kontakt entfernen"
                     select-label="Kontakt auswählen"
                     selected-label="Ausgewählt"
@@ -78,22 +73,17 @@
                 >
                 </multiselect>
             </div>
-            <div class="error" v-if="!$v.contact.required">Field is required</div>
+            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
-            <!--          <div class="form-group">
-                            <label for="detail_mediaInput">Links</label>
-                            <div>
-                                <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
-                                    <label>href</label>
-                                    <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)">
-                                    <label>Text</label>
-                                    <input class="form-control" :id="'detail_mediaInput'"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)">
-                                </div>
-                                <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
-                            </div>
-                        </div>
-                    <div>
-</div>-->
+            <div class="form-group" >
+                <label for='linksInput'>Link</label>
+                <div>
+                    <label >Link eingeben</label>
+                    <input type="text" class="form-control" :id='linksHrefInput' v-model.trim="links.href" @input="updateLinksHref($event.target.value)">
+                    <label >Beschreibender Text zu Link</label>
+                    <input type="text" class="form-control" :id='linkstextInput' v-model.trim="links.text" @input="updateLinksText($event.target.value)">
+                </div>
+            </div>
 
 
             <div class="d-flex flex-row-reverse">
@@ -110,8 +100,8 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
-//import LoadMedia from "./LoadMedia";
-import {required, minLength, maxLength} from 'vuelidate/lib/validators'
+
+import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
 
     export default {
         name: "CreateTermine",
@@ -119,37 +109,36 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
         components: {
             Editor,
             Multiselect,
-            //LoadMedia
+            
         },
         data() {
             return {
                 title: '',
                 headline: '',
                 description: '',
-                startdate: '',
-                enddate: '',
-                starttime: '',
-                endtime: '',
+                date:[{
+                    start: '',
+                    end: '',
+                }],
+                time:[{
+                    start: '',
+                    end: '',
+                }],
                 place: '',
-                contact: [],
-                links: '',
+                contacts: [],
+                links: [{
+                    href: '',
+                    text: '',
+                }],
                 submitStatus: null,
                 detail_media: [],
             };
         },
         validations: {
             title: {required, minLength: minLength(3)},
-            headline: {required, minLength: minLength(3)},
-            description: {required, maxLength: maxLength(300)},
-            date: {required},
-            time: {required},
-            startdate: {required},
-            enddate: {required},
-            starttime: {required},
-            endtime: {required},
+            headline: {required},
             place: {required},
-            contact: {required},
-            links: {required}
+            contacts: {required},
         },
         methods: {
             submit: function () {
@@ -161,10 +150,8 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                         title: this.title,
                         headline: this.headline,
                         description: this.description,
-                        startdate: this.startdate,
-                        enddate: this.enddate,
-                        startime: this.starttime,
-                        endtime: this.endtime,
+                        date: this.date,
+                        time: this.time,
                         place: this.place,
                         contacts: this.contacts,
                         links: this.links
@@ -186,20 +173,22 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
                 this.$v.headline.$touch();
             },
             updateStartdate(value){
-                this.startdate = value;
-                this.$v.startdate.$touch();
+                
+                this.date.start = value;
+                console.log(this.date.start)
+                this.$v.date.start.$touch();
             },
             updateEnddate(value){
-                this.enddate = value;
-                this.$v.enddate.$touch();
+                this.date.end = value;
+                this.$v.date.end.$touch();
             },
             updateStarttime(value){
-                this.starttime = value;
-                this.$v.starttime.$touch();
+                this.time.start = value;
+                this.$v.time.start.$touch();
             },
             updateEndtime(value){
-                this.endtime = value;
-                this.$v.endtime.$touch();
+                this.time.end = value;
+                this.$v.time.end.$touch();
             },
             updatePlace(value){
                 this.place = value;
@@ -222,6 +211,14 @@ import {required, minLength, maxLength} from 'vuelidate/lib/validators'
             },
             popItemImg: function(){
                 this.detail_media.pop();
+            },
+            updateLinksHref(value){
+            this.links.href = value;
+            this.$v.links.href.$touch();
+            },
+            updateLinksText(value){
+                this.links.text = value;
+                this.$v.links.text.$touch();
             },
 
         },
