@@ -5,59 +5,56 @@
             <div class="form-group" :class="{'form-group--error': $v.publikation_title.$error}">
                 <label for="titleInput">Titel:</label>
                 <input type="text" class="form-control"  id="titleInput" v-model.trim="publikation_title"  @input="updateTitle($event.target.value)">
+                <div class="error ml-2" v-if="!$v.publikation_title.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.publikation_title.minLength">Titel muss mindestens {{$v.publikation_title.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.publikation_title.required">Field is required</div>
-            <div class="error" v-if="!$v.publikation_title.minLength">Title must have at least {{$v.publikation_title.$params.minLength.min}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.publikation_subtitle.$error}">
                 <label for="subtitleInput">Untertitel:</label>
                 <input type="text" class="form-control" id="subtitleInput" v-model.trim="publikation_subtitle" @input="updateSubtitle($event.target.value)">
+                <div class="error ml-2" v-if="!$v.publikation_subtitle.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.publikation_subtitle.minLength">Untertitel muss mindestens {{$v.publikation_subtitle.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.publikation_subtitle.required">Field is required</div>
-            <div class="error" v-if="!$v.publikation_subtitle.minLength">Title must have at least {{$v.publikation_subtitle.$params.minLength.min}} letters.</div>
-
 
             <div class="form-group" :class="{'form-group--error': $v.publikation_text.$error}">
                 <label for="textInput">Text:</label>
                 <textarea class="form-control" id="textInput" rows="3" v-model.trim="publikation_text" @input="updateText($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.publikation_text.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.publikation_text.minLength">Text muss mindestens {{$v.publikation_text.$params.minLength.min}} Zeichen enthalten.</div>
+                <div class="error ml-2 text-danger" v-if="!$v.publikation_text.maxLength">Text darf maximal {{$v.publikation_text.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.publikation_text.required">Field is required</div>
-            <div class="error" v-if="!$v.publikation_text.minLength">Text must have at least {{$v.publikation_text.$params.minLength.min}} letters.</div>
-            <div class="error" v-if="!$v.publikation_text.maxLength">Text must have at most {{$v.publikation_text.$params.maxLength.max}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.publikation_author.$error}">
-                <label for="authorInput">Author:</label>
+                <label for="authorInput">Autor:</label>
                 <textarea class="form-control" id="authorInput" rows="3" v-model.trim="publikation_author" @input="updateAuthor($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.publikation_author.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.publikation_author.minLength">Autor muss mindestens {{$v.publikation_author.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.publikation_author.required">Field is required</div>
-            <div class="error" v-if="!$v.publikation_author.minLength">Title must have at least {{$v.publikation_author.$params.minLength.min}} letters.</div>
-
 
             <div class="form-group" :class="{'form-group--error': $v.publikation_betreuer.$error}">
                 <label for="betreuerInput">Betreuer:</label>
                 <textarea class="form-control" id="betreuerInput" rows="3" v-model.trim="publikation_betreuer" @input="updateBetreuer($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.publikation_betreuer.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.publikation_betreuer.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.img.$error}">
                 <label for="imgInput">Bild:</label>
                 <textarea class="form-control" id="imgInput" rows="3" v-model.trim="img" @input="updateImg($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.img.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.img.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.pdf.$error}">
                 <label for="pdfInput">PDF:</label>
                 <textarea class="form-control" id="pdfInput" rows="3" v-model.trim="pdf" @input="updatePdf($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.pdf.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.pdf.required">Field is required</div>
-
-
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
                 <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
-                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
+
         </form>
     </div>
 </template>
@@ -138,7 +135,3 @@ export default {
         }
     }
 </script>
-
-<style scoped>
-
-</style>

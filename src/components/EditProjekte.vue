@@ -295,6 +295,7 @@ export default {
             this.date = this.selectedItem.date;
             this.contacts = this.selectedItem.contacts;
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+            this.submitStatus = 'OK';
         }
     },
     mounted(){
