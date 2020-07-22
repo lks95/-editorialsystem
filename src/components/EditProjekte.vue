@@ -5,7 +5,6 @@
                 <label for="studyInput">Studiengang</label>
                 <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
             </div>
-             <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
@@ -177,7 +176,7 @@ export default {
         };
     },
     validations:{
-        study: {required},
+        study: {},
         category: {required},
         intro_title: { required, minLength: minLength(3)},
         intro_img_src: { required },
@@ -190,8 +189,6 @@ export default {
         detail_text:{required, minLength: minLength(3)},
         date:{required},
         contacts: {required },
-        //detail_img_src: {required},
-        //detail_img_alt: {required},
     },
     methods: {
         submit: function() {
@@ -271,12 +268,12 @@ export default {
             this.$v.contacts.$touch();
         },
         updateDetailImgSrcI(value, index){
-            this.detail_media.detail_img_src[index] = value;
-            this.$v.detail_media.detail_img_src[index].$touch();
+            this.detail_media[index].detail_img_src = value;
+            //this.$v.detail_media[index].detail_img_src.$touch();
         },
         updateDetailImgAltI(value,index){
-            this.detail_media.detail_img_alt[index] = value;
-            this.$v.detail_media.detail_img_alt[index].$touch();
+            this.detail_media[index].detail_img_alt = value;
+           // this.$v.detail_media[index].detail_img_alt.$touch();
         },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',})

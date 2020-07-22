@@ -15,7 +15,7 @@
             </div>
             <div class="error" v-if="!$v.headline.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.description.$error}">
+            <div class="form-group" >
                 <label :for="'descriptionInput-' + this.selectedIndex">Beschreibung</label>
                 <Editor
                     :init="{
@@ -30,29 +30,26 @@
                     :id="'descriptionInput-' + this.selectedIndex"
                 />
             </div>
-            <div class="error" v-if="!$v.description.required">Field is required</div>
 
-
-            <div class="form-row" :class="{'form-group--error': $v.startdate.$error}">
+            <div class="form-row" >
                 <div class="form-group col-md-6">
                     <label :for="'startdateInput-' + this.selectedIndex">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="startdate" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="date.start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins: (Datum)</label>
-                    <input type="date" class="form-control" :id="'enddateInput-' + this.selectedIndex" v-model.trim="enddate" @input="updateEnddate($event.target.value)">
+                    <input type="date" class="form-control" :id="'enddateInput-' + this.selectedIndex" v-model.trim="date.end" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
-            <div class="error" v-if="!$v.startdate.required">Startdate is required</div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="starttime" @input="updateStarttime($event.target.valueAsDate)">
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="time.start" @input="updateStarttime($event.target.valueAsDate)">
                 </div>
                 <div class="col">
                     <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="endtime" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
 
@@ -62,11 +59,10 @@
             </div>
             <div class="error" v-if="!$v.place.required">Field is required</div>
 
-            <div class="form-group" :class="{'form-group--error': $v.contact.$error}">
-                <label :for="'contactInput-' + this.selectedIndex">Kontakt:</label>
+            <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
+                <label :for="'contactsInput-' + this.selectedIndex">Kontakt:</label>
                 <multiselect 
-                    v-model="contact" 
-                    :id="'contactInput-' + this.selectedIndex"
+                    v-model="contacts" 
                     deselect-label="Kontakt entfernen"
                     select-label="Kontakt auswählen"
                     selected-label="Ausgewählt"
@@ -78,7 +74,15 @@
                 >
                 </multiselect>
             </div>
-            <div class="error" v-if="!$v.contact.required">Field is required</div>
+            <div class="error" v-if="!$v.contacts.required">Field is required</div>
+
+            <div class="form-group" >
+                <label >Link</label>
+                 <label :for="'linksHrefInput-' + this.selectedIndex">Link eingeben</label>
+                <input type="text" class="form-control" :id="'linksHrefInput-' + this.selectedIndex" v-model.trim="links.href" @input="updateLinksHref($event.target.value)">
+                <label :for="'linksTextInput-' + this.selectedIndex">Beschreibender Text zu Link</label>
+                <input type="text" class="form-control" :id="'linkstextInput-' + this.selectedIndex" v-model.trim="links.text" @input="updateLinksText($event.target.value)">
+            </div>
 
 
             <div class="d-flex flex-row-reverse">
@@ -109,29 +113,28 @@ export default {
             title: '',
             headline: '',
             description: '',
-            startdate: '',
-            enddate: '',
-            starttime: '',
-            endtime: '',
+            date:[{
+                startdate: '',
+                enddate: '',
+            }],
+            time:[{
+                starttime: '',
+                endtime: '',
+            }],
             place: '',
-            contact: [],
-            links: '',
+            contacts: [],
+            links: [{
+                href: '',
+                text: '',
+            }],
             submitStatus: null,
         };
     },
     validations: {
         title: {required, minLength: minLength(3)},
-        headline: {required, minLength: minLength(3)},
-        description: {required},
-        date: {required},
-        time: {required},
-        startdate: {required},
-        enddate: {required},
-        starttime: {required},
-        endtime: {required},
+        headline: {required},
         place: {required},
-        contact: {required},
-        links: {required}
+        contacts: {required},
     },
     methods: {
         submit: function() {
@@ -148,7 +151,7 @@ export default {
                     starttime: this.starttime || this.selectedItem.starttime,
                     endtime: this.endtime || this.selectedItem.endtime,
                     place: this.place || this.selectedItem.place,
-                    contact: this.contact || this.selectedItem.contact,
+                    contacts: this.contacts || this.selectedItem.contacts,
                     links: this.links || this.selectedItem.links,
                     nId: this.selectedIndex
                 };
@@ -188,13 +191,17 @@ export default {
             this.place = value;
             this.$v.place.$touch();
         },
-        updateContact(value){
-            this.contact = value;
-            this.$v.contact.$touch();
+        updateContacts(value){
+            this.contacts = value;
+            this.$v.contacts.$touch();
         },
-        updateLinks(value){
-            this.links = value;
-            this.$v.links.$touch();
+        updateLinksHref(value){
+            this.links.href = value;
+            this.$v.links.href.$touch();
+        },
+        updateLinksText(value){
+            this.links.text = value;
+            this.$v.links.text.$touch();
         },
         resetForm() {
             this.title = this.selectedItem.title;
@@ -205,7 +212,7 @@ export default {
             this.starttime = this.selectedItem.starttime;
             this.endtime = this.selectedItem.endtime;
             this.place = this.selectedItem.place;
-            this.contact = this.selectedItem.contact;
+            this.contacts = this.selectedItem.contacts;
             this.links = this.selectedItem.links;
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
         }
@@ -219,7 +226,7 @@ export default {
         this.starttime = this.selectedItem.time.start;
         this.endtime = this.selectedItem.time.end;
         this.place = this.selectedItem.place;
-        this.contact = this.selectedItem.contact;
+        this.contacts = this.selectedItem.contacts;
         this.links = this.selectedItem.links;
     }
 }

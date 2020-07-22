@@ -4,14 +4,12 @@
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
                 <label for="studyInput">Studiengang</label>
                 <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
-                 
             </div>
-             <div class="error" v-if="!$v.study.required">Field is required</div>
+             
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
-                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect>
-                 
+                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect> 
             </div>
             <div class="error" v-if="!$v.category.required">Field is required</div>
            
@@ -117,9 +115,9 @@
                 <div>
                     <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
                         <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaSrcInput'+index"  v-model="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <input class="form-control" :id="'detail_mediaSrcInput'+index" v-model.trim="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
                         <label>Detail media Alt</label>
-                        <input class="form-control" :id="'detail_mediaAltInput'+index"  v-model="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
+                        <input class="form-control" :id="'detail_mediaAltInput'+index"  v-model.trim="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
                 </div>
@@ -171,11 +169,11 @@ export default {
             tIndex: 0,
             submitStatus: null,
             showForm: false,
-            showFormImg: false
+            showFormImg: false,
         };
     },
     validations:{
-        study: {required},
+        study: {},
         category: {required},
         intro_title: { required, minLength: minLength(3)},
         intro_img_src: { required },
@@ -265,12 +263,12 @@ export default {
             this.$v.contacts.$touch();
         },
          updateDetailImgSrcI(value, index){
-            this.detail_media.detail_img_src[index] = value;
-            this.$v.detail_media.detail_img_src[index].$touch();
+            this.detail_media[index].detail_img_src = value;
+           // this.$v.detail_media[index].detail_img_src.$touch();
         },
         updateDetailImgAltI(value,index){
-            this.detail_media.detail_img_alt[index] = value;
-            this.$v.detail_media.detail_img_alt[index].$touch();
+            this.detail_media[index].detail_img_alt = value;
+            //this.$v.detail_media[index].detail_img_alt.$touch();
         },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
