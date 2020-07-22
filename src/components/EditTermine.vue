@@ -32,9 +32,9 @@
             </div>
 
             <div class="form-row" >
-                <div class="form-group col-md-6">
-                    <label :for="'startdateInput-' + this.selectedIndex">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" :id="'startdateInput-' + this.selectedIndex" v-model="date.start" @input="updateStartdate($event.target.value)">
+                <div class="form-group col-md-6" >
+                    <label :for="`startdateInput-${selectedIndex}`">Start des Termins: (Datum)</label>
+                    <input type="date" class="form-control" :id="`startdateInput-${selectedIndex}`" v-model="date[0].start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins: (Datum)</label>
@@ -45,11 +45,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="time.start" @input="updateStarttime($event.target.valueAsDate)">
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="time[0].start" @input="updateStarttime($event.target.valueAsDate)">
                 </div>
                 <div class="col">
                     <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="time[0].end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
 
@@ -77,13 +77,14 @@
             </div>
 
             <div class="form-group" >
-                <label >Link</label>
-                 <label :for="'linksHrefInput-' + this.selectedIndex">Link eingeben</label>
-                <input type="text" class="form-control" :id="'linksHrefInput-' + this.selectedIndex" v-model.trim="links.href" @input="updateLinksHref($event.target.value)">
-                <label :for="'linksTextInput-' + this.selectedIndex">Beschreibender Text zu Link</label>
-                <input type="text" class="form-control" :id="'linkstextInput-' + this.selectedIndex" v-model.trim="links.text" @input="updateLinksText($event.target.value)">
+                <label for='linksInput'>Link</label>
+                <div class="form-group my-3 py-3" v-for=" (link, index) in links" :key="index">
+                    <label :for="`linksHrefInput-${selectedIndex}-${index}`">Link eingeben</label>
+                    <input type="text" class="form-control" :for="`linksHrefInput-${selectedIndex}-${index}`" v-model.trim="link.href" @input="updateLinksHref($event.target.value, index)">
+                    <label :for="`linkstextInput-${selectedIndex}-${index}`">Beschreibender Text zu Link</label>
+                    <input type="text" class="form-control" :id="`linkstextInput-${selectedIndex}-${index}`" v-model.trim="link.text" @input="updateLinksText($event.target.value, index)">
+                </div>
             </div>
-
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
@@ -113,19 +114,16 @@ export default {
             headline: '',
             description: '',
             date:[{
-                startdate: '',
-                enddate: '',
+                start: '',
+                end: '',
             }],
             time:[{
-                starttime: '',
-                endtime: '',
+                start: '',
+                end: '',
             }],
             place: '',
             contacts: [],
-            links: [{
-                href: '',
-                text: '',
-            }],
+            links: [],
             submitStatus: null,
         };
     },
@@ -145,10 +143,8 @@ export default {
                     title: this.title || this.selectedItem.title,
                     headline: this.headline || this.selectedItem.headline,
                     description: this.description || this.selectedItem.description,
-                    startdate: this.startdate || this.selectedItem.startdate,
-                    enddate: this.enddate || this.selectedItem.enddate,
-                    starttime: this.starttime || this.selectedItem.starttime,
-                    endtime: this.endtime || this.selectedItem.endtime,
+                    startdate: this.date || this.selectedItem.date,
+                    endtime: this.time || this.selectedItem.time,
                     place: this.place || this.selectedItem.place,
                     contacts: this.contacts || this.selectedItem.contacts,
                     links: this.links || this.selectedItem.links,
@@ -168,20 +164,19 @@ export default {
              this.$v.headline.$touch();
         },
         updateStartdate(value){
-            this.startdate = value;
-            this.$v.startdate.$touch();
+            console.log('1'+value);
+            console.log('3'+this.date.start);
+            
+            this.date.start = value;
         },
         updateEnddate(value){
-            this.enddate = value;
-            this.$v.enddate.$touch();
+            this.date.end = value;
         },
         updateStarttime(value){
-            this.starttime = value;
-            this.$v.starttime.$touch();
+            this.time[0].start = value;
         },
         updateEndtime(value){
-            this.endtime = value;
-            this.$v.endtime.$touch();
+            this.time[0].end = value;
         },
         updatePlace(value){
             this.place = value;
@@ -191,13 +186,12 @@ export default {
             this.contacts = value;
             this.$v.contacts.$touch();
         },
-        updateLinksHref(value){
-            this.links.href = value;
-            this.$v.links.href.$touch();
+        updateLinksHref(value, index){
+            this.links[index].href = value;
         },
-        updateLinksText(value){
-            this.links.text = value;
-            this.$v.links.text.$touch();
+        updateLinksText(value, index){
+            this.links[index].text = value;
+           
         },
         resetForm() {
             this.title = this.selectedItem.title;
@@ -212,7 +206,13 @@ export default {
             this.links = this.selectedItem.links;
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             this.submitStatus = 'OK';
-        }
+        },
+        addLink: function(){
+                this.links.push({ href: '', text: '', });
+            },
+            popLink: function(){
+                this.links.pop();
+            }, 
     },
     mounted() {
         this.title = this.selectedItem.title;
@@ -225,6 +225,9 @@ export default {
         this.place = this.selectedItem.place;
         this.contacts = this.selectedItem.contacts;
         this.links = this.selectedItem.links;
+        if(this.links[0] ==null || this.links[0] ==undefined){
+                this.links.push({ href: '', text: '', });
+            }
     }
 }
 </script>

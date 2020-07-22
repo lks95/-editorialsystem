@@ -33,22 +33,22 @@
             <div class="form-row">
                 <div class="col" >
                     <label for="startdateInput">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="startdateInput" v-model.trim="date.start" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" id="startdateInput" v-model.trim="date[0].start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="enddateInput">Ende des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="enddateInput" v-model.trim="date.end" @input="updateEnddate($event.target.value)">
+                    <input type="date" class="form-control" id="enddateInput" v-model.trim="date[0].end" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col">
                     <label for="starttimeInput">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="time.start" @input="updateStarttime($event.target.value)">
+                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="time[0].start" @input="updateStarttime($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="endtimeInput">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="time[0].end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
            
@@ -78,11 +78,11 @@
 
             <div class="form-group" >
                 <label for='linksInput'>Link</label>
-                <div>
-                    <label >Link eingeben</label>
-                    <input type="text" class="form-control" :id='linksHrefInput' v-model.trim="links.href" @input="updateLinksHref($event.target.value)">
-                    <label >Beschreibender Text zu Link</label>
-                    <input type="text" class="form-control" :id='linkstextInput' v-model.trim="links.text" @input="updateLinksText($event.target.value)">
+                <div class="form-group my-3 py-3" v-for=" (link, index) in links" :key="index">
+                    <label for='linksHrefInput'>Link eingeben</label>
+                    <input type="text" class="form-control" :id="'linksHrefInput'" v-model.trim="link.href" @input="updateLinksHref($event.target.value, index)">
+                    <label for='linksTextInput'>Beschreibender Text zu Link</label>
+                    <input type="text" class="form-control" :id="'linksTextInput'" v-model.trim="link.text" @input="updateLinksText($event.target.value, index)">
                 </div>
             </div>
 
@@ -125,10 +125,7 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
                 }],
                 place: '',
                 contacts: [],
-                links: [{
-                    href: '',
-                    text: '',
-                }],
+                links: [],
                 submitStatus: null,
                 detail_media: [],
             };
@@ -169,22 +166,16 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
                 this.$v.headline.$touch();
             },
             updateStartdate(value){
-                
                 this.date.start = value;
-                console.log(this.date.start)
-                this.$v.date.start.$touch();
             },
             updateEnddate(value){
-                this.date.end = value;
-                this.$v.date.end.$touch();
+                this.date[0].end = value;
             },
             updateStarttime(value){
-                this.time.start = value;
-                this.$v.time.start.$touch();
+                this.time[0].start = value;
             },
             updateEndtime(value){
-                this.time.end = value;
-                this.$v.time.end.$touch();
+                this.time[0].end = value;
             },
             updatePlace(value){
                 this.place = value;
@@ -208,19 +199,23 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
             popItemImg: function(){
                 this.detail_media.pop();
             },
-            updateLinksHref(value){
-            this.links.href = value;
-            this.$v.links.href.$touch();
+            updateLinksHref(value,index){
+            this.links[index].href = value;
             },
-            updateLinksText(value){
-                this.links.text = value;
-                this.$v.links.text.$touch();
+            updateLinksText(value, index){
+                this.links[index].text = value;
             },
+            addLink: function(){
+                this.links.push({ href: '', text: '', });
+            },
+            popLink: function(){
+                this.links.pop();
+            }, 
 
         },
         mounted(){
-            if(this.detail_media[0] ==null || this.detail_media[0] ==undefined){
-                this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
+            if(this.links[0] ==null || this.links[0] ==undefined){
+                this.links.push({ href: '', text: '', });
             }
         }
     }

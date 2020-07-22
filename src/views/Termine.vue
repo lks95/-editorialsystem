@@ -103,7 +103,7 @@ export default {
     },
     methods: {
         confirmDownload: function(){
-        const data = JSON.stringify(this.Praxissemester)
+        const data = JSON.stringify(this.termine)
         const blob = new Blob([data], {type: 'text/plain'})
         const e = document.createEvent('MouseEvents'),
           a = document.createElement('a');

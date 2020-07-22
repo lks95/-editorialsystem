@@ -260,11 +260,9 @@ export default {
         },
          updateDetailImgSrcI(value, index){
             this.detail_media[index].detail_img_src = value;
-           // this.$v.detail_media[index].detail_img_src.$touch();
         },
         updateDetailImgAltI(value,index){
             this.detail_media[index].detail_img_alt = value;
-            //this.$v.detail_media[index].detail_img_alt.$touch();
         },
         addItemImg: function(){
             this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
