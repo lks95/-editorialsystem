@@ -4,40 +4,40 @@
             <div class="form-group" :class="{'form-group-error': $v.title.$error}">
                 <label :for="'titleInput-' + this.selectedIndex">Titel:</label>
                 <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateTitel($event.target.value)">
+                <div class="error ml-2" v-if="!$v.title.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.title.minLength">Titel muss mindestens {{$v.title.$params.minLength.min}} Zeichen enthalten.</div>
+                <div class="error ml-2 text-danger" v-if="!$v.title.maxLength">Titel darf maximal {{$v.title.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.title.required">Field is required</div>
-            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
-            <div class="error" v-if="!$v.title.maxLength">Title must have at most {{$v.title.$params.maxLength.max}} letters.</div>
 
             <div class="form-group" :class="{'form-group-error': $v.link.$error}">
                 <label :for="'linkInput-' + this.selectedIndex">Link:</label>
                 <input type="text" class="form-control" :id="'linkInput-' + this.selectedIndex" v-model.trim="link" @input="updateLink($event.target.value)">
+                <div class="error ml-2" v-if="!$v.link.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.link.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group-error': $v.linkText.$error}">
                 <label :for="'descriptionInput-' + this.selectedIndex">Linktext:</label>
                 <input type="text" class="form-control" :id="'descriptionInput-' + this.selectedIndex" v-model.trim="linkText" @input="updateLinktext($event.target.value)">
+                <div class="error ml-2" v-if="!$v.linkText.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.linkText.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group-error': $v.img.$error}">
                 <label :for="'placeInput-' + this.selectedIndex">Bild:</label>
                 <input type="image" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="img" @input="updateImg($event.target.value)">
+                <div class="error ml-2" v-if="!$v.img.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.img.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group-error': $v.text.$error}">
                 <label :for="'textInput-' + this.selectedIndex">Text:</label>
                 <input type="text" class="form-control" :id="'textInput-' + this.selectedIndex" v-model.trim="text" @input="updateText($event.target.value)">
+                <div class="error ml-2" v-if="!$v.text.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.text.maxLength">Text darf maximal {{$v.text.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.text.required">Field is required</div>
-            <div class="error" v-if="!$v.text.maxLength">Text must have at most {{$v.text.$params.maxLength.max}} letters.</div>
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
                 <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
-                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
 
         </form>
@@ -85,7 +85,6 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
                 this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
                 }
             },
-
             updateTitel(value){
                 this.title = value;
                 this.$v.title.$touch();
@@ -106,7 +105,6 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
                 this.text = value;
                 this.$v.text.$touch();
             },
-
             resetForm(){
                 this.title = this.selectedItem.title;
                 this.link = this.selectedItem.link;
@@ -114,6 +112,7 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
                 this.img = this.selectedItem.img;
                 this.text = this.selectedItem.text;
                 this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+                this.submitStatus = 'OK';
             }
         },
         mounted() {
@@ -125,7 +124,3 @@ import {maxLength, minLength, required} from "vuelidate/lib/validators";
         }
     }
 </script>
-
-<style scoped>
-
-</style>
