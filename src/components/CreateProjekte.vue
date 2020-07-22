@@ -10,6 +10,7 @@
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie:</label>
                 <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Kategorie auswählen"></multiselect> 
+                <div class="error ml-2" v-if="!$v.category.required">Pflichtfeld</div>
             </div>
            
             <div class="form-group" :class="{'form-group--error': $v.intro_title.$error}">
@@ -191,6 +192,7 @@ export default {
             if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
                 this.submitStatus = 'ERROR';
             } else {
+                let dateString = new Date(this.date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
                 let formData = {
                     study: this.study,
                     category: this.category,
@@ -203,7 +205,7 @@ export default {
                     detail_header_img_alt: this.detail_header_img_alt,
                     detail_header_intro: this.detail_header_intro,
                     detail_text: this.detail_text,
-                    date: this.date,
+                    date: dateString,
                     contacts: this.contacts,
                     detail_media: this.detail_media,
                     
