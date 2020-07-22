@@ -2,10 +2,9 @@
     <div>
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
 
-            <div class="form-group" :class="{'form-group--error': $v.study.$error}">
+            <div class="form-group" >
                 <label for="studyInput">Studiengang:</label>
                 <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Studiengang auswählen"></multiselect>
-                <div class="error ml-2" v-if="!$v.study.required">Pflichtfeld</div>
             </div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
@@ -173,7 +172,6 @@ export default {
         };
     },
     validations:{
-        study: {},
         category: {required},
         intro_title: { required, minLength: minLength(3)},
         intro_img_src: { required },
