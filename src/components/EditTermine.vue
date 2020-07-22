@@ -29,7 +29,6 @@
                     v-model.trim="description"
                     :id="'descriptionInput-' + this.selectedIndex"
                 />
-                <div class="error ml-2" v-if="!$v.description.required">Pflichtfeld</div>
             </div>
 
             <div class="form-row" >
@@ -74,9 +73,8 @@
                     :allow-empty="true"
                 >
                 </multiselect>
-                <div class="error ml-2" v-if="!$v.contact.required">Pflichtfeld</div>
+                <div class="error ml-2" v-if="!$v.contacts.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
             <div class="form-group" >
                 <label >Link</label>

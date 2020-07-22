@@ -28,8 +28,6 @@
                     }"
                     v-model.trim="description"
                 />
-                <div class="error ml-2" v-if="!$v.description.required">Pflichtfeld</div>
-                <div class="error ml-2" v-if="!$v.description.maxLength">Text darf maximal {{$v.description.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
 
             <div class="form-row">
@@ -75,9 +73,8 @@
                     :allow-empty="true"
                 >
                 </multiselect>
-                <div class="error ml-2" v-if="!$v.contact.required">Pflichtfeld</div>
+                <div class="error ml-2" v-if="!$v.contacts.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
             <div class="form-group" >
                 <label for='linksInput'>Link</label>
@@ -91,7 +88,7 @@
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
-                <button class="btn btn-primary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <button class="btn btn-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
                 <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
 
