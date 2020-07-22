@@ -49,12 +49,9 @@
                         <button class="btn btn-outline-danger mx-1" @click="confirmDelete(data)" >
                             <font-awesome-icon icon="trash" />
                         </button>
-
                     </div>
                 </div>
             </div>
-
-
         </draggable>
 
     </div>
@@ -136,7 +133,7 @@ export default {
       saveArchiveToBackend: function(){
           axios.post('http://localhost:5000/api/news/archive', {"news": this.archive})
               .then((res)=>{
-                  this.news = res.data.news;
+                  this.archive = res.data.news;
               })
       },
       confirmDelete: function(item){
