@@ -105,11 +105,14 @@ export default {
     validations:{
         id: { required},
         name: { required},
+        phone: {},
         mail: { required},
         room: { required},
         job_title: { required},
         text: {maxLength: maxLength(150)},
         subject: {maxLength: maxLength(100)},
+        times: {},
+        focus: {},
         img: { required}
     },
     methods: {
