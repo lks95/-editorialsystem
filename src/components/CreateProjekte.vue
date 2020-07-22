@@ -1,73 +1,73 @@
 <template>
     <div>
         <form id="addForm" @submit.prevent="submit"  class="pb-2 mb-3 mr-3 border-bottom">
+
             <div class="form-group" :class="{'form-group--error': $v.study.$error}">
-                <label for="studyInput">Studiengang</label>
-                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
+                <label for="studyInput">Studiengang:</label>
+                <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Studiengang auswählen"></multiselect>
+                <div class="error ml-2" v-if="!$v.study.required">Pflichtfeld</div>
             </div>
-             
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
-                <label for="categoryInput">Kategorie</label>
-                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Pick a category"></multiselect> 
+                <label for="categoryInput">Kategorie:</label>
+                <multiselect id="categoryInput" v-model="category" :options="kategoryOptions" :searchable="false" :multiple="true" :close-on-select="false" :show-labels="false" placeholder="Kategorie auswählen"></multiselect> 
             </div>
-            <div class="error" v-if="!$v.category.required">Field is required</div>
            
             <div class="form-group" :class="{'form-group--error': $v.intro_title.$error}">
                 <label for="intro_titleInput">Title:</label>
                 <input type="text" class="form-control"  id="intro_titleInput" v-model.trim="intro_title"  @input="updateTitle($event.target.value)">
+                <div class="error ml-2" v-if="!$v.intro_title.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.intro_title.minLength">Autor muss mindestens {{$v.intro_title.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.intro_title.required">Field is required</div>
-            <div class="error" v-if="!$v.intro_title.minLength">Author must have at least {{$v.intro_title.$params.minLength.min}} letters.</div>
             
             <div class="form-group" :class="{'form-group--error': $v.intro_img_src.$error}">
                 <label for="intro_img_srcInput">Bildname:</label>
                 <input type="text" class="form-control" id="intro_img_srcInput" v-model.trim="intro_img_src" @input="updateImgSrc($event.target.value)">
+                <div class="error ml-2" v-if="!$v.intro_img_src.required">Pflichtfeld</div>
             </div>
-
-            <div class="error" v-if="!$v.intro_img_src.required">Field is required</div>
+            
             <div class="form-group" :class="{'form-group--error': $v.intro_img_alt.$error}">
                 <label for="intro_img_altInput">Bild Alternativtext:</label>
                 <input type="text" class="form-control" id="intro_img_altInput" v-model.trim="intro_img_alt" @input="updateImgAlt($event.target.value)">
+                <div class="error ml-2" v-if="!$v.intro_img_alt.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.intro_img_alt.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.intro_text.$error}">
                 <label for="intro_textInput">Bericht:</label>
                 <textarea class="form-control" id="intro_textInput" rows="3" v-model.trim="intro_text" @input="updateText($event.target.value)"></textarea>
+                <div class="error ml-2" v-if="!$v.intro_text.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.intro_text.minLength">Bericht muss mindestens {{$v.intro_text.$params.minLength.min}} Zeichen enthalten.</div>
+                <div class="error ml-2 text-danger" v-if="!$v.intro_text.maxLength">Bericht darf maximal {{$v.intro_text.$params.maxLength.max}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.intro_text.required">Field is required</div>
-            <div class="error" v-if="!$v.intro_text.minLength">Text must have at least {{$v.intro_text.$params.minLength.min}} letters.</div>
-            <div class="error" v-if="!$v.intro_text.maxLength">Text must have at most {{$v.intro_text.$params.maxLength.max}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.detail_headline.$error}">
-                <label for="detail_headlineInput">Detail Headline:</label>
+                <label for="detail_headlineInput">Detail Überschrift:</label>
                 <input type="text" class="form-control" id="detail_headlineInput"  v-model.trim="detail_headline" @input="updateDetailHeadline($event.target.value)">
+                <div class="error ml-2" v-if="!$v.detail_headline.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.detail_headline.minLength">Detail Überschrift muss mindestens {{$v.detail_headline.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.detail_headline.required">Field is required</div>
-            <div class="error" v-if="!$v.detail_headline.minLength">Text must have at least {{$v.detail_headline.$params.minLength.min}} letters.</div>
            
            <div class="form-group" :class="{'form-group--error': $v.detail_header_img_src.$error}">
                 <label for="detail_header_img_srcInput">detail_header_img_src:</label>
                 <input type="text" class="form-control" id="detail_header_img_srcInput" v-model.trim="detail_header_img_src" @input="updateDetailHeaderImgSrc($event.target.value)">
+                <div class="error ml-2" v-if="!$v.detail_header_img_src.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.detail_header_img_src.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.detail_header_img_alt.$error}">
                 <label for="detail_header_img_altInput">detail_header_img_alt:</label>
                 <input type="text" class="form-control" id="detail_header_img_altInput" v-model.trim="detail_header_img_alt" @input="updateDetailHeaderImgAlt($event.target.value)">
+                <div class="error ml-2" v-if="!$v.detail_header_img_alt.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.detail_header_img_alt.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.detail_header_intro.$error}">
                 <label for="detail_header_introInput">detail_header_intro:</label>
                 <input type="text" class="form-control" id="detail_header_introInput"  v-model.trim="detail_header_intro" @input="updateDetailHeaderIntro($event.target.value)">
+                <div class="error ml-2" v-if="!$v.detail_header_intro.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.detail_header_intro.minLength">Text muss mindestens {{$v.detail_header_intro.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.detail_header_intro.required">Field is required</div>
-            <div class="error" v-if="!$v.detail_header_intro.minLength">Text must have at least {{$v.detail_header_intro.$params.minLength.min}} letters.</div>
            
            <div class="form-group" :class="{'form-group--error': $v.detail_text.$error}">
-                <label for="detail_textInput">detail_text:</label>
+                <label for="detail_textInput">Detail Text:</label>
                 <Editor
                     :init="{
                         height: 500,
@@ -79,9 +79,9 @@
                     }"
                     v-model.trim="detail_text"
                     />
+                <div class="error ml-2" v-if="!$v.detail_text.required">Pflichtfeld</div>
+                <div class="error ml-2 text-danger" v-if="!$v.detail_text.minLength">Detail Text muss mindestens {{$v.detail_text.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.detail_text.required">Field is required</div>
-            <div class="error" v-if="!$v.detail_text.minLength">Text must have at least {{$v.detail_text.$params.minLength.min}} letters.</div>
            
            <div class="form-group" :class="{'form-group--error': $v.date.$error}">
                 <div class="form-row">
@@ -90,8 +90,8 @@
                         <input type="date" class="form-control" id="dateInput" v-model.trim="date" @input="updateDate($event.target.value)">
                     </div>
                 </div>
+                <div class="error ml-2" v-if="!$v.date.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.date.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
                 <label for="contactsInput">Kontakt:</label>
@@ -107,16 +107,16 @@
                     :allow-empty="true"
                 >
                 </multiselect>
+                <div class="error ml-2" v-if="!$v.contacts.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
              <div class="form-group" >
-                <label for="detail_mediaInput">Weitere Bilder</label>
+                <label for="detail_mediaInput">Weitere Bilder:</label>
                 <div>
                     <div class="form-group my-3 py-3" v-for=" (media, index) in detail_media" :key="index">
-                        <label>Detail media Src</label>
-                        <input class="form-control" :id="'detail_mediaSrcInput'+index" v-model.trim="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
-                        <label>Detail media Alt</label>
+                        <label>Detail media Src:</label>
+                        <input class="form-control" :id="'detail_mediaSrcInput'+index"  v-model.trim="media.detail_img_src" @input="updateDetailImgSrcI($event.target.value, index)"> 
+                        <label>Detail media Alt:</label>
                         <input class="form-control" :id="'detail_mediaAltInput'+index"  v-model.trim="media.detail_img_alt" @input="updateDetailImgAltI($event.target.value, index)"> 
                     </div>
                     <LoadMedia title="Media" @addNewImg="addItemImg"  @popdNewImg="popItemImg"/>
@@ -124,11 +124,11 @@
             </div>
 
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'" >Speichern</button>
-                <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+                <button type="submit" class="btn btn-primary">Speichern</button>
+                <button class="btn btn-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
+        
         </form>
     </div>
 </template>
@@ -189,9 +189,9 @@ export default {
     },
     methods: {
         submit: function() {
-            this.$v.$touch()
+            this.$v.$touch();
             if (this.$v.$invalid || this.$v.minLength || this.$v.maxLength) {
-                this.submitStatus = 'ERROR'
+                this.submitStatus = 'ERROR';
             } else {
                 let formData = {
                     study: this.study,
@@ -211,17 +211,13 @@ export default {
                     
                 };
                 this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500)
+                this.submitStatus = 'OK';
             } 
         },
         updateCategeory(value){
             this.category = value;
             this.$v.category.$touch();
         },
-
         updateText(value){
             this.intro_text = value;
             this.$v.intro_text.$touch();
@@ -279,9 +275,8 @@ export default {
     },
     mounted(){
         if(this.detail_media[0] ==null || this.detail_media[0] ==undefined){
-                this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
-            }
+            this.detail_media.push({detail_img_src: '', detail_img_alt:'',});
+        }
     }
-    
 }
 </script>

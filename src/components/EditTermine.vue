@@ -5,15 +5,15 @@
             <div class="form-group" :class="{'form-group--error': $v.title.$error}">
                 <label :for="'titleInput-' + this.selectedIndex">Titel</label>
                 <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateTitleTermin($event.target.value)">
+                <div class="error ml-2" v-if="!$v.title.required">Pflichtfeld</div>
+                <div class="error ml-2" v-if="!$v.title.minLength">Titel muss mindestens {{$v.title.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
-            <div class="error" v-if="!$v.title.required">Field is required</div>
-            <div class="error" v-if="!$v.title.minLength">Title must have at least {{$v.title.$params.minLength.min}} letters.</div>
 
             <div class="form-group" :class="{'form-group--error': $v.headline.$error}">
                 <label :for="'headlineInput-' + this.selectedIndex">Überschrift</label>
                 <input type="text" class="form-control" :id="'headlineInput-' + this.selectedIndex" v-model.trim="headline" @input="updateHeadline($event.target.value)">
+                <div class="error ml-2" v-if="!$v.headline.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.headline.required">Field is required</div>
 
             <div class="form-group" >
                 <label :for="'descriptionInput-' + this.selectedIndex">Beschreibung</label>
@@ -56,8 +56,8 @@
             <div class="form-group" :class="{'form-group--error': $v.place.$error}">
                 <label :for="'placeInput-' + this.selectedIndex">Ort</label>
                 <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="place" @input="updatePlace($event.target.value)">
+                <div class="error ml-2" v-if="!$v.place.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.place.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.contacts.$error}">
                 <label :for="'contactsInput-' + this.selectedIndex">Kontakt:</label>
@@ -73,8 +73,8 @@
                     :allow-empty="true"
                 >
                 </multiselect>
+                <div class="error ml-2" v-if="!$v.contacts.required">Pflichtfeld</div>
             </div>
-            <div class="error" v-if="!$v.contacts.required">Field is required</div>
 
             <div class="form-group" >
                 <label >Link</label>
@@ -86,10 +86,9 @@
 
 
             <div class="d-flex flex-row-reverse">
-                <button type="submit" class="btn btn-primary" :disabled="submitStatus === 'PENDING'">Speichern</button>
+                <button type="submit" class="btn btn-primary">Speichern</button>
                 <b-button class="mx-2" @click="resetForm">Abbrechen</b-button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Fill Form correctly</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sendet...</p>
+                <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
 
         </form>
@@ -138,9 +137,9 @@ export default {
     },
     methods: {
         submit: function() {
-            this.$v.$touch()
+            this.$v.$touch();
             if(this.$v.$invalid || this.$v.minLength || this.$v.maxLength){
-                this.submitStatus = 'ERROR'
+                this.submitStatus = 'ERROR';
             } else {
                 let formData = {
                     title: this.title || this.selectedItem.title,
@@ -156,10 +155,7 @@ export default {
                     nId: this.selectedIndex
                 };
                 this.$emit("save", formData);
-                this.submitStatus = 'PENDING'
-                setTimeout(() => {
-                    this.submitStatus = 'OK'
-                }, 500);
+                this.submitStatus = 'OK';
                 this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             }
         },
@@ -215,6 +211,7 @@ export default {
             this.contacts = this.selectedItem.contacts;
             this.links = this.selectedItem.links;
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
+            this.submitStatus = 'OK';
         }
     },
     mounted() {
