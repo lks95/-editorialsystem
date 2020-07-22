@@ -167,10 +167,6 @@ export default {
              this.$v.headline.$touch();
         },
         updateStartdate(value){
-            console.log('1'+value);
-            console.log(''+this.start);
-            console.log('3'+this.date.start);
-            
             this.date.start = value;
         },
         updateEnddate(value){

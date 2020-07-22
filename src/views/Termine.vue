@@ -114,18 +114,10 @@ export default {
           a.dispatchEvent(e);
     },
    selectedFile(file) {
-      console.log('show a file');
-      console.log(file);
-      
       let fileA = file;
-      console.log('show this file');
-      console.log(fileA);
       if(!fileA || fileA.type !== 'application/json') return;
-     
       let reader = new FileReader();
       reader.readAsText(fileA, "UTF-8");
-      console.log(reader);
-      
       reader.onload =  evt => {
         let text = evt.target.result;
         try {
@@ -187,7 +179,7 @@ export default {
                 }
             })
                 .catch(err => {
-                    console.log(err);
+                    console.error(err);
                 })
         },
         confirmDelete: function (item) {
@@ -210,12 +202,11 @@ export default {
                   }
               })
               .catch(err => {
-                  console.log(err);
+                  console.error(err);
               })
         },
         updateItem: function (item) {
           let foundIndex = this.termine.findIndex(x => x.tid === item.tid);
-          console.log(item);
             this.termine[foundIndex].title = item.title;
             this.termine[foundIndex].headline = item.headline;
             this.termine[foundIndex].description = item.description;
@@ -243,7 +234,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.error(err);
                 })
         },
     },

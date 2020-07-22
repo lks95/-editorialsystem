@@ -23,14 +23,11 @@
 export default {
     name: 'LoadJSON',
     props: [ 'file' ],
-   methods:{
-       Upload() {
-        console.log('selected a file');
-        console.log(this.$refs.myFile.files[0]);
-      
-      let file = this.$refs.myFile.files[0];
-  this.$emit('update-cart', file);
-}
-   }
+    methods:{
+        Upload() {
+            let file = this.$refs.myFile.files[0];
+            this.$emit('update-cart', file);
+        }
+    }
 }
 </script>

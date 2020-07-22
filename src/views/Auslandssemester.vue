@@ -137,7 +137,7 @@ export default {
               }
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           })
     },
     restoreFromArchive: function(item){
@@ -157,7 +157,7 @@ export default {
               }
           })
           .catch(err => {
-            console.log(err);
+            console.error(err);
           })
     },
     confirmDelete: function(item){
@@ -180,7 +180,7 @@ export default {
             }
         })
         .catch(err => {
-            console.log(err);
+            console.error(err);
         })
     },
     confirmDownload: function(){
@@ -195,9 +195,6 @@ export default {
           a.dispatchEvent(e);
     },
    selectedFile() {
-      console.log('selected a file');
-      console.log(this.$refs.myFile.files[0]);
-      
       let file = this.$refs.myFile.files[0];
       if(!file || file.type !== 'application/json') return;
       
