@@ -215,6 +215,7 @@ export default {
         },
         updateItem: function (item) {
           let foundIndex = this.termine.findIndex(x => x.tid === item.tid);
+          console.log(item);
             this.termine[foundIndex].title = item.title;
             this.termine[foundIndex].headline = item.headline;
             this.termine[foundIndex].description = item.description;

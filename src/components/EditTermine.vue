@@ -4,7 +4,7 @@
 
             <div class="form-group" :class="{'form-group--error': $v.title.$error}">
                 <label :for="'titleInput-' + this.selectedIndex">Titel</label>
-                <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title" @input="updateTitleTermin($event.target.value)">
+                <input type="text" class="form-control" :id="'titleInput-' + this.selectedIndex" v-model.trim="title">
                 <div class="error ml-2" v-if="!$v.title.required">Pflichtfeld</div>
                 <div class="error ml-2" v-if="!$v.title.minLength">Titel muss mindestens {{$v.title.$params.minLength.min}} Zeichen enthalten.</div>
             </div>
@@ -34,7 +34,7 @@
             <div class="form-row" >
                 <div class="form-group col-md-6" >
                     <label :for="`startdateInput-${selectedIndex}`">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" :id="`startdateInput-${selectedIndex}`" v-model="date[0].start" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" :id="`startdateInput-${selectedIndex}`" v-model="date.start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="form-group col-md-6">
                     <label :for="'enddateInput-' + this.selectedIndex">Ende des Termins: (Datum)</label>
@@ -45,11 +45,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label :for="'starttimeInput-' + this.selectedIndex">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="time[0].start" @input="updateStarttime($event.target.valueAsDate)">
+                    <input type="time" class="form-control" :id="'starttimeInput-' + this.selectedIndex" v-model.trim="time.start" @input="updateStarttime($event.target.valueAsDate)">
                 </div>
                 <div class="col">
                     <label :for="'endtimeInput-' + this.selectedIndex">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="time[0].end" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" :id="'endtimeInput-' + this.selectedIndex" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
 
@@ -84,6 +84,7 @@
                     <label :for="`linkstextInput-${selectedIndex}-${index}`">Beschreibender Text zu Link</label>
                     <input type="text" class="form-control" :id="`linkstextInput-${selectedIndex}-${index}`" v-model.trim="link.text" @input="updateLinksText($event.target.value, index)">
                 </div>
+                    <LoadLink title="Link" @addLink="addLink"  @popLink="popLink"/>
             </div>
 
             <div class="d-flex flex-row-reverse">
@@ -100,27 +101,29 @@
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
 import {minLength, required} from "vuelidate/lib/validators";
+import LoadLink from './LoadLink'
 
 export default {
     name: 'EditTermine',
     props: ["selectedItem", "selectedIndex", "team"],
     components: {
         Editor,
-        Multiselect
+        Multiselect,
+        LoadLink,
     },
     data() {
         return {
             title: '',
             headline: '',
             description: '',
-            date:[{
+            date:{
                 start: '',
                 end: '',
-            }],
-            time:[{
+            },
+            time:{
                 start: '',
                 end: '',
-            }],
+            },
             place: '',
             contacts: [],
             links: [],
@@ -143,12 +146,12 @@ export default {
                     title: this.title || this.selectedItem.title,
                     headline: this.headline || this.selectedItem.headline,
                     description: this.description || this.selectedItem.description,
-                    startdate: this.date || this.selectedItem.date,
-                    endtime: this.time || this.selectedItem.time,
+                    date: this.date || this.selectedItem.date,
+                    time: this.time || this.selectedItem.time,
                     place: this.place || this.selectedItem.place,
                     contacts: this.contacts || this.selectedItem.contacts,
                     links: this.links || this.selectedItem.links,
-                    nId: this.selectedIndex
+                    tid: this.selectedIndex
                 };
                 this.$emit("save", formData);
                 this.submitStatus = 'OK';
@@ -165,6 +168,7 @@ export default {
         },
         updateStartdate(value){
             console.log('1'+value);
+            console.log(''+this.start);
             console.log('3'+this.date.start);
             
             this.date.start = value;
@@ -173,10 +177,10 @@ export default {
             this.date.end = value;
         },
         updateStarttime(value){
-            this.time[0].start = value;
+            this.start = value;
         },
         updateEndtime(value){
-            this.time[0].end = value;
+            this.end = value;
         },
         updatePlace(value){
             this.place = value;
@@ -197,17 +201,17 @@ export default {
             this.title = this.selectedItem.title;
             this.headline = this.selectedItem.headline;
             this.description = this.selectedItem.description;
-            this.startdate = this.selectedItem.startdate;
-            this.enddate = this.selectedItem.enddate;
-            this.starttime = this.selectedItem.starttime;
-            this.endtime = this.selectedItem.endtime;
+            this.date.start = this.selectedItem.date.start;
+            this.date.end = this.selectedItem.enddate;
+            this.time.start = this.selectedItem.time.start;
+            this.time.end = this.selectedItem.time.end;
             this.place = this.selectedItem.place;
             this.contacts = this.selectedItem.contacts;
             this.links = this.selectedItem.links;
             this.$root.$emit('bv::toggle::collapse', 'collapse-' + this.selectedIndex);
             this.submitStatus = 'OK';
-        },
-        addLink: function(){
+            },
+            addLink: function(){
                 this.links.push({ href: '', text: '', });
             },
             popLink: function(){
@@ -218,10 +222,10 @@ export default {
         this.title = this.selectedItem.title;
         this.headline = this.selectedItem.headline;
         this.description = this.selectedItem.description;
-        this.startdate = this.selectedItem.date.start;
-        this.enddate = this.selectedItem.date.end;
-        this.starttime = this.selectedItem.time.start;
-        this.endtime = this.selectedItem.time.end;
+        this.date.start = this.selectedItem.date.start;
+        this.date.end = this.selectedItem.date.end;
+        this.time.start = this.selectedItem.time.start;
+        this.time.end = this.selectedItem.time.end;
         this.place = this.selectedItem.place;
         this.contacts = this.selectedItem.contacts;
         this.links = this.selectedItem.links;

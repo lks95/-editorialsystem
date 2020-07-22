@@ -33,22 +33,22 @@
             <div class="form-row">
                 <div class="col" >
                     <label for="startdateInput">Start des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="startdateInput" v-model.trim="date[0].start" @input="updateStartdate($event.target.value)">
+                    <input type="date" class="form-control" id="startdateInput" v-model.trim="date.start" @input="updateStartdate($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="enddateInput">Ende des Termins: (Datum)</label>
-                    <input type="date" class="form-control" id="enddateInput" v-model.trim="date[0].end" @input="updateEnddate($event.target.value)">
+                    <input type="date" class="form-control" id="enddateInput" v-model.trim="date.end" @input="updateEnddate($event.target.value)">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="col">
                     <label for="starttimeInput">Beginn des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="time[0].start" @input="updateStarttime($event.target.value)">
+                    <input type="time" class="form-control" id="starttimeInput" v-model.trim="time.start" @input="updateStarttime($event.target.value)">
                 </div>
                 <div class="col">
                     <label for="endtimeInput">Ende des Termins: (Uhrzeit)</label>
-                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="time[0].end" @input="updateEndtime($event.target.value)">
+                    <input type="time" class="form-control" id="endtimeInput" v-model.trim="time.end" @input="updateEndtime($event.target.value)">
                 </div>
             </div>
            
@@ -84,6 +84,7 @@
                     <label for='linksTextInput'>Beschreibender Text zu Link</label>
                     <input type="text" class="form-control" :id="'linksTextInput'" v-model.trim="link.text" @input="updateLinksText($event.target.value, index)">
                 </div>
+                 <LoadLink title="Link" @addLink="addLink"  @popLink="popLink"/>
             </div>
 
             <div class="d-flex flex-row-reverse">
@@ -99,6 +100,7 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import Multiselect from 'vue-multiselect'
+import LoadLink from './LoadLink'
 
 import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
 
@@ -108,6 +110,7 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
         components: {
             Editor,
             Multiselect,
+            LoadLink,
             
         },
         data() {
@@ -115,14 +118,14 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
                 title: '',
                 headline: '',
                 description: '',
-                date:[{
+                date:{
                     start: '',
                     end: '',
-                }],
-                time:[{
+                },
+                time:{
                     start: '',
                     end: '',
-                }],
+                },
                 place: '',
                 contacts: [],
                 links: [],
@@ -169,13 +172,13 @@ import {required, minLength/*, maxLength*/} from 'vuelidate/lib/validators'
                 this.date.start = value;
             },
             updateEnddate(value){
-                this.date[0].end = value;
+                this.date.end = value;
             },
             updateStarttime(value){
-                this.time[0].start = value;
+                this.time.start = value;
             },
             updateEndtime(value){
-                this.time[0].end = value;
+                this.time.end = value;
             },
             updatePlace(value){
                 this.place = value;
