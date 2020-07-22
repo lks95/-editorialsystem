@@ -5,7 +5,6 @@
                 <label for="studyInput">Studiengang</label>
                 <multiselect id="studyInput" v-model="study" :options="studyOptions" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a study"></multiselect>
             </div>
-             <div class="error" v-if="!$v.study.required">Field is required</div>
 
             <div class="form-group" :class="{'form-group--error': $v.category.$error}">
                 <label for="categoryInput">Kategorie</label>
@@ -177,7 +176,7 @@ export default {
         };
     },
     validations:{
-        study: {required},
+        study: {},
         category: {required},
         intro_title: { required, minLength: minLength(3)},
         intro_img_src: { required },
