@@ -23,7 +23,7 @@
 
             <div class="form-group" :class="{'form-group-error': $v.img.$error}">
                 <label :for="'placeInput-' + this.selectedIndex">Bild:</label>
-                <input type="image" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="img" @input="updateImg($event.target.value)">
+                <input type="text" class="form-control" :id="'placeInput-' + this.selectedIndex" v-model.trim="img" @input="updateImg($event.target.value)">
                 <div class="error ml-2" v-if="!$v.img.required">Pflichtfeld</div>
             </div>
 
