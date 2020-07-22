@@ -160,7 +160,7 @@ export default {
                     this.archive.splice(this.archive.indexOf(item), 1);
                     this.saveArchiveToBackend();
                 }else{
-                    this.projekte.splice(this.projekte.indexOf(item), 1);
+                    this.team.splice(this.team.indexOf(item), 1);
                     this.saveToBackend();
                 }
             }
