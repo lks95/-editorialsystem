@@ -1,1 +1,32 @@
-{"news":[{"title":"Innovative Lehr- und Lernkonzepte","link":"news_200330.html","linkText":"Details zur Meldung 'Innovative Lehr- und Lernkonzepte'","img":"200330/doersam_wittenzellner.jpg","text":"Professoren von Wirtschaftsingenieurwesen Medien engagieren sich überdurchschnittlich für eine exzellente, innovative Lehre: gleich vier Projekte werden dieses Jahr von der GHD gefördert.","nId":0},{"title":"WING-Team auf Hausmesse der it.schule Stuttgart","link":"news_200307.html","linkText":"Details zur Meldung 'WING-Team auf Hausmesse der it.schule Stuttgart'","img":"200307/it_schule.jpg","text":"Aussteller informieren über vielseitige Studienmöglichkeiten","nId":1},{"title":"Bester Absolvent im Druck- und Verpackungsbereich","link":"news_200302.html","linkText":"Details zur Meldung 'Bester Absolvent im Druck- und Verpackungsbereich'","img":"200302/preisverleihung.JPG","text":"Andreas Riedel wurde bei der Absolventenfeier im Februar 2020 von dem Verband Druck und Medien in Baden-Württemberg e. V. als bester Absolvent des vergangenen Semesters im Druck- und Verpackungsbereich ausgezeichnet. Wir haben bei Andreas Riedel nachgefragt: Wie wird man zum besten Absolventen?","nId":2},{"title":"HdM meets Inholland - Eine erfolgreiche Austauschwoche","link":"news_191024.html","linkText":"Details zur Meldung 'HdM meets Inholland'","img":"191024/inholland.jpg","text":"Im Oktober 2019 waren zum ersten Mal holländische Studierende aus Alkmaar zu Gast. Von Studierenden, Professoren und Mitarbeitern des Studiengangs Wirtschaftsingenieurwesen Medien wurde dafür ein spannendes Programm auf die Beine gestellt.","nId":3}]}
+{
+    "news": [
+      {
+        "title": "Studienstart im virtuellen Semester",
+        "link": "news_200713.html",
+        "linkText": "Details zur Meldung 'Studienstart im virtuellen Semester'",
+        "img": "200713/Studienstart_Klein.jpg",
+        "text": "Auch wenn in diesem Semester Vieles anders war, eines ist gleich geblieben: Wie zu jedem Semesteranfang durften wir auch in diesem Sommersemester neue Studierende begrüßen. Doch anders als sonst konnten sie nicht an ihrem ersten Studientag das Gebäude der Hochschule der Medien betreten und ihre Kommilitonen und Professoren persönlich kennenlernen. Wie haben sie ihr erstes Semester an der Hochschule der Medien erlebt? Wir haben bei unseren Erstsemestern nachgefragt."
+      },
+      {
+        "title": "Als Tutorin im virtuellen Semester",
+        "link": "news_200707.html",
+        "linkText": "Details zur Meldung 'Als Tutorin im virtuellen Semester'",
+        "img": "200707/AdobeStock_355260799.jpeg",
+        "text": "Das Sommersemester 2020 verläuft in jeder Hinsicht außergewöhnlich: erst wurde der Start der Vorlesungen um fünf Wochen verschoben, dann wurden Präsenzveranstaltungen in kürzester Zeit auf virtuelle Formen umgestellt. Dabei legt die HdM normalerweise einen hohen Wert auf praktische Arbeiten und persönliche Betreuung aller Studierender. Wie kann man diesem Anspruch in virtuellen Veranstaltungen gerecht werden? Lisa Arnold berichtet aus ihrem Alltag als studentische Tutorin."
+      },
+      {
+        "title": "Innovative Lehr- und Lernkonzepte",
+        "link": "news_200330.html",
+        "linkText": "Details zur Meldung 'Innovative Lehr- und Lernkonzepte'",
+        "img": "200330/doersam_wittenzellner.jpg",
+        "text": "Professoren von Wirtschaftsingenieurwesen Medien engagieren sich überdurchschnittlich für eine exzellente, innovative Lehre: gleich vier Projekte werden dieses Jahr von der GHD gefördert."
+      },
+      {
+        "title": "WING-Team auf Hausmesse der it.schule Stuttgart",
+        "link": "news_200307.html",
+        "linkText": "Details zur Meldung 'WING-Team auf Hausmesse der it.schule Stuttgart'",
+        "img": "200307/it_schule.jpg",
+        "text": "Aussteller informieren über vielseitige Studienmöglichkeiten"
+      }
+    ]
+  }

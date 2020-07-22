@@ -1,1 +1,55 @@
-{"berichte":[{"bericht_title":"Jonkoping, Schweden","bericht_title_position":"hintergrund-left","bericht_img":"jonkoping.jpg","bericht_text":"Jönköping mag auf den ersten Blick wie eine ruhige Kleinstadt wirken, doch die Stadt überzeugt umso mehr durch die Lage am zweitgrößten See Schwedens und die außergewöhnliche Studentenkultur. Hier wird man nämlich im wahrsten Sinne des Wortes ins kalte Wasser (des Vätternsees) geworfen. Diese und andere verrückte Aktivitäten verwandeln den Campus zwei Wochen lang während des Kick-Offs in ein riesiges Spektakel. Nicht zu vergessen den gelben \"Ovve\", der Dresscode bei jeder studentischen Veranstaltung ist!","bericht_author":"Vivien Geschwind","asId":0},{"bericht_title":"Stockholm, Schweden","bericht_title_position":"hintergrund-right","bericht_img":"Stockholm.jpg","bericht_text":"Im Vergleich zu den anderen Ländern auf dieser Seite sind sich Schweden und Deutschland doch sehr ähnlich. Umso interessanter ist es, zu beobachten, wo dann doch die meist kleinen aber entscheidenden Unterschiede liegen. Und wenn einem von all den Gedanken mal der Kopf schwirren sollte, sollte man die Dinge einfach typisch schwedisch \"lagom\" angehen und erstmal eine Zimtschnecke-mit-Kaffee-Pause (schwedisch: fika) einlegen ...","bericht_author":"Frederic Birwe","asId":1},{"bericht_title":"Amsterdam, Niederlande","bericht_title_position":"hintergrund-left","bericht_img":"amsterdam_ar.jpg","bericht_text":"Die gelassene Mentalität der Menschen, die wunderschönen Grachten und die vielen kleinen Cafes bieten eine Lebensqualität, wie sie sonst nur in wenigen Städten zu finden ist. Der Minor Mobile Development an der Hogeschool van Amsterdam baut direkt auf dem im Studienschwerpunkt Digital Publishing Technologies erworbenen Wissen auf. Es war eine unvergessliche und einzigartige Zeit in Amsterdam und ein Highlight meines Studiums.","bericht_author":"Andreas Riedel","asId":2},{"bericht_title":"Silicon Valley, USA","bericht_img":"SvUsa.jpg","bericht_text":"Für mich war mein Praxissemester im Silicon Valley ein Highlight des Studiums. Ich konnte Einblicke in verschiedene Unternehmen erhaschen und meinen Wissenschatz ausbauen. Auch für Ausflüge und Freizeit war immer genug Zeit. Auf ganzer Linie eine positive und lebensverändernde Erfahrung!","bericht_author":"Marco Philipp","asId":3},{"bericht_title":"Los Angeles, USA","bericht_img":"LaUsa.png","bericht_text":"Mir hat in Los Angeles alles sehr gut gefallen und ich hatte eine unglaubliche Zeit mit tollen Erfahrungen. Neben dem Reisen selbst und dem Kennenlernen anderer Kulturen habe ich auch erfahren können, wie andere Hochschulen mit dem Thema 'Digitale Technologien' umgehen.","bericht_author":"Anjulie Haaser","asId":4},{"bericht_title":"Amsterdam, Niederlande","bericht_img":"AmNed.png","bericht_text":"Die flachen Hierarchien zwischen Studierenden und Dozenten erlauben einen freundlich-lockeren Umgang. Das Leben in einer Stadt wie Amsterdam bietet viele Möglichkeiten, die Freizeit zu gestalten.","bericht_author":"Josefine Hartung","asId":5},{"bericht_title":"Bali, Indonesien","bericht_img":"BaliIndo.png","bericht_text":"Auf Bali hat mir ganz besonders die freundliche und hilfsbereite Art der Menschen gefallen. Sehr beeindruckt hat mich die Art und Weise, wie die Menschen hier miteinander leben und wie glücklich sie sind, obwohl sie nicht mal annähernd das haben, was Menschen in westlichen Ländern besitzen.","bericht_author":"Dilara Tunctan","asId":6},{"bericht_title":"Seoul, Korea","bericht_img":"SeKo.png","bericht_text":"Mein Aufenthalt in Korea brachte viele neue Herausforderungen mit sich, aber auch die Möglichkeit, eine völlig neue Kultur kennenzulernen. Ich konnte mir ein internationales Business-Netzwerk aufbauen, hatte aber auch vor Ort verständnisvolle Kollegen und einen hervorragenden Chef.","bericht_author":"Mislina Doganc","asId":7}]}
+{
+	"berichte": [
+		{
+			"bericht_title": "Jonkoping, Schweden",
+			"bericht_title_position": "hintergrund-left",
+			"bericht_img": "jonkoping.jpg",
+			"bericht_text": "Jönköping mag auf den ersten Blick wie eine ruhige Kleinstadt wirken, doch die Stadt überzeugt umso mehr durch die Lage am zweitgrößten See Schwedens und die außergewöhnliche Studentenkultur. Hier wird man nämlich im wahrsten Sinne des Wortes ins kalte Wasser (des Vätternsees) geworfen. Diese und andere verrückte Aktivitäten verwandeln den Campus zwei Wochen lang während des Kick-Offs in ein riesiges Spektakel. Nicht zu vergessen den gelben \"Ovve\", der Dresscode bei jeder studentischen Veranstaltung ist!",
+			"bericht_author": "Vivien Geschwind"
+		},
+		{
+			"bericht_title": "Stockholm, Schweden",
+			"bericht_title_position": "hintergrund-right",
+			"bericht_img": "Stockholm.jpg",
+			"bericht_text": "Im Vergleich zu den anderen Ländern auf dieser Seite sind sich Schweden und Deutschland doch sehr ähnlich. Umso interessanter ist es, zu beobachten, wo dann doch die meist kleinen aber entscheidenden Unterschiede liegen. Und wenn einem von all den Gedanken mal der Kopf schwirren sollte, sollte man die Dinge einfach typisch schwedisch \"lagom\" angehen und erstmal eine Zimtschnecke-mit-Kaffee-Pause (schwedisch: fika) einlegen ...",
+			"bericht_author": "Frederic Birwe"
+		},
+		{
+			"bericht_title": "Amsterdam, Niederlande",
+			"bericht_title_position": "hintergrund-left",
+			"bericht_img": "amsterdam_ar.jpg",
+			"bericht_text": "Die gelassene Mentalität der Menschen, die wunderschönen Grachten und die vielen kleinen Cafes bieten eine Lebensqualität, wie sie sonst nur in wenigen Städten zu finden ist. Der Minor Mobile Development an der Hogeschool van Amsterdam baut direkt auf dem im Studienschwerpunkt Digital Publishing Technologies erworbenen Wissen auf. Es war eine unvergessliche und einzigartige Zeit in Amsterdam und ein Highlight meines Studiums.",
+			"bericht_author": "Andreas Riedel"
+		},
+		{
+			"bericht_title": "Silicon Valley, USA",
+			"bericht_img": "SvUsa.jpg",
+			"bericht_text": "F\u00fcr mich war mein Praxissemester im Silicon Valley ein Highlight des Studiums. Ich konnte Einblicke in verschiedene Unternehmen erhaschen und meinen Wissenschatz ausbauen. Auch f\u00fcr Ausfl\u00fcge und Freizeit war immer genug Zeit. Auf ganzer Linie eine positive und lebensver\u00e4ndernde Erfahrung!",
+			"bericht_author": "Marco Philipp"
+		},
+		{
+			"bericht_title": "Los Angeles, USA",
+			"bericht_img": "LaUsa.png",
+			"bericht_text": "Mir hat in Los Angeles alles sehr gut gefallen und ich hatte eine unglaubliche Zeit mit tollen Erfahrungen. Neben dem Reisen selbst und dem Kennenlernen anderer Kulturen habe ich auch erfahren k\u00f6nnen, wie andere Hochschulen mit dem Thema 'Digitale Technologien' umgehen.",
+			"bericht_author": "Anjulie Haaser"
+		},
+		{
+			"bericht_title": "Amsterdam, Niederlande",
+			"bericht_img": "AmNed.png",
+			"bericht_text": "Die flachen Hierarchien zwischen Studierenden und Dozenten erlauben einen freundlich-lockeren Umgang. Das Leben in einer Stadt wie Amsterdam bietet viele M\u00f6glichkeiten, die Freizeit zu gestalten.",
+			"bericht_author": "Josefine Hartung"
+		},
+		{
+			"bericht_title": "Bali, Indonesien",
+			"bericht_img": "BaliIndo.png",
+			"bericht_text": "Auf Bali hat mir ganz besonders die freundliche und hilfsbereite Art der Menschen gefallen. Sehr beeindruckt hat mich die Art und Weise, wie die Menschen hier miteinander leben und wie gl\u00fccklich sie sind, obwohl sie nicht mal ann\u00e4hernd das haben, was Menschen in westlichen L\u00e4ndern besitzen.",
+			"bericht_author": "Dilara Tunctan"
+		},
+		{
+			"bericht_title": "Seoul, Korea",
+			"bericht_img": "SeKo.png",
+			"bericht_text": "Mein Aufenthalt in Korea brachte viele neue Herausforderungen mit sich, aber auch die M\u00f6glichkeit, eine v\u00f6llig neue Kultur kennenzulernen. Ich konnte mir ein internationales Business-Netzwerk aufbauen, hatte aber auch vor Ort verst\u00e4ndnisvolle Kollegen und einen hervorragenden Chef.",
+			"bericht_author": "Mislina Doganc"
+		}
+	]
+}
