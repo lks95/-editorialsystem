@@ -125,7 +125,7 @@
 
             <div class="d-flex flex-row-reverse">
                 <button type="submit" class="btn btn-primary">Speichern</button>
-                <button class="btn btn-outline-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
+                <button class="btn btn-secondary mx-2" @click="$emit('cancel')">Abbrechen</button>
                 <p class="typo__p text-danger" v-if="submitStatus === 'ERROR'">Formular enthält noch Fehler.</p>
             </div>
         
