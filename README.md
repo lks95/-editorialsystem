@@ -10,7 +10,6 @@ The content can be uploaded/downloaded by json files and be displayed in the vie
 | Name            | ID         |
 | --------------- | ---------- |
 | Lukas Schneider | ls130      |
-| Lina Dreher     | ld038      |
 | Lukas Klein     | lk104      |
 
 ## Tech-Stack
